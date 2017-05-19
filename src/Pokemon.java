@@ -2,30 +2,30 @@
  
 public class Pokemon extends Card {
 	
-   private int hd;  //health points
-   private int dp;  //damage points
+   private int healthPoints;
+   private int damagePoints;  //
    private ArrayList<Energy> energy;
    private String stage;
-   private String evolves_from;
+   private String evolvesFrom;
    
    //Constructor
    
-   public Pokemon(String name, int index,String category, int hd, int dp, ArrayList<Energy> energy,String stage, String evolves_from){
+   public Pokemon(String name, int index, String category, int hp, int dp, ArrayList<Energy> energy,String stage, String evolves_from){
 	   super(name, index, category);
-	   this.hd = hd;
-	   this.dp = dp;
+	   this.healthPoints = hd;
+	   this.damagePoints = dp;
 	   this.energy = energy;
 	   this.stage = stage;
-	   this.evolves_from = evolves_from;
+	   this.evolvesFrom = evolves_from;
    }
    
  //Get methods
 	
- 	public int getHD (){
- 		return hd;
+ 	public int getHealthPoints (){
+ 		return healthPoints;
  	}
- 	public int getDP(){
- 		return dp;
+ 	public int getDamagePoints(){
+ 		return ddamagePoints;
  	}
 
  	public ArrayList<Energy> getEnergy(){
@@ -36,17 +36,17 @@ public class Pokemon extends Card {
  		return stage;
  	}
  	
- 	public String getEvolves_From(){
- 		return evolves_from;
+ 	public String getEvolvesFrom(){
+ 		return evolvesFrom;
  	}
  	
  //Set methods
  	
- 	public void setHD(int hd){
- 		this.hd = hd;
+ 	public void setHealthPoints(int healthPoints){
+ 		this.healthPoints = healthPoints;
  	}
- 	public void setIndex(int dp){
- 		this.dp = dp;
+ 	public void setDamagePoints(int damagePoints){
+ 		this.damagePoints = damagePoints;
  	}
  	public void setCategory(ArrayList<Energy> energy){
  		this.energy = energy;
@@ -54,8 +54,8 @@ public class Pokemon extends Card {
  	public void setStage( String stage){
  		this.stage = stage;
  	}
- 	public void setEvolves_From( String evolves_from){
- 		this.evolves_from = evolves_from;
+ 	public void setEvolvesFrom( String evolvesFrom){
+ 		this.evolvesFrom = evolvesFrom;
  	}
    
 }

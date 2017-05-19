@@ -12,7 +12,7 @@ public class Pokemon extends Card {
    
    public Pokemon(String name, int index, String category, int hp, int dp, ArrayList<Energy> energy,String stage, String evolves_from){
 	   super(name, index, category);
-	   this.healthPoints = hd;
+	   this.healthPoints = hp;
 	   this.damagePoints = dp;
 	   this.energy = energy;
 	   this.stage = stage;
@@ -25,7 +25,7 @@ public class Pokemon extends Card {
  		return healthPoints;
  	}
  	public int getDamagePoints(){
- 		return ddamagePoints;
+ 		return damagePoints;
  	}
 
  	public ArrayList<Energy> getEnergy(){

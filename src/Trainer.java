@@ -2,10 +2,10 @@
 public class Trainer extends Card {
 
 	private String textbox;
-	private enum Ability{one, two, three, four, etc};
+	private enum Ability{ONE, TWO, THREE, FOUR, ETC};
 	private Ability ability;
 	
-  //Constructor
+
 	
 	public Trainer (String name, int index,String category,String textbox, Ability ability){
 		super(name, index, category);
@@ -13,7 +13,7 @@ public class Trainer extends Card {
 		this.ability = ability;
 	}
 	
- // Get Methods
+
 	
 	public String getTextbox(){
 		return textbox;
@@ -23,7 +23,7 @@ public class Trainer extends Card {
 		return ability;
 	}
 	
-//Set Methods
+
 	
 	public void setTextbox(String textbox){
 		this.textbox = textbox;
@@ -33,7 +33,7 @@ public class Trainer extends Card {
 		this.ability = ability;
 	}
 	
- //applyRule Method
+
 	
 	public void applyRule(Trainer obj){
 		

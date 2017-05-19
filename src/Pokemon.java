@@ -3,12 +3,12 @@
 public class Pokemon extends Card {
 	
    private int healthPoints;
-   private int damagePoints;  //
+   private int damagePoints;
    private ArrayList<Energy> energy;
    private String stage;
    private String evolvesFrom;
    
-   //Constructor
+
    
    public Pokemon(String name, int index, String category, int hp, int dp, ArrayList<Energy> energy,String stage, String evolves_from){
 	   super(name, index, category);
@@ -19,7 +19,7 @@ public class Pokemon extends Card {
 	   this.evolvesFrom = evolves_from;
    }
    
- //Get methods
+
 	
  	public int getHealthPoints (){
  		return healthPoints;
@@ -40,7 +40,7 @@ public class Pokemon extends Card {
  		return evolvesFrom;
  	}
  	
- //Set methods
+
  	
  	public void setHealthPoints(int healthPoints){
  		this.healthPoints = healthPoints;

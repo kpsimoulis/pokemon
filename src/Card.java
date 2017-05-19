@@ -1,12 +1,12 @@
 
 public class Card {
 	
-//class variables
+
 	private String name;
 	private int index;
 	private String category;
 	
-//Constructor
+
 	
 	public Card(String name, int index, String category ){
 		this.name = name;
@@ -14,7 +14,7 @@ public class Card {
 		this.category = category;
 	}
 	
-//Get methods
+
 	
 	public String getName (){
 		return name;
@@ -27,7 +27,7 @@ public class Card {
 		return category;
 	}
 	
-//Set methods
+
 	
 	public void setName(String name){
 		this.name = name;

@@ -8,5 +8,6 @@ public class Main {
         System.out.println("Hello from Polina");
         System.out.println("Hello from Edwin");
         System.out.println("Hello from Zhaoyang");
+        System.out.println("Hello from Xiaofang");
     }
 }

@@ -1,5 +1,5 @@
 
-public class Energy extends Cards {
+public class Energy extends Card {
 	
 	//Constructor
 	

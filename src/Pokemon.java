@@ -1,6 +1,6 @@
  import java.util.ArrayList;
  
-public class Pokemon extends Cards {
+public class Pokemon extends Card {
 	
    private int hd;  //health points
    private int dp;  //damage points

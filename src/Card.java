@@ -1,5 +1,5 @@
 
-public class Cards {
+public class Card {
 	
 //class variables
 	private String name;
@@ -8,7 +8,7 @@ public class Cards {
 	
 //Constructor
 	
-	public Cards(String name, int index, String category ){
+	public Card(String name, int index, String category ){
 		this.name = name;
 		this.index = index;
 		this.category = category;

@@ -1,5 +1,5 @@
 
-public class Trainer extends Cards {
+public class Trainer extends Card {
 
 	private String textbox;
 	private enum Ability{one, two, three, four, etc};

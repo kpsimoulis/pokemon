@@ -38,4 +38,11 @@ public class Card {
 	public void setCategory(String category){
 		this.category = category;
 	}
+
+	public boolean equals(Card anotherCard){
+
+		return this.name.equals(anotherCard.name) && this.index == anotherCard.index && this.category.equals(anotherCard.category);
+
+	}
+
 }

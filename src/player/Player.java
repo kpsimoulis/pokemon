@@ -6,6 +6,7 @@ import cardcontainer.*;
 
 /**
  * Player.java - Class for defining a player in the pokemon game
+ *
  * @author Céline Mikiël Yohann
  * @version 1.0
  */
@@ -37,6 +38,7 @@ public class Player {
 
     /**
      * Parameterized constructor for the Player class
+     *
      * @param newDeck A validated deck to be assigned to the player
      * @param newName The player's name
      */
@@ -52,6 +54,7 @@ public class Player {
 
     /**
      * Mutator for the player's deck
+     *
      * @param newDeck New deck to be assigned
      */
     public void setDeck(Deck newDeck) {
@@ -60,6 +63,7 @@ public class Player {
 
     /**
      * Mutator for the player's hand
+     *
      * @param newHand New hand for player
      */
     public void setHand(Hand newHand) {
@@ -68,6 +72,7 @@ public class Player {
 
     /**
      * Setter for the player's bench
+     *
      * @param newBench New bench for the player
      */
     public void setBench(Bench newBench) {
@@ -76,6 +81,7 @@ public class Player {
 
     /**
      * Mutator for the player's prize cards
+     *
      * @param newPrizeCards Array of 6 prize cards
      */
     public void setPrizeCards(Card[] newPrizeCards) {
@@ -84,18 +90,20 @@ public class Player {
 
     /**
      * Setter for the player's active pokemon
+     *
      * @param newActivePokemon New player's active pokemon
      */
     public void setActivePokemon(Pokemon newActivePokemon) {
-        if (hasActivePokemon() && bench.containsCard(newActivePokemon)){
+        if (hasActivePokemon() && bench.containsCard(newActivePokemon)) {
             bench.swapCards(activePokemon, bench.getCardIdx(newActivePokemon));
-        }else{
+        } else {
             activePokemon = newActivePokemon;
         }
     }
 
     /**
      * Setter for player's name
+     *
      * @param newName New player's name
      */
     public void setName(String newName) {
@@ -104,6 +112,7 @@ public class Player {
 
     /**
      * Accessor for the player's deck
+     *
      * @return Deck obj - Player's deck
      */
     public Deck getDeck() {
@@ -112,6 +121,7 @@ public class Player {
 
     /**
      * Accessor for the player's hand
+     *
      * @return Hand obj - Player's hand
      */
     public Hand getHand() {
@@ -120,6 +130,7 @@ public class Player {
 
     /**
      * Getter for the player's bench
+     *
      * @return Bench obj - Player's bench
      */
     public Bench getBench() {
@@ -128,6 +139,7 @@ public class Player {
 
     /**
      * Accessor for the player's discard pile
+     *
      * @return Discard Pile obj - Player's discarded cards
      */
     public DiscardPile getDiscardPile() {
@@ -136,6 +148,7 @@ public class Player {
 
     /**
      * Accessor for the player's prize cards
+     *
      * @return Array obj - Player's prize cards
      */
     public Card[] getPrizeCards() {
@@ -144,6 +157,7 @@ public class Player {
 
     /**
      * Getter for the player's active pokemon
+     *
      * @return Card obj - Player's Active Pokemon
      */
     public Card getActivePokemon() {
@@ -152,6 +166,7 @@ public class Player {
 
     /**
      * Getter for the player's name
+     *
      * @return String - Player's name
      */
     public String getName() {
@@ -160,6 +175,7 @@ public class Player {
 
     /**
      * Flip player's coin
+     *
      * @return True if Head, False if Tail
      */
     public boolean flipCoin() {
@@ -183,60 +199,65 @@ public class Player {
 
     /**
      * Put a Pokemon card in the player's bench
+     *
      * @param pokemonCard Pokemon to place in bench
      */
-    public void putPokOnBench(Pokemon pokemonCard){
+    public void putPokOnBench(Pokemon pokemonCard) {
         bench.addCard(pokemonCard);
     }
 
     /**
      * Method to discard a card from hand, deck or bench
+     *
      * @param discardedCard The card to be discarded
-     * @param origin The origin of the card to be discarded
+     * @param origin        The origin of the card to be discarded
      */
-    public void discardCard(Card discardedCard, CardContainer origin){
-        if (origin.getClass() != DiscardPile.class && origin.containsCard(discardedCard) && origin.removeCard(discardedCard)){
-            if (discardedCard.getClass() == Pokemon.class){
+    public void discardCard(Card discardedCard, CardContainer origin) {
+        if (origin.getClass() != DiscardPile.class && origin.containsCard(discardedCard) && origin.removeCard(discardedCard)) {
+            if (discardedCard.getClass() == Pokemon.class) {
                 // TODO: Discard Energies as well
-            }else{
+            } else {
                 discardPile.addCard(discardedCard);
             }
-        }else{
+        } else {
             System.out.println("Cannot discard card from " + origin.getClass());
         }
     }
 
     /**
      * Method to check if player has an active pokemon
+     *
      * @return True if has active pokemon, false otherwise
      */
-    public boolean hasActivePokemon(){
+    public boolean hasActivePokemon() {
         return activePokemon == null;
     }
 
     /**
      * Method to get no. of cards in player's deck
+     *
      * @return No. of cards in player's deck
      */
-    public int getNoCardsDeck(){
+    public int getNoCardsDeck() {
         return deck.getNoOfCards();
     }
 
     /**
      * Method to display Player's information
+     *
      * @return String - information on player (name, hand, bench, active pokemon, cards left in deck)
      */
-    public String toString(){
+    public String toString() {
 
         StringBuilder returnString = new StringBuilder();
 
         returnString.append("Player ").append(name).append(":\n");
         returnString.append("Active Pokemon: ");
-        try{
+        try {
             returnString.append(activePokemon.toString());
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             returnString.append("None");
-        }finally {
+        } finally {
             returnString.append("\n");
         }
 
@@ -251,15 +272,15 @@ public class Player {
     /**
      * Method to distribute cards at the beginning of game
      */
-    private void distributeCards(){
-        if (!deck.validate()){
+    private void distributeCards() {
+        if (!deck.validate()) {
             System.out.println("Incorrect Deck for Player " + name);
-        }else{
+        } else {
             deck.shuffle();
-            for (int i=0; i<7; i++){
+            for (int i = 0; i < 7; i++) {
                 hand.addCard(deck.dealCard());
             }
-            for (int i=0; i<6; i++){
+            for (int i = 0; i < 6; i++) {
                 prizeCards[i] = deck.dealCard();
             }
         }

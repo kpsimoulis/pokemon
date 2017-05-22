@@ -1,3 +1,4 @@
+package card;
 
 public class Trainer extends Card {
 

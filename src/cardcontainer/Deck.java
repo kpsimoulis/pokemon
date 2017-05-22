@@ -1,9 +1,13 @@
+package cardcontainer;
+
+import card.Card;
+import card.Energy;
+import card.Pokemon;
+
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Deck.java - Class for defining a deck in the pokemon game
- *
  * @author Céline Mikiël Yohann
  * @version 1.0
  */

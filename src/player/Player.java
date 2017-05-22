@@ -1,3 +1,9 @@
+package player;
+
+import card.Card;
+import card.Pokemon;
+import cardcontainer.*;
+
 /**
  * Player.java - Class for defining a player in the pokemon game
  * @author Céline Mikiël Yohann

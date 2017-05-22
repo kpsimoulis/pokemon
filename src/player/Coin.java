@@ -1,3 +1,5 @@
+package player;
+
 /**
  * Player.java - Class for defining a player in the pokemon game
  * @author Céline Mikiël Yohann

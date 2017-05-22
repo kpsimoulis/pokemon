@@ -1,3 +1,4 @@
+package card;
 
 public class Energy extends Card {
 	

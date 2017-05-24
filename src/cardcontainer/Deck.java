@@ -4,7 +4,14 @@ import card.Card;
 import card.Energy;
 import card.Pokemon;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 /**
  * Deck.java - Class for defining a deck in the pokemon game
@@ -48,8 +55,91 @@ public class Deck extends CardContainer {
      *
      * @param textFile Text file path
      */
-    public void populateDeck(String textFile) {
-        //TODO: Add import function from file
+    public void populateDeckFromTcgo(String textFile) {
+        System.out.println("Populating: " + textFile);
+
+
+        try (BufferedReader br = new BufferedReader(new FileReader("files/" + textFile))) {
+
+            String line;
+            String cardType = "";
+            Card tmpCard;
+            int idx = 0;
+
+            while ((line = br.readLine()) != null) {
+
+                String[] lineVariables = line.split(" ");
+                if (lineVariables[0].equals("##Pokémon")) {
+                    System.out.println("Reading " + lineVariables[2] + " Pokemon cards");
+                    cardType = "pokemon";
+                } else if (lineVariables[0].equals("##Trainer")) {
+                    System.out.println("Reading " + lineVariables[3] + " Trainer cards");
+                    cardType = "trainer";
+                } else if (lineVariables[0].equals("##Energy")) {
+                    System.out.println("Reading " + lineVariables[2] + " Energy cards");
+                    cardType = "energy";
+                } else if (lineVariables[0].equals("*")) {
+                    if (cardType.equals("energy")) {
+                        tmpCard = new Energy(lineVariables[2], idx, lineVariables[3]);
+                        cards.add(tmpCard);
+                    }
+                    idx++;
+//                    System.out.printf("Cards (%d), Face(%s), Category(%s), HP(%s)\n", Integer.parseInt(lineVariables[1]), lineVariables[2], lineVariables[3], lineVariables[4]);
+                } else if (lineVariables[0].equals("Total")) {
+                    System.out.println("Processed a total of " + lineVariables[3] + " cards");
+                }
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void populateDeck(String fileName) throws IOException {
+        System.out.println("Populating: " + fileName);
+
+
+        //read file into stream, try-with-resources
+        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
+
+
+//            stream.forEach(System.out::println);
+
+            stream.forEach(listItem -> {
+
+                String line;
+                int cardLineNum;
+                try {
+                    cardLineNum = Integer.parseInt(listItem) - 1;
+                    line = Files.readAllLines(Paths.get("files/cards.txt")).get(cardLineNum);
+                    String[] lineVariables = line.split(":");
+                    if (lineVariables[1].equals("pokemon")) {
+                        if (!lineVariables[3].equals("basic")) {
+//                            System.out.printf("POKEMON(%d) - Name: %s, Stage: %s, Evolves From: %s, Category:%s, HP: %s\n", Integer.parseInt(listItem), lineVariables[0], lineVariables[3], lineVariables[4], lineVariables[6], lineVariables[7]);
+                        } else {
+//                            System.out.printf("POKEMON(%d) - Name: %s, Stage: %s, Category:%s, HP: %s\n", Integer.parseInt(listItem), lineVariables[0], lineVariables[3], lineVariables[5], lineVariables[6]);
+                        }
+
+                    } else if (lineVariables[1].equals("trainer")) {
+                        System.out.printf("TRAINER(%d) - Name: %s, Category:%s, Ability Line: %s\n", Integer.parseInt(listItem), lineVariables[0], lineVariables[3], lineVariables[4]);
+
+                    } else if (lineVariables[1].equals("energy")) {
+//                        System.out.printf("ENERGY(%d) - Name: %s, Category:%s\n", Integer.parseInt(listItem), lineVariables[0], lineVariables[3]);
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+//                System.out.println(listItem + ":");
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

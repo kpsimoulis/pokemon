@@ -1,3 +1,7 @@
+import board.Board;
+
+import javax.swing.*;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -9,5 +13,11 @@ public class Main {
         System.out.println("Hello from Edwin");
         System.out.println("Hello from Zhaoyang");
         System.out.println("Hello from Xiaofang");
+
+//        JFrame frame = new JFrame("Board");
+//        frame.setContentPane(new Board().mainPanel);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.pack();
+//        frame.setVisible(true);
     }
 }

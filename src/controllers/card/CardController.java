@@ -14,16 +14,28 @@ public abstract class CardController {
     public CardController(Card cardModel, CardView cardView){
         card = cardModel;
         view = cardView;
-        hideBackCover();
+        backBtnListener();
         view.setName(card.getName());
         view.setType(card.getCategory());
     }
 
-    public void hideBackCover(){
+    public Card getCard() {
+        return card;
+    }
+
+    public CardView getView() {
+        return view;
+    }
+
+    public void backBtnListener(){
         actionListener = actionEvent -> {
             view.getBackSideBtn().setVisible(false);
         };
         view.getBackSideBtn().addActionListener(actionListener);
+    }
+
+    public void returnBackCover() {
+        view.getBackSideBtn().doClick();
     }
 
 }

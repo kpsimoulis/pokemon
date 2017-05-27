@@ -3,33 +3,29 @@ package views;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-/**
- * Created by mikce_000 on 26-May-2017.
- */
-public class CardView extends JFrame{
+public class CardView extends JLayeredPane{
 
-    private String[][] cardInfo;
+    private JTable infoTable;
+    private JButton backSide;
 
     public CardView(){
 
-        JLayeredPane layeredPane = this.getLayeredPane();
-        layeredPane.setMaximumSize(new Dimension(200, 300));
+        this.setMaximumSize(new Dimension(200, 300));
 
-        cardInfo = new String[][]{{"Name: ", "Pikachu"},
+        String[][] cardInfo = new String[][]{{"Name: ", "Pikachu"},
                 {"Type: ", "FFI"}};
         String tblHeaders[] = {"Label", "Info"};
-        JTable infoTable = new JTable(cardInfo, tblHeaders );
+        infoTable = new JTable(cardInfo, tblHeaders );
         infoTable.setPreferredScrollableViewportSize(infoTable.getPreferredSize());
         infoTable.setTableHeader(null);
         infoTable.setShowHorizontalLines(false);
         infoTable.setShowVerticalLines(false);
         JScrollPane tblContainer = new JScrollPane(infoTable);
         tblContainer.setBounds(0,0,200,50);
-        layeredPane.add(tblContainer, JLayeredPane.DEFAULT_LAYER);
+        this.add(tblContainer, JLayeredPane.DEFAULT_LAYER);
 
-        JButton backSide = new JButton();
+        backSide = new JButton();
         backSide.setBackground(Color.black);
         backSide.setAlignmentY(24f);
         backSide.setBorderPainted(false);
@@ -37,18 +33,27 @@ public class CardView extends JFrame{
         backSide.setIcon(new ImageIcon(getClass().getResource("/images/icon.png")));
         backSide.setBounds(0,0,200,200);
         backSide.addActionListener((ActionEvent e) -> backSide.setVisible(false));
-        layeredPane.add(backSide, JLayeredPane.PALETTE_LAYER);
+        this.add(backSide, JLayeredPane.PALETTE_LAYER);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(200, 300));
-        pack();
-        setVisible(true);
+    }
 
+    public void setName(String newName){
+        infoTable.getModel().setValueAt(newName, 0, 1);
+    }
+
+    public void setType(String newType){
+        infoTable.getModel().setValueAt(newType, 1, 1);
     }
 
     public static void main (String [] args){
 
         CardView view = new CardView();
+        JFrame newFrame = new JFrame();
+        newFrame.setLayeredPane(view);
+        newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        newFrame.setMinimumSize(new Dimension(200, 300));
+        newFrame.pack();
+        newFrame.setVisible(true);
 
     }
 

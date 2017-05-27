@@ -11,7 +11,7 @@ public class CardView extends JLayeredPane{
 
     public CardView(){
 
-        this.setMaximumSize(new Dimension(200, 300));
+        this.setMaximumSize(new Dimension(140, 150));
 
         String[][] cardInfo = new String[][]{{"Name: ", "Pikachu"},
                 {"Type: ", "FFI"}};
@@ -22,7 +22,7 @@ public class CardView extends JLayeredPane{
         infoTable.setShowHorizontalLines(false);
         infoTable.setShowVerticalLines(false);
         JScrollPane tblContainer = new JScrollPane(infoTable);
-        tblContainer.setBounds(0,0,200,50);
+        tblContainer.setBounds(0,0,135,145);
         this.add(tblContainer, JLayeredPane.DEFAULT_LAYER);
 
         backSide = new JButton();
@@ -30,9 +30,14 @@ public class CardView extends JLayeredPane{
         backSide.setAlignmentY(24f);
         backSide.setBorderPainted(false);
         backSide.setOpaque(true);
-        backSide.setIcon(new ImageIcon(getClass().getResource("/images/icon.png")));
-        backSide.setBounds(0,0,200,200);
+        backSide.setBounds(0,0,135,145);
+        backSide.setBorder(BorderFactory.createEmptyBorder());
         backSide.addActionListener((ActionEvent e) -> backSide.setVisible(false));
+
+        ImageIcon coverImg = new ImageIcon(getClass().getResource("/images/icon.png"));
+        coverImg.setImage(coverImg.getImage().getScaledInstance(backSide.getWidth(), backSide.getHeight(),  java.awt.Image.SCALE_SMOOTH));
+        backSide.setIcon(coverImg);
+
         this.add(backSide, JLayeredPane.PALETTE_LAYER);
 
     }
@@ -51,7 +56,7 @@ public class CardView extends JLayeredPane{
         JFrame newFrame = new JFrame();
         newFrame.setLayeredPane(view);
         newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        newFrame.setMinimumSize(new Dimension(200, 300));
+        newFrame.setMinimumSize(new Dimension(150, 185));
         newFrame.pack();
         newFrame.setVisible(true);
 

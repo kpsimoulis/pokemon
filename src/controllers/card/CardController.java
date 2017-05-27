@@ -1,9 +1,8 @@
-package controllers;
+package controllers.card;
 
 import card.Card;
-import views.CardView;
+import views.card.CardView;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public abstract class CardController {
@@ -22,9 +21,9 @@ public abstract class CardController {
 
     public void hideBackCover(){
         actionListener = actionEvent -> {
-            view.getBackSide().setVisible(false);
+            view.getBackSideBtn().setVisible(false);
         };
-        view.getBackSide().addActionListener(actionListener);
+        view.getBackSideBtn().addActionListener(actionListener);
     }
 
 }

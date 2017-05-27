@@ -1,7 +1,7 @@
-package controllers;
+package controllers.card;
 
 import card.Energy;
-import views.EnergyView;
+import views.card.EnergyView;
 
 /**
  * Created by mikce_000 on 27-May-2017.

@@ -1,4 +1,4 @@
-package views;
+package views.card;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -7,7 +7,7 @@ import java.awt.*;
 public abstract class CardView extends JLayeredPane{
 
     private JTable infoTable;
-    private JButton backSide;
+    private JButton backSideBtn;
 
     public CardView(){
 
@@ -26,24 +26,24 @@ public abstract class CardView extends JLayeredPane{
         tblContainer.setBounds(0,0,135,145);
         this.add(tblContainer, JLayeredPane.DEFAULT_LAYER);
 
-        backSide = new JButton();
-        backSide.setBackground(Color.black);
-        backSide.setAlignmentY(24f);
-        backSide.setBorderPainted(false);
-        backSide.setOpaque(true);
-        backSide.setBounds(0,0,135,145);
-        backSide.setBorder(BorderFactory.createEmptyBorder());
+        backSideBtn = new JButton();
+        backSideBtn.setBackground(Color.black);
+        backSideBtn.setAlignmentY(24f);
+        backSideBtn.setBorderPainted(false);
+        backSideBtn.setOpaque(true);
+        backSideBtn.setBounds(0,0,135,145);
+        backSideBtn.setBorder(BorderFactory.createEmptyBorder());
 
         ImageIcon coverImg = new ImageIcon(getClass().getResource("/images/icon.png"));
-        coverImg.setImage(coverImg.getImage().getScaledInstance(backSide.getWidth(), backSide.getHeight(),  java.awt.Image.SCALE_SMOOTH));
-        backSide.setIcon(coverImg);
+        coverImg.setImage(coverImg.getImage().getScaledInstance(backSideBtn.getWidth(), backSideBtn.getHeight(),  java.awt.Image.SCALE_SMOOTH));
+        backSideBtn.setIcon(coverImg);
 
-        this.add(backSide, JLayeredPane.PALETTE_LAYER);
+        this.add(backSideBtn, JLayeredPane.PALETTE_LAYER);
 
     }
 
-    public JButton getBackSide(){
-        return backSide;
+    public JButton getBackSideBtn(){
+        return backSideBtn;
     }
 
     public JTable getInfoTable(){return infoTable;}

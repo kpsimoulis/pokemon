@@ -1,7 +1,7 @@
-package controllers;
+package controllers.card;
 
 import card.Pokemon;
-import views.PokemonView;
+import views.card.PokemonView;
 
 public class PokemonController extends CardController {
 

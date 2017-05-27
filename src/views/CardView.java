@@ -1,6 +1,7 @@
 package views;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public abstract class CardView extends JLayeredPane{
@@ -15,11 +16,12 @@ public abstract class CardView extends JLayeredPane{
         String[][] cardInfo = new String[][]{{"Name: ", "Pikachu"},
                 {"Type: ", "FFI"}};
         String tblHeaders[] = {"Label", "Info"};
-        infoTable = new JTable(cardInfo, tblHeaders );
+        infoTable = new JTable( new DefaultTableModel(cardInfo, tblHeaders));
         infoTable.setPreferredScrollableViewportSize(infoTable.getPreferredSize());
         infoTable.setTableHeader(null);
         infoTable.setShowHorizontalLines(false);
         infoTable.setShowVerticalLines(false);
+        infoTable.setFont(new Font("Sans-Serif", Font.PLAIN, 9));
         JScrollPane tblContainer = new JScrollPane(infoTable);
         tblContainer.setBounds(0,0,135,145);
         this.add(tblContainer, JLayeredPane.DEFAULT_LAYER);
@@ -43,6 +45,8 @@ public abstract class CardView extends JLayeredPane{
     public JButton getBackSide(){
         return backSide;
     }
+
+    public JTable getInfoTable(){return infoTable;}
 
     public void setName(String newName){
         infoTable.getModel().setValueAt(newName, 0, 1);

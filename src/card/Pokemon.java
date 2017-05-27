@@ -8,13 +8,29 @@ public class Pokemon extends Card {
     private int damagePoints;
     private ArrayList<Energy> energy;
     private String stage;
+
+    @Override
+    public String toString() {
+        return "Pokemon " +
+                "(" + this.getIndex() + ")" +
+                " {" +
+                " name='" + this.getName() + '\'' +
+                ", category='" + this.getCategory() + '\'' +
+                ", healthPoints=" + healthPoints +
+                ", damagePoints=" + damagePoints +
+                ", energy=" + energy +
+                ", stage='" + stage + '\'' +
+                ", evolvesFrom='" + evolvesFrom + '\'' +
+                '}';
+    }
+
     private String evolvesFrom;
 
 
-    public Pokemon(String name, int index, String category, int hp, int dp, ArrayList<Energy> energy, String stage, String evolves_from) {
+    public Pokemon(String name, int index, String category, int hp, ArrayList<Energy> energy, String stage, String evolves_from) {
         super(name, index, category);
         this.healthPoints = hp;
-        this.damagePoints = dp;
+        this.damagePoints = 0;
         this.energy = energy;
         this.stage = stage;
         this.evolvesFrom = evolves_from;

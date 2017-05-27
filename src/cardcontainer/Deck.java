@@ -3,6 +3,7 @@ package cardcontainer;
 import card.Card;
 import card.Energy;
 import card.Pokemon;
+import card.Trainer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 /**
@@ -104,33 +106,58 @@ public class Deck extends CardContainer {
         //read file into stream, try-with-resources
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
 
+            final AtomicInteger idx = new AtomicInteger();
+
             stream.forEach(listItem -> {
 
                 String line;
+                String abilityLine;
                 int cardLineNum;
                 Card tmpCard;
-                int idx = 0;
+//                int i = 0;
+
                 try {
+//                    Integer idx = new Integer( 1 );
                     cardLineNum = Integer.parseInt(listItem) - 1;
                     line = Files.readAllLines(Paths.get("res/deck/cards.txt")).get(cardLineNum);
                     String[] lineVariables = line.split(":");
                     if (lineVariables[1].equals("pokemon")) {
+                        ArrayList<Energy> tmpEnergy = new ArrayList<Energy>();
                         if (!lineVariables[3].equals("basic")) {
-//                            System.out.printf("POKEMON(%d) - Name: %s, Stage: %s, Evolves From: %s, Category:%s, HP: %s\n", Integer.parseInt(listItem), lineVariables[0], lineVariables[3], lineVariables[4], lineVariables[6], lineVariables[7]);
+                            tmpCard = new Pokemon(lineVariables[0], idx.incrementAndGet(), lineVariables[6], Integer.parseInt(lineVariables[7]), tmpEnergy, lineVariables[3], lineVariables[4]);
+                            cards.add(tmpCard);
+//                            System.out.printf("POKEMON(%d) - Name: %s, Stage: %s, Evolves From: %s, Category:%s, HP: %s\n",
+//                                    Integer.parseInt(listItem), // listItem
+//                                    lineVariables[0],  // Name
+//                                    lineVariables[3], // Stage
+//                                    lineVariables[4], // EvolvesFrom
+//                                    lineVariables[6], // Category
+//                                    lineVariables[7] // HP
+//                            );
                         } else {
-//                            System.out.printf("POKEMON(%d) - Name: %s, Stage: %s, Category:%s, HP: %s\n", Integer.parseInt(listItem), lineVariables[0], lineVariables[3], lineVariables[5], lineVariables[6]);
+
+                            tmpCard = new Pokemon(lineVariables[0], idx.incrementAndGet(), lineVariables[5], Integer.parseInt(lineVariables[6]), tmpEnergy, lineVariables[3], "");
+                            cards.add(tmpCard);
+//  String name, int index, String category, int hp, ArrayList<Energy> energy, String stage, String evolves_from) {
+//                            System.out.printf("POKEMON(%d) - Name: %s, Stage: %s, Category:%s, HP: %s\n",
+//                                    Integer.parseInt(listItem),
+//                                    lineVariables[0], // Name
+//                                    lineVariables[3], // Stage
+//                                    lineVariables[5], // Category
+//                                    lineVariables[6] // HP
+//                            );
                         }
 
                     } else if (lineVariables[1].equals("trainer")) {
-//                        System.out.printf("TRAINER(%d) - Name: %s, Category:%s, Ability Line: %s\n", Integer.parseInt(listItem), lineVariables[0], lineVariables[3], lineVariables[4]);
-
-                    } else if (lineVariables[1].equals("energy")) {
-                        tmpCard = new Energy(lineVariables[0], idx, lineVariables[3]);
+                        abilityLine = Files.readAllLines(Paths.get("res/deck/abilities.txt")).get(Integer.parseInt(lineVariables[4]) - 1);
+                        String[] abilityLineVariables = abilityLine.split(":");
+                        tmpCard = new Trainer(lineVariables[0], idx.incrementAndGet(), lineVariables[3], "", abilityLineVariables[0]);
                         cards.add(tmpCard);
-//                        System.out.printf("ENERGY(%d) - Name: %s, Category:%s\n", Integer.parseInt(listItem), lineVariables[0], lineVariables[3]);
-
+                    } else if (lineVariables[1].equals("energy")) {
+                        tmpCard = new Energy(lineVariables[0], idx.incrementAndGet(), lineVariables[3]);
+                        cards.add(tmpCard);
                     }
-                    idx++;
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -7,4 +7,15 @@ public class Energy extends Card {
         super(name, index, category);
     }
 
+    @Override
+    public String toString() {
+
+        return "Energy "+
+                "(" + this.getIndex() + ")" +
+                " {" +
+                " name='" + this.getName() + '\'' +
+                ", category='" + this.getCategory() + '\'' +
+                '}';
+
+    }
 }

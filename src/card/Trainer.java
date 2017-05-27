@@ -2,35 +2,43 @@ package card;
 
 public class Trainer extends Card {
 
-    private String textbox;
+    @Override
+    public String toString() {
+        return "Trainer " +
+                "(" + this.getIndex() + ")" +
+                " {" +
+                " name='" + this.getName() + '\'' +
+                ", category='" + this.getCategory() + '\'' +
+                ", ability='" + ability + '\'' +
+//                "description='" + description + '\'' +
+                '}';
+    }
 
-    private enum Ability {ONE, TWO, THREE, FOUR, ETC}
-
-    ;
-    private Ability ability;
+    private String description;
+    private String ability;
 
 
-    public Trainer(String name, int index, String category, String textbox, Ability ability) {
+    public Trainer(String name, int index, String category, String description, String ability) {
         super(name, index, category);
-        this.textbox = textbox;
+        this.description = description;
         this.ability = ability;
     }
 
 
-    public String getTextbox() {
-        return textbox;
+    public String getDescription() {
+        return description;
     }
 
-    public Ability getAbility() {
+    public String getAbility() {
         return ability;
     }
 
 
-    public void setTextbox(String textbox) {
-        this.textbox = textbox;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setAbility(Ability ability) {
+    public void setAbility(String ability) {
         this.ability = ability;
     }
 

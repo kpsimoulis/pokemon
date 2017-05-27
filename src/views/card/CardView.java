@@ -12,6 +12,7 @@ public abstract class CardView extends JLayeredPane{
     public CardView(){
 
         this.setMaximumSize(new Dimension(140, 150));
+        this.setPreferredSize(new Dimension(140, 150));
 
         String[][] cardInfo = new String[][]{{"Name: ", "Pikachu"},
                 {"Type: ", "FFI"}};

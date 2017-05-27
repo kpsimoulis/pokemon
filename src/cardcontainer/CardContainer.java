@@ -53,7 +53,7 @@ public abstract class CardContainer {
      *
      * @return List of cards
      */
-    ArrayList<Card> getCards() {
+    public ArrayList<Card> getCards() {
         return cards;
     }
 

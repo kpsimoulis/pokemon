@@ -11,7 +11,7 @@ public class Main {
 
         Deck deck = new Deck();
         String fileName = "files/deck1.ptcgo.txt";
-        String fileName2 = "files/deck1.txt";
+        String fileName2 = "res/deck/deck1.txt";
 
         deck.populateDeck(fileName2);
 

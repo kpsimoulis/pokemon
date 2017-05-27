@@ -104,16 +104,15 @@ public class Deck extends CardContainer {
         //read file into stream, try-with-resources
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
 
-
-//            stream.forEach(System.out::println);
-
             stream.forEach(listItem -> {
 
                 String line;
                 int cardLineNum;
+                Card tmpCard;
+                int idx = 0;
                 try {
                     cardLineNum = Integer.parseInt(listItem) - 1;
-                    line = Files.readAllLines(Paths.get("files/cards.txt")).get(cardLineNum);
+                    line = Files.readAllLines(Paths.get("res/deck/cards.txt")).get(cardLineNum);
                     String[] lineVariables = line.split(":");
                     if (lineVariables[1].equals("pokemon")) {
                         if (!lineVariables[3].equals("basic")) {
@@ -123,12 +122,15 @@ public class Deck extends CardContainer {
                         }
 
                     } else if (lineVariables[1].equals("trainer")) {
-                        System.out.printf("TRAINER(%d) - Name: %s, Category:%s, Ability Line: %s\n", Integer.parseInt(listItem), lineVariables[0], lineVariables[3], lineVariables[4]);
+//                        System.out.printf("TRAINER(%d) - Name: %s, Category:%s, Ability Line: %s\n", Integer.parseInt(listItem), lineVariables[0], lineVariables[3], lineVariables[4]);
 
                     } else if (lineVariables[1].equals("energy")) {
+                        tmpCard = new Energy(lineVariables[0], idx, lineVariables[3]);
+                        cards.add(tmpCard);
 //                        System.out.printf("ENERGY(%d) - Name: %s, Category:%s\n", Integer.parseInt(listItem), lineVariables[0], lineVariables[3]);
 
                     }
+                    idx++;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

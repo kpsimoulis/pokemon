@@ -1,9 +1,9 @@
-package controllers.hand;
+package controllers.cardcontainer;
 
 import card.Card;
 import card.Energy;
 import card.Pokemon;
-import cardcontainer.Hand;
+import cardcontainer.CardContainer;
 import controllers.card.CardController;
 import controllers.card.EnergyController;
 import controllers.card.PokemonController;
@@ -11,24 +11,24 @@ import javafx.util.Pair;
 import views.card.CardView;
 import views.card.EnergyView;
 import views.card.PokemonView;
-import views.hand.HandView;
+import views.cardcontainer.CardContainerView;
 
 import java.util.ArrayList;
 
-public class HandController {
+public abstract class CardContainerController {
 
-    private Hand hand;
-    private HandView view;
+    private CardContainer container;
+    private CardContainerView view;
     private ArrayList<CardController> cardControllers;
 
-    public HandController(Hand newHand, HandView newView){
+    public CardContainerController(CardContainer newContainer, CardContainerView newView, int initialCapacity){
 
-        hand = newHand;
+        container = newContainer;
         view = newView;
 
-        cardControllers = new ArrayList<CardController>(7);
+        cardControllers = new ArrayList<CardController>(initialCapacity);
 
-        for (Card card : newHand.getCards()) {
+        for (Card card : newContainer.getCards()) {
             addCard(card);
         }
 
@@ -49,7 +49,7 @@ public class HandController {
             cardView = new EnergyView();
             cardController = new EnergyController((Energy) newCard, (EnergyView) cardView);
         }
-        hand.addCard(newCard);
+        container.addCard(newCard);
         view.addCardView(cardView);
         cardControllers.add(cardController);
         return new Pair<>(cardController, cardView);
@@ -57,7 +57,7 @@ public class HandController {
 
     public Pair<CardController, CardView> removeCard(Card cardToRemove){
 
-        hand.removeCard(cardToRemove);
+        container.removeCard(cardToRemove);
         CardController removedController = null;
         for(CardController controller: cardControllers){
             if (controller.getCard() == cardToRemove){

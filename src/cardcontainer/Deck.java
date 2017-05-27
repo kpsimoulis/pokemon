@@ -21,6 +21,9 @@ public class Deck extends CardContainer {
         cards = new ArrayList<Card>(60);
     }
 
+    @Override
+    public void addCard(Card newCard) {}
+
     /**
      * Copy Constructor
      *

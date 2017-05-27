@@ -1,4 +1,4 @@
-package views.hand;
+package views.cardcontainer;
 
 import views.card.CardView;
 
@@ -6,14 +6,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class HandView extends JScrollPane{
+public abstract class CardContainerView extends JScrollPane{
 
     private JPanel panel;
     private ArrayList<CardView> cardViews;
 
-    public HandView(){
+    public CardContainerView(int initialCapacity){
 
-        cardViews = new ArrayList<CardView>(7);
+        cardViews = new ArrayList<CardView>(initialCapacity);
 
         setPreferredSize(new Dimension(450, 180));
         setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -21,7 +21,6 @@ public class HandView extends JScrollPane{
 
         panel = new JPanel();
         setViewportView(panel);
-
     }
 
     public ArrayList<CardView> getCardViews(){
@@ -49,4 +48,5 @@ public class HandView extends JScrollPane{
         return returnedView;
 
     }
+
 }

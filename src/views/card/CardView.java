@@ -17,7 +17,12 @@ public abstract class CardView extends JLayeredPane{
         String[][] cardInfo = new String[][]{{"Name: ", "Pikachu"},
                 {"Type: ", "FFI"}};
         String tblHeaders[] = {"Label", "Info"};
-        infoTable = new JTable( new DefaultTableModel(cardInfo, tblHeaders));
+        infoTable = new JTable( new DefaultTableModel(cardInfo, tblHeaders){
+            @Override
+            public boolean isCellEditable(int row, int col){
+                return false;
+            }
+        });
         infoTable.setPreferredScrollableViewportSize(infoTable.getPreferredSize());
         infoTable.setTableHeader(null);
         infoTable.setShowHorizontalLines(false);

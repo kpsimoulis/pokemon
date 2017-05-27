@@ -140,4 +140,5 @@ public abstract class CardContainer {
 
     }
 
+    public abstract void addCard(Card newCard);
 }

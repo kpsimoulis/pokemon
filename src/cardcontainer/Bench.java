@@ -92,9 +92,7 @@ public class Bench extends CardContainer {
     public Card swapCards(Card card1, int targetIdx) {
 
         if (cards.get(targetIdx) != null) {
-            Card tmpCard = cards.remove(targetIdx);
-            cards.set(targetIdx, card1);
-            return tmpCard;
+            return cards.set(targetIdx, card1);
         }
         return null;
 

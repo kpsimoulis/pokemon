@@ -62,4 +62,11 @@ public class Pokemon extends Card {
         this.evolvesFrom = evolvesFrom;
     }
 
+    public void addEnergy(Energy energyCard) {
+        energy.add(energyCard);
+    }
+
+    public Energy removeEnergy() throws NullPointerException {
+       return energy.remove(energy.size() - 1);
+    }
 }

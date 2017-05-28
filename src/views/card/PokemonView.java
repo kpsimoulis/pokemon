@@ -34,4 +34,21 @@ public class PokemonView extends CardView {
         this.getInfoTable().getModel().setValueAt(pokStage, 5, 1);
     }
 
+    public int getDmgPts(){
+        return (int) this.getInfoTable().getModel().getValueAt(2, 1);
+    }
+
+    public int getNoEnergies(){
+        return (int) this.getInfoTable().getModel().getValueAt(3, 1);
+    }
+
+    public int getHP(){
+
+        return (int) this.getInfoTable().getModel().getValueAt(4, 1);
+    }
+
+    public String getStage(){
+        return (String) this.getInfoTable().getModel().getValueAt(5, 1);
+    }
+
 }

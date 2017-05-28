@@ -1,16 +1,10 @@
 package main;
 
-import card.Card;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DeckParser {
-
-    private static final String CARDS_FILE = "res/deck/cards.txt";
-    private static final String ABILITIES_FILE = "res/deck/abilities.txt";
-
-    private String fileName;
+public class CardsFileParser {
 
     private String name;
     private String category;
@@ -20,15 +14,12 @@ public class DeckParser {
     private int healthPoints;
     private int abilityLineNum;
     private Retreat retreat;
+    private ArrayList<Attack> attack;
+    private List<String> itemList;
 
     public ArrayList<Attack> getAttack() {
         return attack;
     }
-
-    private ArrayList<Attack> attack;
-    private List<String> itemList;
-    private Card tmpCard;
-
 
     public Retreat getRetreat() {
         return retreat;
@@ -64,7 +55,7 @@ public class DeckParser {
         return healthPoints;
     }
 
-    public DeckParser(String[] items) {
+    public CardsFileParser(String[] items) {
         this.itemList = new ArrayList<String>(Arrays.asList(items));
     }
 
@@ -161,6 +152,5 @@ public class DeckParser {
     public void print(){
         System.out.println(String.join(":", itemList));
     }
-
 
 }

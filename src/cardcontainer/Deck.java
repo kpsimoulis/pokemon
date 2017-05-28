@@ -5,6 +5,7 @@ import card.Energy;
 import card.Pokemon;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Deck.java - Class for defining a deck in the pokemon game
@@ -22,7 +23,9 @@ public class Deck extends CardContainer {
     }
 
     @Override
-    public void addCard(Card newCard) {}
+    public void addCard(Card newCard) {
+        cards.add(newCard);
+    }
 
     /**
      * Copy Constructor
@@ -108,15 +111,7 @@ public class Deck extends CardContainer {
      * Method to shuffle the deck
      */
     public void shuffle() {
-        //Collections.shuffle(cards);
-
-        ArrayList<Card> tmpList = new ArrayList<Card>(cards);
-
-        while (tmpList.size() > 0) {
-            int randomIdx = (int) (Math.random() * tmpList.size());
-            cards.add(randomIdx, tmpList.remove(randomIdx));
-        }
-
+        Collections.shuffle(cards);
     }
 
     /**

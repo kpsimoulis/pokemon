@@ -171,6 +171,9 @@ public class CardsFileParser {
         }
     }
 
+    /**
+     * print remaining and unprocessed itemList
+     */
     public void print(){
         System.out.println(String.join(":", itemList));
     }

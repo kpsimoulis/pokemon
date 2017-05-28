@@ -230,7 +230,7 @@ public class Player {
      * @return True if has active pokemon, false otherwise
      */
     public boolean hasActivePokemon() {
-        return activePokemon == null;
+        return activePokemon != null;
     }
 
     /**

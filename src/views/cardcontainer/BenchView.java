@@ -3,7 +3,7 @@ package views.cardcontainer;
 import views.card.CardView;
 import views.card.PokemonView;
 
-public class BenchView extends CardContainerView {
+public class BenchView extends ContainerView {
 
     public BenchView(){
 

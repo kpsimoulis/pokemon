@@ -6,12 +6,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public abstract class CardContainerView extends JScrollPane{
+public abstract class ContainerView extends JScrollPane {
 
     private JPanel panel;
     private ArrayList<CardView> cardViews;
 
-    public CardContainerView(int initialCapacity){
+    public ContainerView(int initialCapacity){
 
         cardViews = new ArrayList<CardView>(initialCapacity);
 
@@ -47,6 +47,10 @@ public abstract class CardContainerView extends JScrollPane{
         }
         return returnedView;
 
+    }
+
+    public int getNoOfCards() {
+        return cardViews.size();
     }
 
 }

@@ -1,27 +1,22 @@
 package controllers.cardcontainer;
 
 import card.Card;
-import card.Energy;
-import card.Pokemon;
 import cardcontainer.CardContainer;
 import controllers.card.CardController;
-import controllers.card.EnergyController;
-import controllers.card.PokemonController;
+import controllers.card.ControllerViewBuilder;
 import javafx.util.Pair;
 import views.card.CardView;
-import views.card.EnergyView;
-import views.card.PokemonView;
-import views.cardcontainer.CardContainerView;
+import views.cardcontainer.ContainerView;
 
 import java.util.ArrayList;
 
 public abstract class CardContainerController {
 
     private CardContainer container;
-    private CardContainerView view;
+    private ContainerView view;
     private ArrayList<CardController> cardControllers;
 
-    public CardContainerController(CardContainer newContainer, CardContainerView newView, int initialCapacity){
+    public CardContainerController(CardContainer newContainer, ContainerView newView, int initialCapacity){
 
         container = newContainer;
         view = newView;
@@ -40,19 +35,11 @@ public abstract class CardContainerController {
 
     public Pair<CardController, CardView> addCard(Card newCard){
 
-        CardController cardController = null;
-        CardView cardView = null;
-        if (newCard.getClass() == Pokemon.class){
-            cardView = new PokemonView();
-            cardController = new PokemonController((Pokemon) newCard, (PokemonView) cardView);
-        }else if (newCard.getClass() == Energy.class){
-            cardView = new EnergyView();
-            cardController = new EnergyController((Energy) newCard, (EnergyView) cardView);
-        }
+        Pair<CardController, CardView> pairControllerView = ControllerViewBuilder.buildControllerView(newCard);
         container.addCard(newCard);
-        view.addCardView(cardView);
-        cardControllers.add(cardController);
-        return new Pair<>(cardController, cardView);
+        view.addCardView(pairControllerView.getValue());
+        cardControllers.add(pairControllerView.getKey());
+        return pairControllerView;
     }
 
     public Pair<CardController, CardView> removeCard(Card cardToRemove){
@@ -80,4 +67,11 @@ public abstract class CardContainerController {
 
     }
 
+    public CardContainer getContainer() {
+        return container;
+    }
+
+    public void setContainer(CardContainer container) {
+        this.container = container;
+    }
 }

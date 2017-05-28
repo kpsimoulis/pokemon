@@ -1,14 +1,14 @@
-package views.cardcontainer;
+package views.cardpiles;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class DeckView extends JPanel {
+public abstract class PileView extends JPanel {
 
     private int noOfCards;
     private JButton backSideBtn;
 
-    public DeckView() {
+    public PileView() {
 
         this.noOfCards = 0;
 
@@ -51,4 +51,3 @@ public class DeckView extends JPanel {
     }
 
 }
-

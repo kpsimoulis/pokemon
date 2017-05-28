@@ -4,6 +4,7 @@ import card.Card;
 import card.Energy;
 import card.Pokemon;
 import card.Trainer;
+import main.DeckParser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -55,55 +58,11 @@ public class Deck extends CardContainer {
     /**
      * Method to populate the deck from a text file
      *
-     * @param textFile Text file path
+     * @param fileName Text file path
      */
-    public void populateDeckFromTcgo(String textFile) {
-        System.out.println("Populating: " + textFile);
-
-
-        try (BufferedReader br = new BufferedReader(new FileReader("files/" + textFile))) {
-
-            String line;
-            String cardType = "";
-            Card tmpCard;
-            int idx = 0;
-
-            while ((line = br.readLine()) != null) {
-
-                String[] lineVariables = line.split(" ");
-                if (lineVariables[0].equals("##Pokémon")) {
-                    System.out.println("Reading " + lineVariables[2] + " Pokemon cards");
-                    cardType = "pokemon";
-                } else if (lineVariables[0].equals("##Trainer")) {
-                    System.out.println("Reading " + lineVariables[3] + " Trainer cards");
-                    cardType = "trainer";
-                } else if (lineVariables[0].equals("##Energy")) {
-                    System.out.println("Reading " + lineVariables[2] + " Energy cards");
-                    cardType = "energy";
-                } else if (lineVariables[0].equals("*")) {
-                    if (cardType.equals("energy")) {
-                        tmpCard = new Energy(lineVariables[2], idx, lineVariables[3]);
-                        cards.add(tmpCard);
-                    }
-                    idx++;
-//                    System.out.printf("Cards (%d), Face(%s), Category(%s), HP(%s)\n", Integer.parseInt(lineVariables[1]), lineVariables[2], lineVariables[3], lineVariables[4]);
-                } else if (lineVariables[0].equals("Total")) {
-                    System.out.println("Processed a total of " + lineVariables[3] + " cards");
-                }
-
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public void populateDeck(String fileName) throws IOException {
         System.out.println("Populating: " + fileName);
 
-
-        //read file into stream, try-with-resources
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
 
             final AtomicInteger idx = new AtomicInteger();
@@ -112,49 +71,77 @@ public class Deck extends CardContainer {
 
                 String line;
                 String abilityLine;
-                int cardLineNum;
                 Card tmpCard;
-//                int i = 0;
+
+                DeckParser parser;
 
                 try {
-//                    Integer idx = new Integer( 1 );
-                    cardLineNum = Integer.parseInt(listItem) - 1;
-                    line = Files.readAllLines(Paths.get("res/deck/cards.txt")).get(cardLineNum);
+                    line = Files.readAllLines(Paths.get("res/deck/cards.txt")).get(Integer.parseInt(listItem) - 1);
                     String[] lineVariables = line.split(":");
-                    if (lineVariables[1].equals("pokemon")) {
-                        ArrayList<Energy> tmpEnergy = new ArrayList<Energy>();
-                        if (!lineVariables[3].equals("basic")) {
-                            tmpCard = new Pokemon(lineVariables[0], idx.incrementAndGet(), lineVariables[6], Integer.parseInt(lineVariables[7]), tmpEnergy, lineVariables[3], lineVariables[4]);
-                            cards.add(tmpCard);
-//                            System.out.printf("POKEMON(%d) - Name: %s, Stage: %s, Evolves From: %s, Category:%s, HP: %s\n",
-//                                    Integer.parseInt(listItem), // listItem
-//                                    lineVariables[0],  // Name
-//                                    lineVariables[3], // Stage
-//                                    lineVariables[4], // EvolvesFrom
-//                                    lineVariables[6], // Category
-//                                    lineVariables[7] // HP
-//                            );
-                        } else {
 
-                            tmpCard = new Pokemon(lineVariables[0], idx.incrementAndGet(), lineVariables[5], Integer.parseInt(lineVariables[6]), tmpEnergy, lineVariables[3], "");
+                    String[] items = line.split(":");
+
+                    parser = new DeckParser(items);
+
+                    parser.parseName();
+                    parser.parseCardType();
+
+                    if (parser.getCardType().equals("pokemon")) {
+                        parser.parseStage();
+                        ArrayList<Energy> tmpEnergy = new ArrayList<Energy>();
+                        if (!parser.getStage().equals("basic")) {
+                            parser.parseEvolvesFrom();
+                            parser.parseCategory();
+                            parser.parseHealthPoints();
+                            parser.parseRetreat();
+                            parser.parseAttacks();
+                            tmpCard = new Pokemon(parser.getName(), // Name
+                                    idx.incrementAndGet(), // Index
+                                    parser.getCategory(), // Category
+                                    parser.getHealthPoints(), // HP
+                                    tmpEnergy, // Energy Array
+                                    parser.getStage(), // Stage
+                                    parser.getEvolvesFrom(), // Evolves From
+                                    parser.getRetreat(),
+                                    parser.getAttack()
+                            );
                             cards.add(tmpCard);
-//  String name, int index, String category, int hp, ArrayList<Energy> energy, String stage, String evolves_from) {
-//                            System.out.printf("POKEMON(%d) - Name: %s, Stage: %s, Category:%s, HP: %s\n",
-//                                    Integer.parseInt(listItem),
-//                                    lineVariables[0], // Name
-//                                    lineVariables[3], // Stage
-//                                    lineVariables[5], // Category
-//                                    lineVariables[6] // HP
-//                            );
+                        } else {
+                            parser.parseCategory();
+                            parser.parseHealthPoints();
+                            parser.parseRetreat();
+                            parser.parseAttacks();
+                            tmpCard = new Pokemon(parser.getName(), // Name
+                                    idx.incrementAndGet(), // Index
+                                    parser.getCategory(), // Category
+                                    parser.getHealthPoints(), // HP
+                                    tmpEnergy, // Energy Array
+                                    parser.getStage(), // Stage
+                                    "", // Evolves From
+                                    parser.getRetreat(),
+                                    parser.getAttack()
+                            );
+                            cards.add(tmpCard);
                         }
 
-                    } else if (lineVariables[1].equals("trainer")) {
-                        abilityLine = Files.readAllLines(Paths.get("res/deck/abilities.txt")).get(Integer.parseInt(lineVariables[4]) - 1);
+                    } else if (parser.getCardType().equals("trainer")) {
+                        parser.parseCategory();
+                        parser.parseAbilityLineNum();
+                        abilityLine = Files.readAllLines(Paths.get("res/deck/abilities.txt")).get(parser.getAbilityLineNum() - 1);
                         String[] abilityLineVariables = abilityLine.split(":");
-                        tmpCard = new Trainer(lineVariables[0], idx.incrementAndGet(), lineVariables[3], "", abilityLineVariables[0]);
+                        tmpCard = new Trainer(parser.getName(),
+                                idx.incrementAndGet(),
+                                parser.getCategory(),
+                                "",
+                                abilityLineVariables[0]
+                        );
                         cards.add(tmpCard);
-                    } else if (lineVariables[1].equals("energy")) {
-                        tmpCard = new Energy(lineVariables[0], idx.incrementAndGet(), lineVariables[3]);
+                    } else if (parser.getCardType().equals("energy")) {
+                        parser.parseCategory();
+                        tmpCard = new Energy(parser.getName(),
+                                idx.incrementAndGet(),
+                                parser.getCategory()
+                        );
                         cards.add(tmpCard);
                     }
 
@@ -162,8 +149,6 @@ public class Deck extends CardContainer {
                     e.printStackTrace();
                 }
 
-
-//                System.out.println(listItem + ":");
             });
 
         } catch (IOException e) {

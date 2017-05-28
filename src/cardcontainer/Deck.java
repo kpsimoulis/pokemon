@@ -3,8 +3,18 @@ package cardcontainer;
 import card.Card;
 import card.Energy;
 import card.Pokemon;
+import card.Trainer;
+import main.AbilitiesFileParser;
+import main.Ability;
+import main.CardsFileParser;
 
 import java.util.ArrayList;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 /**
  * Deck.java - Class for defining a deck in the pokemon game
@@ -46,10 +56,110 @@ public class Deck extends CardContainer {
     /**
      * Method to populate the deck from a text file
      *
-     * @param textFile Text file path
+     * @param fileName Text file path
      */
-    public void populateDeck(String textFile) {
-        //TODO: Add import function from file
+    public void populateDeck(String fileName) throws IOException {
+        System.out.println("Populating: " + fileName);
+
+        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
+
+            final AtomicInteger idx = new AtomicInteger();
+
+            stream.forEach(listItem -> {
+
+                String line;
+                String abilityLine;
+                Card tmpCard;
+                Ability tmpAbility;
+
+                CardsFileParser cardsParser;
+                AbilitiesFileParser abilitiesParser;
+
+                try {
+                    line = Files.readAllLines(Paths.get("res/deck/cards.txt")).get(Integer.parseInt(listItem) - 1);
+                    String[] items = line.split(":");
+
+                    cardsParser = new CardsFileParser(items);
+
+                    cardsParser.parseName();
+                    cardsParser.parseCardType();
+
+                    if (cardsParser.getCardType().equals("pokemon")) {
+                        cardsParser.parseStage();
+                        ArrayList<Energy> tmpEnergy = new ArrayList<Energy>();
+                        if (!cardsParser.getStage().equals("basic")) {
+                            cardsParser.parseEvolvesFrom();
+                            cardsParser.parseCategory();
+                            cardsParser.parseHealthPoints();
+                            cardsParser.parseRetreat();
+                            cardsParser.parseAttacks();
+                            tmpCard = new Pokemon(cardsParser.getName(), // Name
+                                    idx.incrementAndGet(), // Index
+                                    cardsParser.getCategory(), // Category
+                                    cardsParser.getHealthPoints(), // HP
+                                    tmpEnergy, // Energy Array
+                                    cardsParser.getStage(), // Stage
+                                    cardsParser.getEvolvesFrom(), // Evolves From
+                                    cardsParser.getRetreat(),
+                                    cardsParser.getAttack()
+                            );
+                            cards.add(tmpCard);
+                        } else {
+                            cardsParser.parseCategory();
+                            cardsParser.parseHealthPoints();
+                            cardsParser.parseRetreat();
+                            cardsParser.parseAttacks();
+                            tmpCard = new Pokemon(cardsParser.getName(), // Name
+                                    idx.incrementAndGet(), // Index
+                                    cardsParser.getCategory(), // Category
+                                    cardsParser.getHealthPoints(), // HP
+                                    tmpEnergy, // Energy Array
+                                    cardsParser.getStage(), // Stage
+                                    "", // Evolves From
+                                    cardsParser.getRetreat(),
+                                    cardsParser.getAttack()
+                            );
+                            cards.add(tmpCard);
+                        }
+
+                    } else if (cardsParser.getCardType().equals("trainer")) {
+                        cardsParser.parseCategory();
+                        cardsParser.parseAbilityLineNum();
+                        abilityLine = Files.readAllLines(Paths.get("res/deck/abilities.txt")).get(cardsParser.getAbilityLineNum() - 1);
+                        String[] abilityLineVariables = abilityLine.split(":");
+
+                        abilitiesParser = new AbilitiesFileParser(abilityLineVariables);
+                        abilitiesParser.parseName();
+                        abilitiesParser.parseAction();
+                        abilitiesParser.parseLogic();
+                        abilitiesParser.parseDescription();
+
+                        tmpAbility = new Ability(abilitiesParser.getName(), abilitiesParser.getAction(), abilitiesParser.getDescription(), abilitiesParser.getLogic());
+
+                        tmpCard = new Trainer(cardsParser.getName(),
+                                idx.incrementAndGet(),
+                                cardsParser.getCategory(),
+                                tmpAbility
+                        );
+                        cards.add(tmpCard);
+                    } else if (cardsParser.getCardType().equals("energy")) {
+                        cardsParser.parseCategory();
+                        tmpCard = new Energy(cardsParser.getName(),
+                                idx.incrementAndGet(),
+                                cardsParser.getCategory()
+                        );
+                        cards.add(tmpCard);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

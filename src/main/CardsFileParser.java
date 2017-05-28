@@ -1,10 +1,15 @@
 package main;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class CardsFileParser {
+
+    private List<String> itemList;
 
     private String name;
     private String category;
@@ -15,7 +20,6 @@ public class CardsFileParser {
     private int abilityLineNum;
     private Retreat retreat;
     private ArrayList<Attack> attack;
-    private List<String> itemList;
 
     public ArrayList<Attack> getAttack() {
         return attack;
@@ -125,15 +129,33 @@ public class CardsFileParser {
             String[] attackItems = attackLine.split(",");
             this.attack = new ArrayList<Attack>();
             ArrayList<Requirement> requirement = new ArrayList<Requirement>();
+            String abilityLine;
+            AbilitiesFileParser abilitiesParser;
+            Ability tmpAbility;
 
             for (int i = 0; i < attackItems.length; i++)
             {
                 String[] attackVariables = attackItems[i].split(":");
                 if (attackVariables.length == 4) {
                     requirement.add(new Requirement(attackVariables[1], Integer.parseInt(attackVariables[2])));
-                    attack.add(new Attack(requirement, Integer.parseInt(attackVariables[3])));
-                    // Reset Requirement Arraylist
-                    requirement = new ArrayList<Requirement>();
+                    try {
+                        abilityLine = Files.readAllLines(Paths.get("res/deck/abilities.txt")).get(Integer.parseInt(attackVariables[3]) - 1);
+                        String[] abilityLineVariables = abilityLine.split(":");
+
+                        abilitiesParser = new AbilitiesFileParser(abilityLineVariables);
+                        abilitiesParser.parseName();
+                        abilitiesParser.parseAction();
+                        abilitiesParser.parseLogic();
+                        abilitiesParser.parseDescription();
+                        tmpAbility = new Ability(abilitiesParser.getName(), abilitiesParser.getAction(), abilitiesParser.getDescription(), abilitiesParser.getLogic());
+
+                        attack.add(new Attack(requirement, tmpAbility));
+                        // Reset Requirement Arraylist
+                        requirement = new ArrayList<Requirement>();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else if (attackVariables.length == 3) {
                     requirement.add(new Requirement(attackVariables[1], Integer.parseInt(attackVariables[2])));

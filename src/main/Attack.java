@@ -5,18 +5,18 @@ import java.util.ArrayList;
 public class Attack {
 
     private ArrayList<Requirement> requirement;
-    private int abilityLine;
+    private Ability ability;
 
-    public Attack(ArrayList<Requirement> requirement, int abilityLine) {
+    public Attack(ArrayList<Requirement> requirement, Ability ability) {
         this.requirement = requirement;
-        this.abilityLine = abilityLine;
+        this.ability = ability;
     }
 
     @Override
     public String toString() {
         return "Attack{" +
                 "requirement=" + requirement +
-                ", abilityLine=" + abilityLine +
+                ", ability=" + ability +
                 '}';
     }
 }

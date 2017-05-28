@@ -5,6 +5,7 @@ import card.Energy;
 import card.Pokemon;
 import card.Trainer;
 import main.AbilitiesFileParser;
+import main.Ability;
 import main.CardsFileParser;
 
 import java.util.ArrayList;
@@ -69,14 +70,13 @@ public class Deck extends CardContainer {
                 String line;
                 String abilityLine;
                 Card tmpCard;
+                Ability tmpAbility;
 
                 CardsFileParser cardsParser;
                 AbilitiesFileParser abilitiesParser;
 
                 try {
                     line = Files.readAllLines(Paths.get("res/deck/cards.txt")).get(Integer.parseInt(listItem) - 1);
-                    String[] lineVariables = line.split(":");
-
                     String[] items = line.split(":");
 
                     cardsParser = new CardsFileParser(items);
@@ -127,11 +127,19 @@ public class Deck extends CardContainer {
                         cardsParser.parseAbilityLineNum();
                         abilityLine = Files.readAllLines(Paths.get("res/deck/abilities.txt")).get(cardsParser.getAbilityLineNum() - 1);
                         String[] abilityLineVariables = abilityLine.split(":");
+
+                        abilitiesParser = new AbilitiesFileParser(abilityLineVariables);
+                        abilitiesParser.parseName();
+                        abilitiesParser.parseAction();
+                        abilitiesParser.parseLogic();
+                        abilitiesParser.parseDescription();
+
+                        tmpAbility = new Ability(abilitiesParser.getName(), abilitiesParser.getAction(), abilitiesParser.getDescription(), abilitiesParser.getLogic());
+
                         tmpCard = new Trainer(cardsParser.getName(),
                                 idx.incrementAndGet(),
                                 cardsParser.getCategory(),
-                                "",
-                                abilityLineVariables[0]
+                                tmpAbility
                         );
                         cards.add(tmpCard);
                     } else if (cardsParser.getCardType().equals("energy")) {

@@ -1,14 +1,26 @@
+import java.io.IOException;
+
+import cardcontainer.Deck;
+import main.AbilityDescriptionMap;
+
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        System.out.println("Hello World!");
-        System.out.println("Hello from Kosta");
-        System.out.println("Hello from Mikiel");
-        System.out.println("Hello from Polina");
-        System.out.println("Hello from Edwin");
-        System.out.println("Hello from Zhaoyang");
-        System.out.println("Hello from Xiaofang");
-        System.out.println("Hello from Simon");
+        Deck deck1 = new Deck();
+        Deck deck2 = new Deck();
+        String fileName1 = "res/deck/deck1.txt";
+        String fileName2 = "res/deck/deck2.txt";
+
+        deck1.populateDeck(fileName1);
+        deck2.populateDeck(fileName2);
+
+        System.out.println("Deck 1:");
+        System.out.println(deck1);
+        System.out.println("Deck 2:");
+        System.out.println(deck2);
+
     }
+
 }

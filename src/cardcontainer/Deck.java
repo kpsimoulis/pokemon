@@ -175,8 +175,9 @@ public class Deck extends CardContainer {
      */
     public boolean validate() {
 
-        if (cards == null || cards.size() != 60)
+        if (cards == null || cards.size() != 60){
             return false;
+        }
 
         int basicPokemonCounter = 0;
 
@@ -189,8 +190,6 @@ public class Deck extends CardContainer {
             } else {
                 if (card.getClass() == Pokemon.class)
                     basicPokemonCounter++;
-                else
-                    return false;
             }
 
         }

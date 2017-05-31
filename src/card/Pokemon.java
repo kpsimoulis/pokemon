@@ -1,6 +1,7 @@
 package card;
 
 import java.util.ArrayList;
+import main.*;
 
 public class Pokemon extends Card {
 
@@ -9,15 +10,37 @@ public class Pokemon extends Card {
     private ArrayList<Energy> energy;
     private String stage;
     private String evolvesFrom;
+    private Retreat retreat;
+    private ArrayList<Attack> attack;
+
+    @Override
+    public String toString() {
+        return "Pokemon " +
+                "(" + this.getIndex() + ")" +
+                " {" +
+                " name='" + this.getName() + '\'' +
+                ", category='" + this.getCategory() + '\'' +
+                ", healthPoints=" + healthPoints +
+                ", damagePoints=" + damagePoints +
+                ", energy=" + energy +
+                ", stage='" + stage + '\'' +
+                ", evolvesFrom='" + evolvesFrom + '\'' +
+                ", Retreat='" + retreat + '\'' +
+                ", Attack='" + attack + '\'' +
+                '}';
+    }
 
 
-    public Pokemon(String name, int index, String category, int hp, int dp, ArrayList<Energy> energy, String stage, String evolves_from) {
+
+    public Pokemon(String name, int index, String category, int hp, ArrayList<Energy> energy, String stage, String evolves_from, Retreat retreat, ArrayList<Attack> attack) {
         super(name, index, category);
         this.healthPoints = hp;
-        this.damagePoints = dp;
+        this.damagePoints = 0;
         this.energy = energy;
         this.stage = stage;
         this.evolvesFrom = evolves_from;
+        this.retreat = retreat;
+        this.attack = attack;
     }
 
 

@@ -51,4 +51,10 @@ public class PokemonView extends CardView {
         return (String) this.getInfoTable().getModel().getValueAt(5, 1);
     }
 
+    public void addAbilityBtns(){
+
+
+
+    }
+
 }

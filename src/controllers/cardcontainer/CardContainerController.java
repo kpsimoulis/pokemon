@@ -67,6 +67,10 @@ public abstract class CardContainerController {
 
     }
 
+    public ContainerView getView() {
+        return view;
+    }
+
     public CardContainer getContainer() {
         return container;
     }

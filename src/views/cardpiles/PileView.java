@@ -12,6 +12,7 @@ public abstract class PileView extends JPanel {
 
         this.noOfCards = 0;
 
+        this.setOpaque(false);
         this.setMaximumSize(new Dimension(140, 150));
         this.setPreferredSize(new Dimension(140, 150));
 
@@ -48,6 +49,7 @@ public abstract class PileView extends JPanel {
 
     private void changeBtnText(String newText){
         backSideBtn.setText(newText);
+        backSideBtn.repaint();
     }
 
 }

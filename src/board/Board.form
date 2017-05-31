@@ -32,9 +32,9 @@
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                <minimum-size width="400" height="200"/>
-                <preferred-size width="400" height="200"/>
-                <maximum-size width="600" height="200"/>
+                <minimum-size width="600" height="200"/>
+                <preferred-size width="600" height="200"/>
+                <maximum-size width="600" height="400"/>
               </grid>
             </constraints>
             <properties>
@@ -64,25 +64,32 @@
                   </component>
                 </children>
               </grid>
-              <grid id="7ed0e" binding="MiddleLeftPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
+              <grid id="7ed0e" binding="MiddleLeftPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <preferred-size width="130" height="24"/>
+                  </grid>
                 </constraints>
                 <properties>
                   <background color="-13206289"/>
                 </properties>
                 <border type="none"/>
                 <children>
-                  <vspacer id="ea2e2">
-                    <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                  </vspacer>
+                  <grid id="8c907" binding="playerCoin" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints border-constraint="North"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                  <grid id="e75f5" binding="playerActive" layout-manager="FlowLayout" hgap="5" vgap="7" flow-align="4">
+                    <constraints border-constraint="Center"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
                 </children>
               </grid>
-              <grid id="74190" binding="MiddleRightPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
+              <grid id="74190" binding="MiddleRightPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -90,7 +97,21 @@
                   <background color="-13206289"/>
                 </properties>
                 <border type="none"/>
-                <children/>
+                <children>
+                  <grid id="c60e5" binding="opponentCoin" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints border-constraint="South"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                  <grid id="935e4" binding="opponentActive" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints border-constraint="Center"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                </children>
               </grid>
             </children>
           </grid>
@@ -226,8 +247,7 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <grid id="9609d" binding="playerDeckPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
+                  <grid id="9609d" binding="playerDeckPanel" layout-manager="CardLayout" hgap="0" vgap="0">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -244,8 +264,7 @@
                     <border type="none"/>
                     <children/>
                   </grid>
-                  <grid id="b8a44" binding="playerDiscardPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
+                  <grid id="b8a44" binding="playerDiscardPanel" layout-manager="CardLayout" hgap="0" vgap="0">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>

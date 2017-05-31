@@ -11,12 +11,9 @@ import java.awt.*;
  */
 public class Board {
     private JPanel mainPanel;
-    private JPanel middlePanel;
     private JPanel opponentPanel;
     private JPanel opponentSidePanel;
     private JPanel opponentCards;
-    private JPanel PokeBallPanel;
-    private JLabel PokeBallIcon;
     private JPanel MiddleLeftPanel;
     private JPanel MiddleRightPanel;
     private JPanel opponentBenchCards;
@@ -34,6 +31,17 @@ public class Board {
     private JPanel playerDiscardPanel;
     private JPanel opponentDiscardPanel;
     private JPanel opponentDeckPanel;
+    private JPanel middlePanel;
+    private JPanel PokeBallPanel;
+    private JLabel PokeBallIcon;
+    private JPanel opponentCoinPanel;
+    private JPanel playerActivePanel;
+    private JPanel playerCoinPanel;
+    private JPanel opponentActivePanel;
+    private JPanel prizePanel;
+    private JPanel opponentPrizePanel;
+    private JPanel playerPrizePanel;
+    private JPanel commandPanel;
     private JPanel playerCoin;
     private JPanel playerActive;
     private JPanel opponentCoin;

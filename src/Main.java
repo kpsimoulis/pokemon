@@ -9,6 +9,8 @@ public class Main {
         GameView mainView = new GameView();
         GameController mainControl = new GameController(mainView);
 
+        System.out.println("Hello");
+
     }
 
 }

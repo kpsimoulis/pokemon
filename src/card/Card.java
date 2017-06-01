@@ -3,7 +3,7 @@ package card;
 public class Card {
 
 
-    private String name;
+    String name;
     private int index;
     private String category;
 

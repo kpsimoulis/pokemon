@@ -15,6 +15,14 @@ public class CoinController {
 
     }
 
+    public Coin getCoin() {
+        return coin;
+    }
+
+    public CoinView getView() {
+        return view;
+    }
+
     public void flipCoin(){
         coin.flip();
         if (coin.isHead()){

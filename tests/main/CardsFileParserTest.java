@@ -94,7 +94,7 @@ public class CardsFileParserTest {
         cardsFile.parseHealthPoints();
         cardsFile.parseRetreat();
         retreat = new Retreat("colorless",2);
-        assertEquals(retreat,cardsFile.getRetreat());
+        assertEquals(retreat.toString(),cardsFile.getRetreat().toString());
 
     }
 
@@ -137,8 +137,8 @@ public class CardsFileParserTest {
         attacks = new Attack[]{attack1,attack2};
 
 
-        assertArrayEquals(attacks,cardsFile.getAttack().toArray(new Attack[2]));
-
+        assertEquals(attack1.toString(),cardsFile.getAttack().toArray(new Attack[2])[0].toString());
+        assertEquals(attack2.toString(),cardsFile.getAttack().toArray(new Attack[2])[1].toString());
 
     }
 

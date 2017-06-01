@@ -62,6 +62,10 @@ public abstract class PlayerController {
 
     }
 
+    public void setActivePokemonController(ActivePokemonController activePokemonController) {
+        this.activePokemonController = activePokemonController;
+    }
+
     public void initiateGame(){
 
         if (!player.getDeck().validate()) {

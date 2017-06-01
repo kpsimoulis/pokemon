@@ -3,13 +3,14 @@ package views.card;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.KeyListener;
 
-public abstract class CardView extends JLayeredPane{
+public abstract class CardView extends JLayeredPane {
 
     private JTable infoTable;
     private JButton backSideBtn;
 
-    public CardView(){
+    public CardView() {
 
         this.setMaximumSize(new Dimension(140, 85));
         this.setPreferredSize(new Dimension(140, 85));
@@ -17,9 +18,9 @@ public abstract class CardView extends JLayeredPane{
         String[][] cardInfo = new String[][]{{"Name: ", "Pikachu"},
                 {"Type: ", "FFI"}};
         String tblHeaders[] = {"Label", "Info"};
-        infoTable = new JTable( new DefaultTableModel(cardInfo, tblHeaders){
+        infoTable = new JTable(new DefaultTableModel(cardInfo, tblHeaders) {
             @Override
-            public boolean isCellEditable(int row, int col){
+            public boolean isCellEditable(int row, int col) {
                 return false;
             }
         });
@@ -29,7 +30,7 @@ public abstract class CardView extends JLayeredPane{
         infoTable.setShowVerticalLines(false);
         infoTable.setFont(new Font("Sans-Serif", Font.PLAIN, 9));
         JScrollPane tblContainer = new JScrollPane(infoTable);
-        tblContainer.setBounds(0,0,135,80);
+        tblContainer.setBounds(0, 0, 135, 80);
         this.add(tblContainer, JLayeredPane.DEFAULT_LAYER);
 
         backSideBtn = new JButton();
@@ -37,30 +38,38 @@ public abstract class CardView extends JLayeredPane{
         backSideBtn.setAlignmentY(24f);
         backSideBtn.setBorderPainted(false);
         backSideBtn.setOpaque(true);
-        backSideBtn.setBounds(0,0,135,80);
+        backSideBtn.setBounds(0, 0, 135, 80);
         backSideBtn.setBorder(BorderFactory.createEmptyBorder());
 
         ImageIcon coverImg = new ImageIcon(getClass().getResource("/images/icon.png"));
-        coverImg.setImage(coverImg.getImage().getScaledInstance(backSideBtn.getWidth(), backSideBtn.getHeight(),  java.awt.Image.SCALE_SMOOTH));
+        coverImg.setImage(coverImg.getImage().getScaledInstance(backSideBtn.getWidth(), backSideBtn.getHeight(), java.awt.Image.SCALE_SMOOTH));
         backSideBtn.setIcon(coverImg);
 
         this.add(backSideBtn, JLayeredPane.PALETTE_LAYER);
 
     }
 
-    public JButton getBackSideBtn(){
+    public JButton getBackSideBtn() {
         return backSideBtn;
     }
 
-    public JTable getInfoTable(){return infoTable;}
+    public JTable getInfoTable() {
+        return infoTable;
+    }
 
-    public void setName(String newName){
+    public void setName(String newName) {
         infoTable.getModel().setValueAt(newName, 0, 1);
     }
 
-    public void setType(String newType){
+    public void setType(String newType) {
         infoTable.getModel().setValueAt(newType, 1, 1);
     }
 
+    public void setListeners(KeyListener keyListener) {
+        infoTable.addKeyListener(keyListener);
+    }
 
+    public void invalidateKeyListeners(KeyListener keyListener) {
+        infoTable.removeKeyListener(keyListener);
+    }
 }

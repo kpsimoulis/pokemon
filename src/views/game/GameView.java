@@ -1,6 +1,11 @@
 package views.game;
 
 import board.Board;
+import card.Card;
+import cardcontainer.CardContainer;
+import controllers.game.GameController;
+import views.activepokemon.ActivePokemonView;
+import views.card.CardView;
 import views.cardcontainer.BenchView;
 import views.cardcontainer.HandView;
 import views.cardpiles.DeckView;
@@ -9,6 +14,7 @@ import views.coin.CoinView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 /**
  * Created by mikce_000 on 29-May-2017.
@@ -53,5 +59,30 @@ public class GameView extends JFrame {
         board.getOpponentCoinPanel().add(coinView);
         board.getOpponentCoinPanel().revalidate();
 
+    }
+
+    public void setCommand(String command) {
+
+        board.getCommandPanel().removeAll();
+        board.getCommandPanel().add(new JLabel(command));
+
+    }
+
+    public Component addCommandCombo(Object[] items) {
+
+       return board.getCommandPanel().add(new JComboBox<Object>(items));
+
+    }
+
+    public void addCommandButton(String btnText, ActionListener listener) {
+
+        JButton button = new JButton(btnText);
+        button.addActionListener(listener);
+        board.getCommandPanel().add(button);
+
+    }
+
+    public void setPlayerActive(ActivePokemonView pokemonView) {
+        board.getPlayerActivePanel().add(pokemonView).revalidate();
     }
 }

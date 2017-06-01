@@ -55,7 +55,9 @@ public abstract class CardContainerController {
         }
 
         assert removedController != null;
-        return new Pair<>(removedController, view.removeCardView(removedController.getView()));
+        CardView returnedView = view.removeCardView(removedController.getView());
+        view.revalidate();
+        return new Pair<>(removedController, returnedView);
 
     }
 

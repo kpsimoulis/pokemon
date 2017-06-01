@@ -38,8 +38,8 @@ public class GameView extends JFrame {
         board.getPlayerHandCards().add(handView).revalidate();
         board.getPlayerDiscardPanel().add(discardPileView).revalidate();
         board.getPlayerBenchCards().add(benchView).revalidate();
-        board.getPlayerCoin().add(coinView);
-        board.getPlayerCoin().revalidate();
+        board.getPlayerCoinPanel().add(coinView);
+        board.getPlayerCoinPanel().revalidate();
 
     }
 

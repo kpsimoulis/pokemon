@@ -43,4 +43,15 @@ public class GameView extends JFrame {
 
     }
 
+    public void setOpponentViews(DeckView deckView, HandView handView, DiscardPileView discardPileView,
+                                 BenchView benchView, CoinView coinView) {
+
+        board.getOpponentDeckPanel().add(deckView).revalidate();
+        board.getOpponentHandCards().add(handView).revalidate();
+        board.getOpponentDiscardPanel().add(discardPileView).revalidate();
+        board.getOpponentBenchCards().add(benchView).revalidate();
+        board.getOpponentCoinPanel().add(coinView);
+        board.getOpponentCoinPanel().revalidate();
+
+    }
 }

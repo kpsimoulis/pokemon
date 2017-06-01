@@ -21,7 +21,7 @@ import views.coin.CoinView;
 
 import static controllers.card.ControllerViewBuilder.buildControllerView;
 
-public class PlayerController {
+public abstract class PlayerController {
 
     private Player player;
     private DeckController deckController;

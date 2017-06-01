@@ -11,8 +11,8 @@ public abstract class CardView extends JLayeredPane{
 
     public CardView(){
 
-        this.setMaximumSize(new Dimension(140, 95));
-        this.setPreferredSize(new Dimension(140, 95));
+        this.setMaximumSize(new Dimension(140, 85));
+        this.setPreferredSize(new Dimension(140, 85));
 
         String[][] cardInfo = new String[][]{{"Name: ", "Pikachu"},
                 {"Type: ", "FFI"}};
@@ -29,7 +29,7 @@ public abstract class CardView extends JLayeredPane{
         infoTable.setShowVerticalLines(false);
         infoTable.setFont(new Font("Sans-Serif", Font.PLAIN, 9));
         JScrollPane tblContainer = new JScrollPane(infoTable);
-        tblContainer.setBounds(0,0,135,90);
+        tblContainer.setBounds(0,0,135,80);
         this.add(tblContainer, JLayeredPane.DEFAULT_LAYER);
 
         backSideBtn = new JButton();
@@ -37,7 +37,7 @@ public abstract class CardView extends JLayeredPane{
         backSideBtn.setAlignmentY(24f);
         backSideBtn.setBorderPainted(false);
         backSideBtn.setOpaque(true);
-        backSideBtn.setBounds(0,0,135,90);
+        backSideBtn.setBounds(0,0,135,80);
         backSideBtn.setBorder(BorderFactory.createEmptyBorder());
 
         ImageIcon coverImg = new ImageIcon(getClass().getResource("/images/icon.png"));

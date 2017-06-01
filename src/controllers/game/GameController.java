@@ -1,5 +1,7 @@
 package controllers.game;
 
+import controllers.player.AIPlayerController;
+import controllers.player.HumanPlayerController;
 import controllers.player.PlayerController;
 import views.ChoiceDialog;
 import views.cardcontainer.BenchView;
@@ -21,8 +23,8 @@ public class GameController {
     public GameController(GameView newView){
 
         view = newView;
-        player1Controller = new PlayerController();
-        player2Controller = new PlayerController();
+        player1Controller = new HumanPlayerController();
+        player2Controller = new AIPlayerController();
         view.setVisible(true);
         displayChoiceDialog();
 
@@ -62,6 +64,17 @@ public class GameController {
                 player1Controller.getCoinController().getView());
 
         player1Controller.initiateGame();
+        player1Controller.getHandController().returnAllCards();
+
+        player2Controller.buildViewController();
+        view.setOpponentViews( (DeckView) player2Controller.getDeckController().getView(),
+                (HandView) player2Controller.getHandController().getView(),
+                (DiscardPileView) player2Controller.getDiscardPileController().getView(),
+                (BenchView) player2Controller.getBenchController().getView(),
+                player2Controller.getCoinController().getView());
+
+        player2Controller.initiateGame();
+        player2Controller.getHandController().returnAllCards();
 
     }
 

@@ -1,25 +1,15 @@
-import java.io.IOException;
-
-import cardcontainer.Deck;
-import main.AbilityDescriptionMap;
+import controllers.game.GameController;
+import views.game.GameView;
 
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        Deck deck1 = new Deck();
-        Deck deck2 = new Deck();
-        String fileName1 = "res/deck/deck1.txt";
-        String fileName2 = "res/deck/deck2.txt";
+        GameView mainView = new GameView();
+        GameController mainControl = new GameController(mainView);
 
-        deck1.populateDeck(fileName1);
-        deck2.populateDeck(fileName2);
-
-        System.out.println("Deck 1:");
-        System.out.println(deck1);
-        System.out.println("Deck 2:");
-        System.out.println(deck2);
+        System.out.println("Hello");
 
     }
 

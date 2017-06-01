@@ -9,6 +9,7 @@ import main.Ability;
 import main.CardsFileParser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,6 +30,11 @@ public class Deck extends CardContainer {
      */
     public Deck() {
         cards = new ArrayList<Card>(60);
+    }
+
+    @Override
+    public void addCard(Card newCard) {
+        cards.add(newCard);
     }
 
     /**
@@ -169,8 +175,9 @@ public class Deck extends CardContainer {
      */
     public boolean validate() {
 
-        if (cards == null || cards.size() != 60)
+        if (cards == null || cards.size() != 60){
             return false;
+        }
 
         int basicPokemonCounter = 0;
 
@@ -183,8 +190,6 @@ public class Deck extends CardContainer {
             } else {
                 if (card.getClass() == Pokemon.class)
                     basicPokemonCounter++;
-                else
-                    return false;
             }
 
         }
@@ -215,15 +220,7 @@ public class Deck extends CardContainer {
      * Method to shuffle the deck
      */
     public void shuffle() {
-        //Collections.shuffle(cards);
-
-        ArrayList<Card> tmpList = new ArrayList<Card>(cards);
-
-        while (tmpList.size() > 0) {
-            int randomIdx = (int) (Math.random() * tmpList.size());
-            cards.add(randomIdx, tmpList.remove(randomIdx));
-        }
-
+        Collections.shuffle(cards);
     }
 
     /**

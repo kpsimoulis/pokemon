@@ -128,6 +128,10 @@ public class Player {
         return hand;
     }
 
+    public Coin getPlayerCoin() {
+        return playerCoin;
+    }
+
     /**
      * Getter for the player's bench
      *
@@ -230,7 +234,7 @@ public class Player {
      * @return True if has active pokemon, false otherwise
      */
     public boolean hasActivePokemon() {
-        return activePokemon == null;
+        return activePokemon != null;
     }
 
     /**
@@ -269,22 +273,6 @@ public class Player {
 
     }
 
-    /**
-     * Method to distribute cards at the beginning of game
-     */
-    private void distributeCards() {
-        if (!deck.validate()) {
-            System.out.println("Incorrect Deck for Player " + name);
-        } else {
-            deck.shuffle();
-            for (int i = 0; i < 7; i++) {
-                hand.addCard(deck.dealCard());
-            }
-            for (int i = 0; i < 6; i++) {
-                prizeCards[i] = deck.dealCard();
-            }
-        }
 
-    }
 
 }

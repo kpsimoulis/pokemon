@@ -322,7 +322,9 @@ public class GameController {
                     }
 
                     sb.append("You can now do the following:\n" +
-                            "1. Re-Attack with Active Pokemon");
+                            "1. Re-Attack with Active Pokemon\n" +
+                            "E. Exit Attack Menu"
+                    );
 
                     view.setCommand(sb.toString());
                     view.addBoardListerner(new AttackMenuListener());
@@ -337,6 +339,64 @@ public class GameController {
                 case KeyEvent.VK_3:
                 case KeyEvent.VK_NUMPAD3: {
                     System.out.println("3");
+                    break;
+                }
+                case KeyEvent.VK_E: {
+                    view.addBoardListerner(new ChoiceMenuListener());
+                    break;
+                }
+                default:{
+                    System.out.println("Press the correct key.");
+                }
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
+    }
+
+    class ChoiceMenuListener implements KeyListener{
+
+        ChoiceMenuListener(){
+            view.setCommand("You can now do the following:\n" +
+                    "1. Go to Energy Menu\n" +
+                    "2. Go to Attack Menu\n" +
+                    "3. Go to Bench Menu\n" +
+                    "4. Go to Retreat Menu");
+        }
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_1:
+                case KeyEvent.VK_NUMPAD1: {
+                    view.addBoardListerner(new firstMenuListener());
+                    break;
+                }
+                case KeyEvent.VK_2:
+                case KeyEvent.VK_NUMPAD2: {
+                    view.addBoardListerner(new SecondMenuListener());
+                    break;
+                }
+                case KeyEvent.VK_3:
+                case KeyEvent.VK_NUMPAD3: {
+                    StringBuilder sb = new StringBuilder("");
+                    sb.append("Not implemented yet");
+                    view.setCommand(sb.toString());
+                    break;
+                }
+                case KeyEvent.VK_4:
+                case KeyEvent.VK_NUMPAD4: {
+                    StringBuilder sb = new StringBuilder("");
+                    sb.append("Not implemented yet");
+                    view.setCommand(sb.toString());
                     break;
                 }
                 default:{

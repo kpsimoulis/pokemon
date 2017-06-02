@@ -1,5 +1,6 @@
 package views.card;
 
+import card.Energy;
 import main.Attack;
 import main.Requirement;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 public class PokemonView extends CardView {
 
     private ArrayList<Attack> attacks;
+    private ArrayList<Energy> energies;
 
     public PokemonView(){
 
@@ -22,10 +24,6 @@ public class PokemonView extends CardView {
         }
         this.getInfoTable().setModel(infoModel);
 
-    }
-
-    public void setAttacks(ArrayList<Attack> attacks){
-        this.attacks = new ArrayList<>(attacks);
     }
 
     @Override
@@ -49,11 +47,20 @@ public class PokemonView extends CardView {
 
         }
 
+        StringBuilder energySb = new StringBuilder();
+        for(Energy item: this.energies){
+            if(energySb.length() > 0){
+                energySb.append(',');
+            }
+            energySb.append(item.getCategory());
+        }
+
         return "=== POKEMON CARD ===\n\n" +
                 "Name: " + getCardName() + "\n" +
                 "Type: " + getCardType() + "\n" +
                 "Damage Pts.: " + getDmgPts() + "\n" +
                 "# Energies: " + getNoEnergies() + "\n" +
+                energySb.toString() + "\n" +
                 "HP: " + getHP() + "\n" +
                 "Stage: " + getStage() + "\n\n" +
                 attack;
@@ -96,6 +103,14 @@ public class PokemonView extends CardView {
 
     public String getStage(){
         return (String) this.getInfoTable().getModel().getValueAt(5, 1);
+    }
+
+    public void setAttacks(ArrayList<Attack> attacks){
+        this.attacks = new ArrayList<>(attacks);
+    }
+
+    public void setEnergies(ArrayList<Energy> energies) {
+        this.energies = new ArrayList<>(energies);
     }
 
     public void addAbilityBtns(){

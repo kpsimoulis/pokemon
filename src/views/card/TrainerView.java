@@ -38,10 +38,6 @@ public class TrainerView extends CardView {
         return (String) this.getInfoTable().getModel().getValueAt(3, 1);
     }
 
-    public String getTextbox(){
-        return (String) this.getInfoTable().getModel().getValueAt(2, 1);
-    }
-
     public void setAbility(String name){
         this.getInfoTable().getModel().setValueAt(name, 2, 1);
     }

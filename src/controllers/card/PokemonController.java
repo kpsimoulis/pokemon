@@ -25,6 +25,7 @@ public class PokemonController extends CardController {
         Pokemon card = (Pokemon) this.getCard();
         ((Pokemon) this.getCard()).addEnergy(energyCard);
         ((PokemonView) this.getView()).setNoEnergies(card.getEnergy().size());
+        ((PokemonView) this.getView()).setEnergies(card.getEnergy());
 
     }
 

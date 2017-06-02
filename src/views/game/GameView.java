@@ -90,9 +90,8 @@ public class GameView extends JFrame {
     }
 
     public void addBoardListerner(KeyListener listener) {
-        addKeyListener(listener);
-        setFocusable(true);
-        requestFocusInWindow();
+
+        disableKeyListener();
 
         dispatcher = new KeyDispatcher(listener);
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();

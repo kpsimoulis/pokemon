@@ -31,6 +31,15 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * The Game Controller Class
+ * This class contains two player controllers and a game view. This class will be the main class that will control the game.
+ * It will start by initiating the player controllers, views and setting the choice dialog. Once the user choose the options
+ * in the dialog, the game will start by loading the deck and distribute cards. The player will then be able to choose an active
+ * pokemon followed by bench pokemon. After ending the turn, the AI will also choose his active pokemon as well as his benched pokemon.
+ * A menu will then be displayed for the player to know the options to choose for different actions (e.g. add energy, add pokemon to bench
+ * or end turn). For each turn, a card will be dealt from the deck and added to the Hand of each player.
+ */
 public class GameController {
 
     private GameView view;

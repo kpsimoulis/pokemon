@@ -160,7 +160,9 @@ public class GameController {
 
     private void playerDealDeck(PlayerController playerController){
         playerController.getHandController().addCard(playerController.getDeckController().dealCard().getKey().getCard());
-        playerController.getHandController().returnAllCards();
+        if (playerController instanceof HumanPlayerController){
+            playerController.getHandController().returnAllCards();
+        }
     }
 
     private void endFirstTurn() {
@@ -170,6 +172,7 @@ public class GameController {
         view.disableKeyListener();
         firstTurn = false;
 
+        playerDealDeck(player2Controller);
         player2Controller.putPokemonOnBench();
         player2Controller.getBenchController().returnAllCards();
 
@@ -265,7 +268,6 @@ public class GameController {
         view.addBoardListerner(listener);
     }
 
-
     class firstMenuListener implements KeyListener {
 
         firstMenuListener() {
@@ -338,6 +340,16 @@ public class GameController {
                     view.setCommand("Choose Pokemon from hand (Click on a pokemon and hit enter)");
                     view.disableKeyListener();
                     setHandToBench(player1Controller);
+                    break;
+                }
+                case KeyEvent.VK_3:
+                case KeyEvent.VK_NUMPAD3: {
+                    if (firstTurn){
+                        endFirstTurn();
+                    }else{
+                        gameAITurn(false);
+                    }
+                    break;
                 }
                 default: {
                     System.out.println("Press the correct key.");
@@ -405,12 +417,14 @@ public class GameController {
                     view.setCommand("Choose Pokemon from hand (Click on a pokemon and hit enter)");
                     view.disableKeyListener();
                     setHandToBench(player1Controller);
+                    break;
                 }
                 case KeyEvent.VK_3:
                 case KeyEvent.VK_NUMPAD3:
                 {
                     energyAdded = false;
-                    view.addBoardListerner(new AttackMenuListener());
+                    gameAITurn(false);
+                    break;
                 }
                 default: {
                     System.out.println("Press the correct key.");
@@ -422,6 +436,47 @@ public class GameController {
         public void keyReleased(KeyEvent e) {
 
         }
+    }
+
+    public boolean gameAITurn(boolean humanCanAttack){
+
+        StringBuilder sb = new StringBuilder();
+        Pokemon card1 = (Pokemon) player1Controller.getActivePokemonController().getPokemonController().getCard();
+        Attack attack = card1.getAttack().get(0);
+        Pokemon card2 = (Pokemon) player2Controller.getActivePokemonController().getPokemonController().getCard();
+        Attack attack2 = card2.getAttack().get(0);
+        if (humanCanAttack){
+            player1Controller.getActivePokemonController().attackPokemon(
+                    player2Controller.getActivePokemonController(), attack.getAbility().getDamage());
+            sb.append("Attack caused: ").append(attack.getAbility().getDamage()).append("\nTurn Ended.\n");
+            view.disableKeyListener();
+            if (card2.getHealthPoints() <= card2.getDamagePoints()) {
+                sb.append("You won\n");
+                view.setCommand(sb.toString());
+                return true;
+            }
+        }
+
+        sb.append("AI is playing...\n");
+        playerDealDeck(player2Controller);
+        player2Controller.attack(player1Controller.getActivePokemonController());
+        sb.append("Attack caused: ").append(attack2.getAbility().getDamage()).append("\nTurn Ended.\n");
+        if (card1.getHealthPoints() <= card1.getDamagePoints()) {
+            sb.append("Computer won\n");
+            view.setCommand(sb.toString());
+            return true;
+        }
+
+        sb.append("You can now do the following:\n" +
+                "1. Re-Attack with Active Pokemon\n" +
+                "E. Exit Attack Menu"
+        );
+
+        view.setCommand(sb.toString());
+        playerDealDeck(player1Controller);
+        view.addBoardListerner(new AttackMenuListener());
+
+        return false;
     }
 
     class AttackMenuListener implements KeyListener {
@@ -437,39 +492,7 @@ public class GameController {
                 case KeyEvent.VK_1:
                 case KeyEvent.VK_NUMPAD1: {
 
-                    Pokemon card1 = (Pokemon) player1Controller.getActivePokemonController().getPokemonController().getCard();
-                    Attack attack = card1.getAttack().get(0);
-                    Pokemon card2 = (Pokemon) player2Controller.getActivePokemonController().getPokemonController().getCard();
-                    Attack attack2 = card2.getAttack().get(0);
-                    player1Controller.getActivePokemonController().attackPokemon(
-                            player2Controller.getActivePokemonController(), attack.getAbility().getDamage());
-
-                    StringBuilder sb = new StringBuilder("Attack caused: " + attack.getAbility().getDamage() + "\nTurn Ended.\n");
-                    view.disableKeyListener();
-                    if (card2.getHealthPoints() <= card2.getDamagePoints()) {
-                        sb.append("You won\n");
-                        view.setCommand(sb.toString());
-                        break;
-                    }
-                    sb.append("AI is playing...\n");
-                    player2Controller.getActivePokemonController().getPokemonController().addEnergy(new Energy("Fight", 1, "fight"));
-                    player2Controller.getActivePokemonController().attackPokemon(
-                            player1Controller.getActivePokemonController(), attack2.getAbility().getDamage());
-                    sb.append("Attack caused: " + attack2.getAbility().getDamage() + "\nTurn Ended.\n");
-                    if (card1.getHealthPoints() <= card1.getDamagePoints()) {
-                        sb.append("Computer won\n");
-                        view.setCommand(sb.toString());
-                        break;
-                    }
-
-                    sb.append("You can now do the following:\n" +
-                            "1. Re-Attack with Active Pokemon\n" +
-                            "E. Exit Attack Menu"
-                    );
-
-                    view.setCommand(sb.toString());
-                    playerDealDeck(player1Controller);
-                    view.addBoardListerner(new AttackMenuListener());
+                    gameAITurn(true);
 
                     break;
                 }

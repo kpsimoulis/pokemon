@@ -1,11 +1,13 @@
 package controllers.player;
 
 import card.Card;
+import card.Energy;
 import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
 import controllers.card.PokemonController;
 import javafx.util.Pair;
+import main.Attack;
 import views.activepokemon.ActivePokemonView;
 import views.card.CardView;
 import views.card.PokemonView;
@@ -65,6 +67,21 @@ public class AIPlayerController extends PlayerController {
             getHandController().removeCard(pokemon);
             getBenchController().addCard(pokemon);
         }
+
+    }
+
+    public void attack(ActivePokemonController opponentPokemon){
+
+        for (Card card: getHandController().getContainer().getCards()){
+            if (card instanceof Energy && card.getCategory().equals("fight")){
+                Pair<CardController, CardView> pair = getHandController().removeCard(card);
+                getActivePokemonController().getPokemonController().addEnergy((Energy)card);
+                break;
+            }
+        }
+
+        Attack attack = getActivePokemonController().getPokemonController().getAttacks().get(0);
+        getActivePokemonController().attackPokemon(opponentPokemon, attack.getAbility().getDamage());
 
     }
 }

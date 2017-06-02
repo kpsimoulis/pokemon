@@ -1,9 +1,13 @@
 package views.card;
 
+import views.game.GameView;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public abstract class CardView extends JLayeredPane {
 
@@ -15,6 +19,7 @@ public abstract class CardView extends JLayeredPane {
         this.setMaximumSize(new Dimension(140, 85));
         this.setPreferredSize(new Dimension(140, 85));
 
+        MouseListener descListeners = getMouseListener();
         String[][] cardInfo = new String[][]{{"Name: ", "Pikachu"},
                 {"Type: ", "FFI"}};
         String tblHeaders[] = {"Label", "Info"};
@@ -29,9 +34,13 @@ public abstract class CardView extends JLayeredPane {
         infoTable.setShowHorizontalLines(false);
         infoTable.setShowVerticalLines(false);
         infoTable.setFont(new Font("Sans-Serif", Font.PLAIN, 9));
+        infoTable.addMouseListener(descListeners);
+        infoTable.setCellSelectionEnabled(false);
         JScrollPane tblContainer = new JScrollPane(infoTable);
         tblContainer.setBounds(0, 0, 135, 80);
+        tblContainer.addMouseListener(descListeners);
         this.add(tblContainer, JLayeredPane.DEFAULT_LAYER);
+
 
         backSideBtn = new JButton();
         backSideBtn.setBackground(Color.black);
@@ -46,7 +55,6 @@ public abstract class CardView extends JLayeredPane {
         backSideBtn.setIcon(coverImg);
 
         this.add(backSideBtn, JLayeredPane.PALETTE_LAYER);
-
     }
 
     public JButton getBackSideBtn() {
@@ -69,7 +77,59 @@ public abstract class CardView extends JLayeredPane {
         infoTable.addKeyListener(keyListener);
     }
 
+    protected String getCardName() {
+        return infoTable.getModel().getValueAt(0, 1).toString();
+    }
+
+    protected String getCardType() {
+        return infoTable.getModel().getValueAt(1, 1).toString();
+    }
+
+
     public void invalidateKeyListeners(KeyListener keyListener) {
         infoTable.removeKeyListener(keyListener);
     }
+
+    private MouseListener getMouseListener(){
+        return new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                Component component = (Component) e.getSource();
+                GameView gameView = (GameView) SwingUtilities.getAncestorOfClass(GameView.class, component);
+
+                JPanel descPanel = gameView.getBoard().getPlayerPokDescPanel();
+                descPanel.removeAll();
+                descPanel.revalidate();
+                descPanel.repaint();
+                descPanel.add(new JTextArea(getCardDesc()), BorderLayout.NORTH);
+                descPanel.revalidate();
+
+                setBorder(BorderFactory.createLineBorder(Color.green));
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        };
+    }
+
+    protected abstract String getCardDesc();
 }

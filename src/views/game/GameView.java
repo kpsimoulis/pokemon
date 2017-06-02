@@ -16,9 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-/**
- * Created by mikce_000 on 29-May-2017.
- */
+
 public class GameView extends JFrame {
 
     private Board board;

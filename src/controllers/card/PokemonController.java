@@ -43,4 +43,16 @@ public class PokemonController extends CardController {
 
     }
 
+    public ArrayList<Attack> getAttacks() {
+        return ((Pokemon) getCard()).getAttack();
+    }
+
+
+    public void causeDamage(int damage) {
+
+        Pokemon card = (Pokemon) getCard();
+        card.setDamagePoints(card.getDamagePoints() + damage);
+        ((PokemonView) getView()).setDmgPts(card.getDamagePoints());
+
+    }
 }

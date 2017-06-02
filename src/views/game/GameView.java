@@ -1,6 +1,11 @@
 package views.game;
 
 import board.Board;
+import card.Card;
+import cardcontainer.CardContainer;
+import controllers.game.GameController;
+import views.activepokemon.ActivePokemonView;
+import views.card.CardView;
 import views.cardcontainer.BenchView;
 import views.cardcontainer.HandView;
 import views.cardpiles.DeckView;
@@ -9,10 +14,9 @@ import views.coin.CoinView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
-/**
- * Created by mikce_000 on 29-May-2017.
- */
+
 public class GameView extends JFrame {
 
     private Board board;
@@ -41,6 +45,47 @@ public class GameView extends JFrame {
         board.getPlayerCoinPanel().add(coinView);
         board.getPlayerCoinPanel().revalidate();
 
+    }
+
+    public void setOpponentViews(DeckView deckView, HandView handView, DiscardPileView discardPileView,
+                                 BenchView benchView, CoinView coinView) {
+
+        board.getOpponentDeckPanel().add(deckView).revalidate();
+        board.getOpponentHandCards().add(handView).revalidate();
+        board.getOpponentDiscardPanel().add(discardPileView).revalidate();
+        board.getOpponentBenchCards().add(benchView).revalidate();
+        board.getOpponentCoinPanel().add(coinView);
+        board.getOpponentCoinPanel().revalidate();
+
+    }
+
+    public void setCommand(String command) {
+
+        board.getCommandPanel().removeAll();
+        board.getCommandPanel().add(new JLabel(command));
+
+    }
+
+    public Component addCommandCombo(Object[] items) {
+
+       return board.getCommandPanel().add(new JComboBox<Object>(items));
+
+    }
+
+    public void addCommandButton(String btnText, ActionListener listener) {
+
+        JButton button = new JButton(btnText);
+        button.addActionListener(listener);
+        board.getCommandPanel().add(button);
+
+    }
+
+    public void setPlayerActive(ActivePokemonView pokemonView) {
+        board.getPlayerActivePanel().add(pokemonView).revalidate();
+    }
+
+    public void setOpponentActive(ActivePokemonView pokemonView){
+        board.getOpponentActivePanel().add(pokemonView).revalidate();
     }
 
 }

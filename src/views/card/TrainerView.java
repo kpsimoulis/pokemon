@@ -11,7 +11,7 @@ public class TrainerView extends CardView {
 
         super();
         String[][] cardInfo = new String[][]{
-                {"Ability", ""}, {"Textbox: ", ""}
+                {"Ability", ""}, {"Desc.: ", ""}
         };
         DefaultTableModel infoModel = (DefaultTableModel) this.getInfoTable().getModel();
         for (String[] aCardInfo : cardInfo) {
@@ -20,6 +20,14 @@ public class TrainerView extends CardView {
         this.getInfoTable().setModel(infoModel);
     }
 
+    @Override
+    protected String getCardDesc() {
+        return "=== TRAINER CARD ===\n\n" +
+                "Name: " + getCardName() + "\n" +
+                "Type: " + getCardType() + "\n" +
+                "Ability: " + getAbility() + "\n" +
+                "Description: " + getTextbox() + "\n";
+    }
 
 
     public String getAbility(){

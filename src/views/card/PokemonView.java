@@ -18,6 +18,17 @@ public class PokemonView extends CardView {
 
     }
 
+    @Override
+    protected String getCardDesc() {
+        return "=== POKEMON CARD ===\n\n" +
+                "Name: " + getCardName() + "\n" +
+                "Type: " + getCardType() + "\n" +
+                "Damage Pts.: " + getDmgPts() + "\n" +
+                "# Energies: " + getNoEnergies() + "\n" +
+                "HP: " + getHP() + "\n" +
+                "Stage: " + getStage() + "\n";
+    }
+
     public void setDmgPts(int dmgPts){
         this.getInfoTable().getModel().setValueAt(String.valueOf(dmgPts),2, 1);
     }
@@ -35,16 +46,16 @@ public class PokemonView extends CardView {
     }
 
     public int getDmgPts(){
-        return (int) this.getInfoTable().getModel().getValueAt(2, 1);
+        return Integer.valueOf( this.getInfoTable().getModel().getValueAt(2, 1).toString());
     }
 
     public int getNoEnergies(){
-        return (int) this.getInfoTable().getModel().getValueAt(3, 1);
+        return Integer.valueOf( this.getInfoTable().getModel().getValueAt(3, 1).toString());
     }
 
     public int getHP(){
 
-        return (int) this.getInfoTable().getModel().getValueAt(4, 1);
+        return Integer.valueOf( this.getInfoTable().getModel().getValueAt(4, 1).toString());
     }
 
     public String getStage(){

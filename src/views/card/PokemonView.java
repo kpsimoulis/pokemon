@@ -48,11 +48,13 @@ public class PokemonView extends CardView {
         }
 
         StringBuilder energySb = new StringBuilder();
-        for(Energy item: this.energies){
-            if(energySb.length() > 0){
-                energySb.append(',');
+        if (this.energies.size() > 0) {
+            for(Energy item: this.energies){
+                if(energySb.length() > 0){
+                    energySb.append(',');
+                }
+                energySb.append(item.getCategory());
             }
-            energySb.append(item.getCategory());
         }
 
         return "=== POKEMON CARD ===\n\n" +

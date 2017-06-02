@@ -17,6 +17,7 @@ public class PokemonController extends CardController {
         view.setNoEnergies(card.getEnergy().size());
         view.setStage(card.getStage());
         view.setAttacks(card.getAttack());
+        view.setEnergies(card.getEnergy());
 
     }
 

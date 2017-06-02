@@ -296,13 +296,36 @@ public class GameController {
                 case KeyEvent.VK_1:
                 case KeyEvent.VK_NUMPAD1: {
 
-                    Pokemon card = (Pokemon) player1Controller.getActivePokemonController().getPokemonController().getCard();
-                    Attack attack = card.getAttack().get(0);
+                    Pokemon card1 = (Pokemon) player1Controller.getActivePokemonController().getPokemonController().getCard();
+                    Attack attack = card1.getAttack().get(0);
+                    Pokemon card2 = (Pokemon) player2Controller.getActivePokemonController().getPokemonController().getCard();
+                    Attack attack2 = card2.getAttack().get(0);
                     player1Controller.getActivePokemonController().attackPokemon(
                             player2Controller.getActivePokemonController(), attack.getAbility().getDamage());
 
-                    view.setCommand("Attack caused: " + attack.getAbility().getDamage() + "\nTurn Ended.");
+                    StringBuilder sb = new StringBuilder("Attack caused: " + attack.getAbility().getDamage() + "\nTurn Ended.\n");
                     view.disableKeyListener();
+                    if (card2.getHealthPoints() <= card2.getDamagePoints()) {
+                        sb.append("You won\n");
+                        view.setCommand(sb.toString());
+                        break;
+                    }
+                    sb.append("AI is playing...\n");
+                    player2Controller.getActivePokemonController().getPokemonController().addEnergy(new Energy("Fight", 1, "fight"));
+                    player2Controller.getActivePokemonController().attackPokemon(
+                            player1Controller.getActivePokemonController(), attack2.getAbility().getDamage());
+                    sb.append("Attack caused: " + attack2.getAbility().getDamage() + "\nTurn Ended.\n");
+                    if (card1.getHealthPoints() <= card1.getDamagePoints()) {
+                        sb.append("Computer won\n");
+                        view.setCommand(sb.toString());
+                        break;
+                    }
+
+                    sb.append("You can now do the following:\n" +
+                            "1. Re-Attack with Active Pokemon");
+
+                    view.setCommand(sb.toString());
+                    view.addBoardListerner(new AttackMenuListener());
 
                     break;
                 }

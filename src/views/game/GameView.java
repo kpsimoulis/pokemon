@@ -7,6 +7,7 @@ import views.cardcontainer.BenchView;
 import views.cardcontainer.HandView;
 import views.cardpiles.DeckView;
 import views.cardpiles.DiscardPileView;
+import views.cardpiles.PrizeCardView;
 import views.coin.CoinView;
 
 import javax.swing.*;
@@ -35,7 +36,7 @@ public class GameView extends JFrame {
     }
 
     public void setPlayerViews(DeckView deckView, HandView handView, DiscardPileView discardPileView,
-                               BenchView benchView, CoinView coinView) {
+                               BenchView benchView, CoinView coinView, PrizeCardView prizeCardView) {
 
         board.getPlayerDeckPanel().add(deckView).revalidate();
         board.getPlayerHandCards().add(handView).revalidate();
@@ -43,11 +44,12 @@ public class GameView extends JFrame {
         board.getPlayerBenchCards().add(benchView).revalidate();
         board.getPlayerCoinPanel().add(coinView);
         board.getPlayerCoinPanel().revalidate();
+        board.getPlayerPrizePanel().add(prizeCardView).revalidate();
 
     }
 
     public void setOpponentViews(DeckView deckView, HandView handView, DiscardPileView discardPileView,
-                                 BenchView benchView, CoinView coinView) {
+                                 BenchView benchView, CoinView coinView, PrizeCardView prizeCardView) {
 
         board.getOpponentDeckPanel().add(deckView).revalidate();
         board.getOpponentHandCards().add(handView).revalidate();
@@ -55,6 +57,7 @@ public class GameView extends JFrame {
         board.getOpponentBenchCards().add(benchView).revalidate();
         board.getOpponentCoinPanel().add(coinView);
         board.getOpponentCoinPanel().revalidate();
+        board.getOpponentPrizePanel().add(prizeCardView).revalidate();
 
     }
 

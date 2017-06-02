@@ -9,6 +9,7 @@ import controllers.cardcontainer.BenchController;
 import controllers.cardcontainer.HandController;
 import controllers.cardpiles.DeckController;
 import controllers.cardpiles.DiscardPileController;
+import controllers.cardpiles.PrizeCardController;
 import controllers.coin.CoinController;
 import javafx.util.Pair;
 import player.Player;
@@ -17,6 +18,7 @@ import views.cardcontainer.BenchView;
 import views.cardcontainer.HandView;
 import views.cardpiles.DeckView;
 import views.cardpiles.DiscardPileView;
+import views.cardpiles.PrizeCardView;
 import views.coin.CoinView;
 
 import static controllers.card.ControllerViewBuilder.buildControllerView;
@@ -30,6 +32,7 @@ public abstract class PlayerController {
     private DiscardPileController discardPileController;
     private BenchController benchController;
     private CoinController coinController;
+    private PrizeCardController prizeCardController;
 
     public PlayerController(){
 
@@ -60,6 +63,9 @@ public abstract class PlayerController {
         CoinView coinView = new CoinView();
         coinController = new CoinController(player.getPlayerCoin(), coinView);
 
+        PrizeCardView prizeCardView = new PrizeCardView();
+        prizeCardController = new PrizeCardController(player.getPrizeCards(), prizeCardView);
+
     }
 
     public void setActivePokemonController(ActivePokemonController activePokemonController) {
@@ -75,11 +81,9 @@ public abstract class PlayerController {
             for (int i = 0; i < 7; i++) {
                 handController.addCard(deckController.dealCard().getKey().getCard());
             }
-            Card [] prizeCards = new Card[6];
             for (int i = 0; i < 6; i++) {
-                prizeCards[i] = player.getDeck().dealCard();
+                prizeCardController.addCard(player.getDeck().dealCard());
             }
-            player.setPrizeCards(prizeCards);
         }
 
     }
@@ -110,5 +114,9 @@ public abstract class PlayerController {
 
     public CoinController getCoinController() {
         return coinController;
+    }
+
+    public PrizeCardController getPrizeCardController() {
+        return prizeCardController;
     }
 }

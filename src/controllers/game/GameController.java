@@ -20,6 +20,7 @@ import views.cardcontainer.BenchView;
 import views.cardcontainer.HandView;
 import views.cardpiles.DeckView;
 import views.cardpiles.DiscardPileView;
+import views.cardpiles.PrizeCardView;
 import views.game.GameView;
 
 import javax.swing.*;
@@ -80,7 +81,8 @@ public class GameController {
                 (HandView) player1Controller.getHandController().getView(),
                 (DiscardPileView) player1Controller.getDiscardPileController().getView(),
                 (BenchView) player1Controller.getBenchController().getView(),
-                player1Controller.getCoinController().getView());
+                player1Controller.getCoinController().getView(),
+                (PrizeCardView) player1Controller.getPrizeCardController().getView());
 
         player1Controller.initiateGame();
         player1Controller.getHandController().returnAllCards();
@@ -90,7 +92,8 @@ public class GameController {
                 (HandView) player2Controller.getHandController().getView(),
                 (DiscardPileView) player2Controller.getDiscardPileController().getView(),
                 (BenchView) player2Controller.getBenchController().getView(),
-                player2Controller.getCoinController().getView());
+                player2Controller.getCoinController().getView(),
+                (PrizeCardView) player2Controller.getPrizeCardController().getView());
 
         player2Controller.initiateGame();
 

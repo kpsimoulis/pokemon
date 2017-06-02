@@ -19,8 +19,8 @@ public class ActivePokemonViewTest {
         assertNull(activePokemonView.getPokemonView());
     }
 
-    @Test
-    public void zoomPokemon() throws Exception {
-    }
+//    @Test
+//    public void zoomPokemon() throws Exception {
+//    }
 
 }

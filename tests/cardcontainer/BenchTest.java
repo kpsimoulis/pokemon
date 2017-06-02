@@ -20,14 +20,10 @@ import static org.junit.Assert.*;
 public class BenchTest {
 
     private Bench bench;
-   // private ArrayList<Card> cards;
     private Retreat retreat;
-   private ArrayList<Energy> energyArray;
-   //private Attack attack;
-   private ArrayList<Attack> attacks;
-   //private Ability ability;
-   //private Requirement requirement;
-   //private ArrayList<Requirement> requirements = new ArrayList<Requirement>();
+    private ArrayList<Energy> energyArray;
+    private ArrayList<Attack> attacks;
+
     @Before
     public void beforeEachTest()
 
@@ -46,8 +42,6 @@ public class BenchTest {
 
     @Test
     public void addCard() throws Exception {
-
-        // retreat = new Retreat("fighting",1);
 
         Card card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "stage-one","pikachu",retreat,attacks);
         int size = bench.getNoOfCards();
@@ -85,6 +79,7 @@ public class BenchTest {
         bench.addCard(card2);
         bench.addCard(card3);
         bench.addCard(card4);
+        assertFalse(bench.isFull());
         bench.addCard(card5);
         assertTrue(bench.isFull());
 
@@ -99,7 +94,6 @@ public class BenchTest {
         bench.addCard(card1);
         bench.addCard(card2);
         bench.swapCards(card3,1);
-
         assertEquals(1,bench.getCardIdx(card3));
     }
 

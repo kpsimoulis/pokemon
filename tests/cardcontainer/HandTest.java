@@ -19,22 +19,18 @@ import static org.junit.Assert.*;
  */
 public class HandTest {
     private Hand hand;
-   // private ArrayList<Card> cards;
     private Retreat retreat;
     private ArrayList<Energy> energyArray;
-    //private Attack attack;
     private ArrayList<Attack> attacks;
-   // private Ability ability;
-    //private Requirement requirement;
-   // private ArrayList<Requirement> requirements = new ArrayList<Requirement>();
+
     @Before
     public void beforeEachTest(){
         hand = new Hand();
         energyArray= new ArrayList<Energy>(20);
         retreat = new Retreat("fighting",1);
         Ability ability = new Ability("Rain Splash","damage","put 20 damage points on opponent","opponent-active");
-       Requirement requirement=new Requirement("general",2);
-       ArrayList<Requirement> requirements = new ArrayList<Requirement>();
+        Requirement requirement=new Requirement("general",2);
+        ArrayList<Requirement> requirements = new ArrayList<Requirement>();
         requirements.add(requirement);
         Attack attack = new Attack(requirements,ability);
         ArrayList<Attack> attacks =  new ArrayList<Attack>();

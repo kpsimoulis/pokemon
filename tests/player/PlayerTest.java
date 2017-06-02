@@ -52,6 +52,8 @@ public class PlayerTest {
         playerCoin.flip();
         if(playerCoin.isHead()==true)
             assertTrue(playerCoin.isHead());
+        else
+            assertFalse(playerCoin.isHead());
 
     }
     @Test
@@ -67,7 +69,7 @@ public class PlayerTest {
         newDeck = new Deck();
         newDeck.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
         player.setDeck(newDeck);
-       // player.shuffleDeck();
+        player.shuffleDeck();
         assertEquals(60,player.getDeck().getNoOfCards());
 
 
@@ -83,26 +85,26 @@ public class PlayerTest {
         assertEquals(1,player.getHand().getNoOfCards());
 
     }
-    @Test
-    public void discardCard() throws Exception {
-        newDeck = new Deck();
-        newDeck.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
-        player.setDeck(newDeck);
-        player.drawCard();
-        assertEquals(1,player.getHand().getNoOfCards());
-        String testString ="Jirachi:pokemon:cat:basic:cat:psychic:70:retreat:cat:colorless:1:attacks:cat:psychic:1:39,cat:colorless:2,cat:psychic:1:40";
-        String[] item = new String[1];
-        item[0]=testString;
-        CardsFileParser cardsFile = new CardsFileParser(item);
-
-       // assertEquals(0,player.getHand().getNoOfCards());
-
-
-    }
+//    @Test
+//    public void discardCard() throws Exception {
+//        newDeck = new Deck();
+//        newDeck.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
+//        player.setDeck(newDeck);
+//        player.drawCard();
+//        assertEquals(1,player.getHand().getNoOfCards());
+//        String testString ="Jirachi:pokemon:cat:basic:cat:psychic:70:retreat:cat:colorless:1:attacks:cat:psychic:1:39,cat:colorless:2,cat:psychic:1:40";
+//        String[] item = new String[1];
+//        item[0]=testString;
+//        CardsFileParser cardsFile = new CardsFileParser(item);
+//
+//       assertEquals(0,player.getHand().getNoOfCards());
+//
+//
+//    }
 
     @Test
     public void hasActivePokemon() throws Exception {
-
+        assertFalse((player.hasActivePokemon()));
         Pokemon card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "stage-one","pikachu",retreat,attacks);
         player.setActivePokemon(card1);
         assertTrue(player.hasActivePokemon());
@@ -118,15 +120,7 @@ public class PlayerTest {
         assertEquals(59,player.getNoCardsDeck());
 
     }
-    @Test
-    public void distributeCards() throws Exception {
-        newDeck = new Deck();
-        newDeck.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
-        player.setDeck(newDeck);
-       // player.distributeCards();
 
-
-    }
 
 
 

@@ -21,24 +21,24 @@ public class DeckTest {
 
     }
 
-//    @Test
-//    public void addCard() throws Exception {
-//        Card card1 = new Energy("Psychic",20, "energy");
-//        Card card2 = new Energy("Fighting",5, "energy");
-//        deck1.addCard(card1);
-//        assertEquals(1, deck1.getNoOfCards());
-//    }
 
     @Test
     public void dealCard() throws Exception {
         assertNull(deck2.dealCard());
+        deck2.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
+        assertEquals(60,deck2.getNoOfCards());
+        deck2.dealCard();
+        assertEquals(59,deck2.getNoOfCards());
     }
 
     @Test
     public void populateDeck() throws Exception {
+        deck1.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck3.txt");
+        assertEquals(0,deck1.getNoOfCards());
         deck1.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
         assertEquals(60,deck1.getNoOfCards());
         assertEquals("Jirachi",deck1.dealCard().getName());
+
     }
 
     @Test

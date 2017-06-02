@@ -14,11 +14,6 @@ public class CardsFileParserTest {
     private CardsFileParser cardsFile ;
     private CardsFileParser cardsFile1 ;
     private Retreat retreat;
-    //private Requirement requirement1;
-    //private Requirement requirement2;
-    //private Attack attack1;
-   // private Attack attack2;
-   // private ArrayList<Requirement> requirements;
     private Attack[] attacks;
     @Before
     public void beforeEachTest(){

@@ -37,13 +37,6 @@ public class AbilitiesFileParserTest {
         assertEquals("target:them:destination:deck:bottom:choice:target:1",abilities.getLogic());
     }
 
-//    @Test
-//    public void parseDescription() throws Exception {
-//        abilities.parseName();
-//        abilities.parseAction();
-//        abilities.parseLogic();
-//        abilities.parseDescription();
-//
-//    }
+
 
 }

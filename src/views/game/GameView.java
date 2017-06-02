@@ -1,11 +1,8 @@
 package views.game;
 
 import board.Board;
-import card.Card;
-import cardcontainer.CardContainer;
-import controllers.game.GameController;
+import controllers.game.KeyListeners.KeyDispatcher;
 import views.activepokemon.ActivePokemonView;
-import views.card.CardView;
 import views.cardcontainer.BenchView;
 import views.cardcontainer.HandView;
 import views.cardpiles.DeckView;
@@ -15,11 +12,13 @@ import views.coin.CoinView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 
 
 public class GameView extends JFrame {
 
     private Board board;
+    private KeyDispatcher dispatcher;
 
     public GameView() {
 
@@ -62,7 +61,9 @@ public class GameView extends JFrame {
     public void setCommand(String command) {
 
         board.getCommandPanel().removeAll();
-        board.getCommandPanel().add(new JLabel(command));
+        JTextArea textArea = new JTextArea(command);
+        textArea.setEditable(false);
+        board.getCommandPanel().add(textArea).revalidate();
 
     }
 
@@ -88,4 +89,24 @@ public class GameView extends JFrame {
         board.getOpponentActivePanel().add(pokemonView).revalidate();
     }
 
+    public void addBoardListerner(KeyListener listener) {
+        addKeyListener(listener);
+        setFocusable(true);
+        requestFocusInWindow();
+
+        dispatcher = new KeyDispatcher(listener);
+        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher( dispatcher );
+    }
+
+    public void disableKeyListener() {
+
+        for(KeyListener listener: getKeyListeners()){
+            removeKeyListener(listener);
+        }
+
+        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.removeKeyEventDispatcher( dispatcher );
+
+    }
 }

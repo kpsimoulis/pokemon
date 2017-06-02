@@ -1,7 +1,9 @@
 package controllers.cardcontainer;
 
+import card.Energy;
 import cardcontainer.Hand;
 import controllers.card.CardController;
+import views.card.EnergyView;
 import views.card.PokemonView;
 import views.cardcontainer.HandView;
 
@@ -26,11 +28,19 @@ public class HandController extends CardContainerController {
 
     }
 
-    public void removeCardActiveListener(KeyListener keyListener) {
+    public void removeAllListeners(KeyListener keyListener) {
 
         for (CardController cardController : getCardControllers()) {
             cardController.getView().invalidateKeyListeners(keyListener);
         }
 
+    }
+
+    public void setEnergyListener(KeyListener energyListener) {
+        for (CardController cardController : getCardControllers()) {
+            if (cardController.getView() instanceof EnergyView) {
+                cardController.getView().setListeners(energyListener);
+            }
+        }
     }
 }

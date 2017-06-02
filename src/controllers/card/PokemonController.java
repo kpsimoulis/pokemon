@@ -5,6 +5,8 @@ import card.Pokemon;
 import main.Attack;
 import views.card.PokemonView;
 
+import java.util.ArrayList;
+
 public class PokemonController extends CardController {
 
     public PokemonController(Pokemon card, PokemonView view){

@@ -30,4 +30,7 @@ public class ActivePokemonController {
         return tmpController;
     }
 
+    public void returnCard() {
+        pokemonController.returnBackCover();
+    }
 }

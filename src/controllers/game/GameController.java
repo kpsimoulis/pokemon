@@ -1,16 +1,15 @@
 package controllers.game;
 
-import card.Card;
-import card.Pokemon;
+import card.Energy;
 import controllers.card.CardController;
 import controllers.card.PokemonController;
 import controllers.player.AIPlayerController;
 import controllers.player.HumanPlayerController;
-import controllers.player.PlayerController;
 import javafx.util.Pair;
 import views.ChoiceDialog;
 import views.activepokemon.ActivePokemonView;
 import views.card.CardView;
+import views.card.EnergyView;
 import views.card.PokemonView;
 import views.cardcontainer.BenchView;
 import views.cardcontainer.HandView;
@@ -39,7 +38,6 @@ public class GameController {
         player2Controller = new AIPlayerController();
         view.setVisible(true);
         displayChoiceDialog();
-
     }
 
     public void displayChoiceDialog() {
@@ -116,9 +114,11 @@ public class GameController {
                                 break;
                             }
                         }
-                        player1Controller.getHandController().removeCardActiveListener(this);
+                        player1Controller.getHandController().removeAllListeners(this);
                         view.setCommand("AI is playing");
                         view.setOpponentActive(player2Controller.setActivePokemon(true));
+                        player2Controller.getActivePokemonController().returnCard();
+                        startGame();
                         break;
                     }
                     default:{
@@ -134,8 +134,117 @@ public class GameController {
         };
         player1Controller.getHandController().setActiveListener(listener);
 
+    }
+
+    private void startGame() {
+
+        KeyListener listener = new firstMenuListener();
+        view.addBoardListerner(listener);
 
     }
 
+    class firstMenuListener implements KeyListener {
+
+        firstMenuListener(){
+            view.setCommand("Computer has selected his active pokemon.\n" +
+                    "You can now do the following:\n" +
+                    "1. Add Energy to your active pokemon");
+        }
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_1:
+                case KeyEvent.VK_NUMPAD1:{
+                    view.setCommand("Select an Energy Card and press enter.");
+                    KeyListener listener1 = new KeyListener() {
+                        @Override
+                        public void keyTyped(KeyEvent e) {
+
+                        }
+
+                        @Override
+                        public void keyPressed(KeyEvent e) {
+                            switch (e.getKeyCode()) {
+                                case KeyEvent.VK_ENTER: {
+                                    System.out.println("test");
+                                    EnergyView chosenCard = (EnergyView) SwingUtilities.getAncestorOfClass(EnergyView.class, (Component)e.getSource());
+                                    Pair<CardController, CardView> pair = null;
+                                    for (CardController cardController: player1Controller.getHandController().getCardControllers()){
+                                        if (cardController.getView() == chosenCard){
+                                            pair = player1Controller.getHandController().removeCard(cardController.getCard());
+                                            break;
+                                        }
+                                    }
+                                    assert pair != null;
+                                    player1Controller.getActivePokemonController().getPokemonController().addEnergy((Energy) pair.getKey().getCard());
+                                    player1Controller.getHandController().removeAllListeners(this);
+                                    SecondMenuListener secondMenuListener = new SecondMenuListener();
+                                    view.addBoardListerner(secondMenuListener);
+                                    break;
+                                }
+                                default:{
+                                    System.out.println("333Press correct key.");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void keyReleased(KeyEvent e) {
+
+                        }
+                    };
+                    player1Controller.getHandController().setEnergyListener(listener1);
+                    view.disableKeyListener();
+                    break;
+                }
+                default:{
+                    System.out.println("222Press the correct key.");
+                }
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
+    }
+
+    class SecondMenuListener implements KeyListener{
+
+        public SecondMenuListener(){
+            view.setCommand("You can now do the following:\n" +
+                    "1. Attack with Active Pokemon");
+        }
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_1:
+                case KeyEvent.VK_NUMPAD1: {
+                    System.out.print("Test");
+                    break;
+                }
+                default:{
+                    System.out.println("Press the correct key.");
+                }
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
+    }
 
 }

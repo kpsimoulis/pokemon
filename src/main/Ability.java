@@ -26,6 +26,33 @@ public class Ability {
         this.logic = logic;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getDamage() {
+        if (name.equals("Rollout") || name.equals("Flail")) {
+            return 10;
+        }
+        else if (name.equals("Aurora Beam")) {
+            return 80;
+        }
+        else if (name.equals("Heart Sign")) {
+            return 50;
+        }
+        else {
+            return 20;
+        }
+    }
+
+    public String getAction() {
+        return action;
+    }
+
     /**
      *
      * @return

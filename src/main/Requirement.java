@@ -22,6 +22,32 @@ public class Requirement {
         this.energyAmount = energyAmount;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public String getCategoryShort() {
+        if (category.equals("fight")) {
+            return "fgt";
+
+        }
+        else if (category.equals("water")) {
+            return "wat";
+
+        }
+        else if (category.equals("psychic")) {
+            return "psy";
+
+        }
+        else {
+            return "col";
+        }
+    }
+
+    public int getEnergyAmount() {
+        return energyAmount;
+    }
+
     /**
      *
      * @return

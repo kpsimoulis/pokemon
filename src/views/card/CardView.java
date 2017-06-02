@@ -102,7 +102,9 @@ public abstract class CardView extends JLayeredPane {
                 descPanel.removeAll();
                 descPanel.revalidate();
                 descPanel.repaint();
-                descPanel.add(new JTextArea(getCardDesc()), BorderLayout.NORTH);
+                JTextArea textArea = new JTextArea(getCardDesc());
+                textArea.setLineWrap(true);
+                descPanel.add(new JScrollPane(textArea), BorderLayout.NORTH);
                 descPanel.revalidate();
 
                 setBorder(BorderFactory.createLineBorder(Color.green));

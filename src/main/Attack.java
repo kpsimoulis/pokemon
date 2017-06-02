@@ -28,6 +28,23 @@ public class Attack {
      *
      * @return
      */
+    public ArrayList<Requirement> getRequirement() {
+        return requirement;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Ability getAbility() {
+        return ability;
+    }
+
+
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return "Attack{" +

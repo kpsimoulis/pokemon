@@ -11,6 +11,15 @@ public class Pokemon extends Card {
     private String stage;
     private String evolvesFrom;
     private Retreat retreat;
+
+    public Retreat getRetreat() {
+        return retreat;
+    }
+
+    public ArrayList<Attack> getAttack() {
+        return attack;
+    }
+
     private ArrayList<Attack> attack;
 
     @Override

@@ -2,6 +2,7 @@ package controllers.card;
 
 import card.Energy;
 import card.Pokemon;
+import main.Attack;
 import views.card.PokemonView;
 
 public class PokemonController extends CardController {
@@ -13,6 +14,7 @@ public class PokemonController extends CardController {
         view.setHP(card.getHealthPoints());
         view.setNoEnergies(card.getEnergy().size());
         view.setStage(card.getStage());
+        view.setAttacks(card.getAttack());
 
     }
 

@@ -8,7 +8,8 @@ public class TrainerController extends CardController {
     public TrainerController(Trainer card, TrainerView view){
 
         super(card, view);
-
+        view.setAbility(card.getAbility().getName());
+        view.setDescription(card.getAbility().getDescription());
 
     }
 }

@@ -1,6 +1,7 @@
 package controllers.player;
 
 import card.Card;
+import card.Pokemon;
 import cardcontainer.CardContainer;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
@@ -119,4 +120,16 @@ public abstract class PlayerController {
     public PrizeCardController getPrizeCardController() {
         return prizeCardController;
     }
+
+    public boolean handHasPokemon(){
+
+        for (CardController cardController : getHandController().getCardControllers()){
+            if (cardController.getCard() instanceof Pokemon){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
 }

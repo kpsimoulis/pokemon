@@ -33,7 +33,7 @@ public abstract class ContainerView extends JScrollPane {
     public void addCardView(CardView newView){
 
         cardViews.add(newView);
-        panel.add(newView);
+        panel.add(newView).revalidate();
 
     }
 

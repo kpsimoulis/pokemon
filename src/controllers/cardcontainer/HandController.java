@@ -18,7 +18,7 @@ public class HandController extends CardContainerController {
     }
 
 
-    public void setActiveListener(KeyListener activeListener) {
+    public void setPokemonListener(KeyListener activeListener) {
 
         for (CardController cardController : getCardControllers()) {
             if (cardController.getView() instanceof PokemonView) {

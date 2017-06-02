@@ -47,6 +47,7 @@ public class GameController {
     private AIPlayerController player2Controller;
     private boolean firstTurn;
     private boolean energyAdded;
+    private String extraMessage = "";
 
     public GameController(GameView newView) {
 
@@ -227,6 +228,17 @@ public class GameController {
             public void keyReleased(KeyEvent e) {}
         };
         playerController.getHandController().setPokemonListener(listener);
+
+    }
+
+    public void setActiveRetreat() {
+
+        Pokemon card = (Pokemon) player1Controller.getActivePokemonController().getPokemonController().getCard();
+        player1Controller.getActivePokemonController().retreatPokemon();
+        player1Controller.getBenchController().addCard(card);
+        player1Controller.getBenchController().returnAllCards();
+        extraMessage = "Your Active Pokemon has been Retreated\n";
+        view.addBoardListerner(new ChoiceMenuListener());
 
     }
 
@@ -533,11 +545,11 @@ public class GameController {
     class ChoiceMenuListener implements KeyListener {
 
         ChoiceMenuListener() {
-            view.setCommand("You can now do the following:\n" +
+            view.setCommand(extraMessage + "You can now do the following:\n" +
                     "1. Go to Energy Menu\n" +
                     "2. Go to Attack Menu\n" +
-                    "3. Go to Bench Menu (TODO)\n" +
-                    "4. Go to Retreat Menu (TODO)");
+                    "3. Go to Bench Menu\n" +
+                    "4. Retreat your Active Pokemon");
         }
 
         @Override
@@ -560,12 +572,12 @@ public class GameController {
                 }
                 case KeyEvent.VK_3:
                 case KeyEvent.VK_NUMPAD3: {
-                    System.out.println("Not implemented yet");
+                    setPlayerBench();
                     break;
                 }
                 case KeyEvent.VK_4:
                 case KeyEvent.VK_NUMPAD4: {
-                    System.out.println("Not implemented yet");
+                    setActiveRetreat();
                     break;
                 }
                 default: {

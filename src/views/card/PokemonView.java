@@ -3,6 +3,7 @@ package views.card;
 import card.Energy;
 import main.Attack;
 import main.Requirement;
+import main.Retreat;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class PokemonView extends CardView {
 
     private ArrayList<Attack> attacks;
     private ArrayList<Energy> energies;
+    private Retreat retreat;
 
     public PokemonView(){
 
@@ -57,7 +59,7 @@ public class PokemonView extends CardView {
             }
         }
 
-        return "=== POKEMON CARD ===\n\n" +
+        return "== POKEMON CARD ==\n\n" +
                 "Name: " + getCardName() + "\n" +
                 "Type: " + getCardType() + "\n" +
                 "Damage Pts.: " + getDmgPts() + "\n" +
@@ -65,6 +67,7 @@ public class PokemonView extends CardView {
                 energySb.toString() + "\n" +
                 "HP: " + getHP() + "\n" +
                 "Stage: " + getStage() + "\n\n" +
+                "Retreat: " + this.retreat.getCategoryShort()+ " (x" +this.retreat.getEnergyAmount()+ ")\n\n" +
                 attack;
     }
 
@@ -113,6 +116,10 @@ public class PokemonView extends CardView {
 
     public void setEnergies(ArrayList<Energy> energies) {
         this.energies = new ArrayList<>(energies);
+    }
+
+    public void setRetreat(Retreat retreat) {
+        this.retreat = retreat;
     }
 
     public void addAbilityBtns(){

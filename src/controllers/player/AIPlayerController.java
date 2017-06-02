@@ -52,4 +52,19 @@ public class AIPlayerController extends PlayerController {
 
     }
 
+    public void putPokemonOnBench() {
+
+        ArrayList<Pokemon> pokemonInHand = new ArrayList<>();
+        for (Card card : getHandController().getContainer().getCards()) {
+            if (card instanceof Pokemon) {
+                pokemonInHand.add( (Pokemon) card);
+            }
+        }
+
+        for (Pokemon pokemon: pokemonInHand){
+            getHandController().removeCard(pokemon);
+            getBenchController().addCard(pokemon);
+        }
+
+    }
 }

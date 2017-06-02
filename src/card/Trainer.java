@@ -11,6 +11,10 @@ public class Trainer extends Card {
         this.ability = ability;
     }
 
+    public Ability getAbility() {
+        return ability;
+    }
+
     @Override
     public String toString() {
         return "Trainer " +

@@ -1,8 +1,16 @@
 package views.card;
 
+import card.Energy;
+import main.Attack;
+import main.Requirement;
+
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 
 public class PokemonView extends CardView {
+
+    private ArrayList<Attack> attacks;
+    private ArrayList<Energy> energies;
 
     public PokemonView(){
 
@@ -16,6 +24,54 @@ public class PokemonView extends CardView {
         }
         this.getInfoTable().setModel(infoModel);
 
+    }
+
+    @Override
+    protected String getCardDesc() {
+
+        String attack;
+        attack = "Attacks:\n\n";
+        for (Attack aAttackInfo : this.attacks) {
+            if (aAttackInfo.getAbility().getAction().equals("dam")) {
+                attack += aAttackInfo.getAbility().getName() + " (Dmg: " + aAttackInfo.getAbility().getDamage()+ ")\n";
+            }
+            else {
+                attack += aAttackInfo.getAbility().getName() + " (Desc: " + aAttackInfo.getAbility().getDescription()+ ")\n";
+            }
+            attack += "Req: ";
+            for (Requirement aRequirement: aAttackInfo.getRequirement()) {
+                attack += aRequirement.getCategoryShort() + "(x" + aRequirement.getEnergyAmount() + ") ";
+            }
+
+            attack += "\n\n";
+
+        }
+
+        StringBuilder energySb = new StringBuilder();
+        if (this.energies.size() > 0) {
+            for(Energy item: this.energies){
+                if(energySb.length() > 0){
+                    energySb.append(',');
+                }
+                energySb.append(item.getCategory());
+            }
+        }
+
+        return "=== POKEMON CARD ===\n\n" +
+                "Name: " + getCardName() + "\n" +
+                "Type: " + getCardType() + "\n" +
+                "Damage Pts.: " + getDmgPts() + "\n" +
+                "# Energies: " + getNoEnergies() + "\n" +
+                energySb.toString() + "\n" +
+                "HP: " + getHP() + "\n" +
+                "Stage: " + getStage() + "\n\n" +
+                attack;
+    }
+
+    public void addAttack(int idx, String name) {
+        DefaultTableModel infoModel = (DefaultTableModel) this.getInfoTable().getModel();
+        String[] cardInfo = new String[]{"Attack:", name};
+        infoModel.addRow(cardInfo);
     }
 
     public void setDmgPts(int dmgPts){
@@ -35,20 +91,28 @@ public class PokemonView extends CardView {
     }
 
     public int getDmgPts(){
-        return (int) this.getInfoTable().getModel().getValueAt(2, 1);
+        return Integer.valueOf( this.getInfoTable().getModel().getValueAt(2, 1).toString());
     }
 
     public int getNoEnergies(){
-        return (int) this.getInfoTable().getModel().getValueAt(3, 1);
+        return Integer.valueOf( this.getInfoTable().getModel().getValueAt(3, 1).toString());
     }
 
     public int getHP(){
 
-        return (int) this.getInfoTable().getModel().getValueAt(4, 1);
+        return Integer.valueOf( this.getInfoTable().getModel().getValueAt(4, 1).toString());
     }
 
     public String getStage(){
         return (String) this.getInfoTable().getModel().getValueAt(5, 1);
+    }
+
+    public void setAttacks(ArrayList<Attack> attacks){
+        this.attacks = new ArrayList<>(attacks);
+    }
+
+    public void setEnergies(ArrayList<Energy> energies) {
+        this.energies = new ArrayList<>(energies);
     }
 
     public void addAbilityBtns(){

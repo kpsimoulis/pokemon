@@ -22,7 +22,7 @@ public class ChoiceDialog extends JFrame {
     public ChoiceDialog() {
 
         setLayout(new BorderLayout());
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Pokemon TCG Game");
         setSize(new Dimension(350, 250));
 

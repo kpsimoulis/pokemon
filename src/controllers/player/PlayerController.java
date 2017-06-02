@@ -21,7 +21,7 @@ import views.coin.CoinView;
 
 import static controllers.card.ControllerViewBuilder.buildControllerView;
 
-public class PlayerController {
+public abstract class PlayerController {
 
     private Player player;
     private DeckController deckController;
@@ -60,6 +60,10 @@ public class PlayerController {
         CoinView coinView = new CoinView();
         coinController = new CoinController(player.getPlayerCoin(), coinView);
 
+    }
+
+    public void setActivePokemonController(ActivePokemonController activePokemonController) {
+        this.activePokemonController = activePokemonController;
     }
 
     public void initiateGame(){

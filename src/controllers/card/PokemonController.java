@@ -2,7 +2,10 @@ package controllers.card;
 
 import card.Energy;
 import card.Pokemon;
+import main.Attack;
 import views.card.PokemonView;
+
+import java.util.ArrayList;
 
 public class PokemonController extends CardController {
 
@@ -13,6 +16,8 @@ public class PokemonController extends CardController {
         view.setHP(card.getHealthPoints());
         view.setNoEnergies(card.getEnergy().size());
         view.setStage(card.getStage());
+        view.setAttacks(card.getAttack());
+        view.setEnergies(card.getEnergy());
 
     }
 
@@ -21,6 +26,7 @@ public class PokemonController extends CardController {
         Pokemon card = (Pokemon) this.getCard();
         ((Pokemon) this.getCard()).addEnergy(energyCard);
         ((PokemonView) this.getView()).setNoEnergies(card.getEnergy().size());
+        ((PokemonView) this.getView()).setEnergies(card.getEnergy());
 
     }
 
@@ -39,4 +45,16 @@ public class PokemonController extends CardController {
 
     }
 
+    public ArrayList<Attack> getAttacks() {
+        return ((Pokemon) getCard()).getAttack();
+    }
+
+
+    public void causeDamage(int damage) {
+
+        Pokemon card = (Pokemon) getCard();
+        card.setDamagePoints(card.getDamagePoints() + damage);
+        ((PokemonView) getView()).setDmgPts(card.getDamagePoints());
+
+    }
 }

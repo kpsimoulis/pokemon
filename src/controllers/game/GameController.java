@@ -363,8 +363,8 @@ public class GameController {
             view.setCommand("You can now do the following:\n" +
                     "1. Go to Energy Menu\n" +
                     "2. Go to Attack Menu\n" +
-                    "3. Go to Bench Menu\n" +
-                    "4. Go to Retreat Menu");
+                    "3. Go to Bench Menu (TODO)\n" +
+                    "4. Go to Retreat Menu (TODO)");
         }
 
         @Override
@@ -387,16 +387,12 @@ public class GameController {
                 }
                 case KeyEvent.VK_3:
                 case KeyEvent.VK_NUMPAD3: {
-                    StringBuilder sb = new StringBuilder("");
-                    sb.append("Not implemented yet");
-                    view.setCommand(sb.toString());
+                    System.out.println("Not implemented yet");
                     break;
                 }
                 case KeyEvent.VK_4:
                 case KeyEvent.VK_NUMPAD4: {
-                    StringBuilder sb = new StringBuilder("");
-                    sb.append("Not implemented yet");
-                    view.setCommand(sb.toString());
+                    System.out.println("Not implemented yet");
                     break;
                 }
                 default:{

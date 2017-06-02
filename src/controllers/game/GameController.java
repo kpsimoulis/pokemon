@@ -1,6 +1,7 @@
 package controllers.game;
 
 import card.Card;
+import card.Pokemon;
 import controllers.card.CardController;
 import controllers.card.PokemonController;
 import controllers.player.AIPlayerController;
@@ -28,8 +29,8 @@ import java.io.IOException;
 public class GameController {
 
     private GameView view;
-    private PlayerController player1Controller;
-    private PlayerController player2Controller;
+    private HumanPlayerController player1Controller;
+    private AIPlayerController player2Controller;
 
     public GameController(GameView newView) {
 
@@ -117,6 +118,7 @@ public class GameController {
                         }
                         player1Controller.getHandController().removeCardActiveListener(this);
                         view.setCommand("AI is playing");
+                        view.setOpponentActive(player2Controller.setActivePokemon(true));
                         break;
                     }
                     default:{

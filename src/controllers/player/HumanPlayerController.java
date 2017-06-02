@@ -1,5 +1,6 @@
 package controllers.player;
 
+import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.PokemonController;
 import views.activepokemon.ActivePokemonView;
@@ -19,6 +20,7 @@ public class HumanPlayerController extends PlayerController {
         if (!getPlayer().hasActivePokemon() && firstTime){
 
             ActivePokemonView view = new ActivePokemonView(pokemonView);
+            getPlayer().setActivePokemon((Pokemon) controller.getCard());
             setActivePokemonController(new ActivePokemonController(controller,view ));
             return view;
 

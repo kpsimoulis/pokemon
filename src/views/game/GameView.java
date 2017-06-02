@@ -83,4 +83,9 @@ public class GameView extends JFrame {
     public void setPlayerActive(ActivePokemonView pokemonView) {
         board.getPlayerActivePanel().add(pokemonView).revalidate();
     }
+
+    public void setOpponentActive(ActivePokemonView pokemonView){
+        board.getOpponentActivePanel().add(pokemonView).revalidate();
+    }
+
 }

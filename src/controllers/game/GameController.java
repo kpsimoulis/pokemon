@@ -1,11 +1,16 @@
 package controllers.game;
 
+import card.Card;
 import card.Energy;
+import card.Pokemon;
+import cardcontainer.CardContainer;
 import controllers.card.CardController;
 import controllers.card.PokemonController;
 import controllers.player.AIPlayerController;
 import controllers.player.HumanPlayerController;
 import javafx.util.Pair;
+import main.Attack;
+import main.Requirement;
 import views.ChoiceDialog;
 import views.activepokemon.ActivePokemonView;
 import views.card.CardView;
@@ -24,6 +29,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class GameController {
 
@@ -172,7 +181,6 @@ public class GameController {
                         public void keyPressed(KeyEvent e) {
                             switch (e.getKeyCode()) {
                                 case KeyEvent.VK_ENTER: {
-                                    System.out.println("test");
                                     EnergyView chosenCard = (EnergyView) SwingUtilities.getAncestorOfClass(EnergyView.class, (Component)e.getSource());
                                     Pair<CardController, CardView> pair = null;
                                     for (CardController cardController: player1Controller.getHandController().getCardControllers()){
@@ -189,7 +197,7 @@ public class GameController {
                                     break;
                                 }
                                 default:{
-                                    System.out.println("333Press correct key.");
+                                    System.out.println("Press correct key.");
                                 }
                             }
                         }
@@ -204,7 +212,7 @@ public class GameController {
                     break;
                 }
                 default:{
-                    System.out.println("222Press the correct key.");
+                    System.out.println("Press the correct key.");
                 }
             }
         }
@@ -232,7 +240,80 @@ public class GameController {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_1:
                 case KeyEvent.VK_NUMPAD1: {
-                    System.out.print("Test");
+
+                    StringBuilder builder = new StringBuilder("Press the corresponding number for the attacks:\n");
+
+                    Pokemon card = (Pokemon) player1Controller.getActivePokemonController().getPokemonController().getCard();
+                    int index=1;
+                    for (Attack attack: card.getAttack()){
+
+                        HashMap<String, Integer> dict = new HashMap<>();
+                        for (Energy energy: card.getEnergy()){
+                            String energyCategory = energy.getCategory();
+                            if (dict.containsKey(energyCategory)){
+                                dict.put(energyCategory, dict.get(energyCategory) + 1);
+                            }else{
+                                dict.put(energyCategory, 1);
+                            }
+                        }
+
+                        boolean meetRequirements = true;
+                        for (Requirement requirement: attack.getRequirement()){
+                            if (dict.containsKey(requirement.getCategory()) && dict.get(requirement.getCategory()) == requirement.getEnergyAmount()){
+                                builder.append(index).append(". ").append(attack.getAbility().getName()).append("\n");
+                            }
+                        }
+
+                        index++;
+                    }
+
+                    view.setCommand(builder.toString());
+                    view.addBoardListerner(new AttackMenuListener());
+                    break;
+                }
+                default:{
+                    System.out.println("Press the correct key.");
+                }
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
+    }
+
+    class AttackMenuListener implements KeyListener{
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_1:
+                case KeyEvent.VK_NUMPAD1: {
+
+                    Pokemon card = (Pokemon) player1Controller.getActivePokemonController().getPokemonController().getCard();
+                    Attack attack = card.getAttack().get(0);
+                    player1Controller.getActivePokemonController().attackPokemon(
+                            player2Controller.getActivePokemonController(), attack.getAbility().getDamage());
+
+                    view.setCommand("Attack caused: " + attack.getAbility().getDamage() + "\nTurn Ended.");
+                    view.disableKeyListener();
+
+                    break;
+                }
+                case KeyEvent.VK_2:
+                case KeyEvent.VK_NUMPAD2: {
+                    System.out.println("2");
+                    break;
+                }
+                case KeyEvent.VK_3:
+                case KeyEvent.VK_NUMPAD3: {
+                    System.out.println("3");
                     break;
                 }
                 default:{

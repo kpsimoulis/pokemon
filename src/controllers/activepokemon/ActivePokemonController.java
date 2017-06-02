@@ -1,5 +1,6 @@
 package controllers.activepokemon;
 
+import card.Pokemon;
 import controllers.card.PokemonController;
 import views.activepokemon.ActivePokemonView;
 
@@ -32,5 +33,11 @@ public class ActivePokemonController {
 
     public void returnCard() {
         pokemonController.returnBackCover();
+    }
+
+    public void attackPokemon(ActivePokemonController activePokemonController, int damage) {
+
+        activePokemonController.getPokemonController().causeDamage(damage);
+
     }
 }

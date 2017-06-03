@@ -74,6 +74,7 @@ public class GameController {
                 }
                 player1Controller.getPlayer().setName(dialog.getP1Name());
                 player2Controller.getPlayer().setName(dialog.getP2Name());
+                System.out.println(player1Controller.getPlayer().getName());
                 loadBoard();
                 dialog.setVisible(false);
             }

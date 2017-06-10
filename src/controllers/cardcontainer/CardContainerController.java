@@ -6,8 +6,10 @@ import controllers.card.CardController;
 import controllers.card.ControllerViewBuilder;
 import javafx.util.Pair;
 import views.card.CardView;
+import views.card.PokemonView;
 import views.cardcontainer.ContainerView;
 
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 public abstract class CardContainerController {
@@ -79,5 +81,25 @@ public abstract class CardContainerController {
 
     public void setContainer(CardContainer container) {
         this.container = container;
+    }
+
+
+
+    public void setPokemonListener(KeyListener activeListener) {
+
+        for (CardController cardController : getCardControllers()) {
+            if (cardController.getView() instanceof PokemonView) {
+                cardController.getView().setListeners(activeListener);
+            }
+        }
+
+    }
+
+    public void removeAllListeners(KeyListener keyListener) {
+
+        for (CardController cardController : getCardControllers()) {
+            cardController.getView().invalidateKeyListeners(keyListener);
+        }
+
     }
 }

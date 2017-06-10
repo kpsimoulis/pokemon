@@ -1,20 +1,16 @@
 package controllers.game;
 
-import card.Energy;
 import card.Pokemon;
 import controllers.card.CardController;
-import controllers.card.PokemonController;
+import controllers.cardcontainer.CardContainerController;
+import controllers.game.KeyListeners.ListenerActivePok;
+import controllers.game.KeyListeners.MainMenuListener;
 import controllers.player.AIPlayerController;
 import controllers.player.HumanPlayerController;
 import controllers.player.PlayerController;
-import javafx.util.Pair;
 import main.Attack;
-import main.Requirement;
 import views.ChoiceDialog;
-import views.activepokemon.ActivePokemonView;
 import views.card.CardView;
-import views.card.EnergyView;
-import views.card.PokemonView;
 import views.cardcontainer.BenchView;
 import views.cardcontainer.HandView;
 import views.cardpiles.DeckView;
@@ -22,14 +18,12 @@ import views.cardpiles.DiscardPileView;
 import views.cardpiles.PrizeCardView;
 import views.game.GameView;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Arrays;
 
 /**
  * The Game Controller Class
@@ -55,6 +49,34 @@ public class GameController {
         player2Controller = new AIPlayerController();
         view.setVisible(true);
         displayChoiceDialog();
+    }
+
+    public boolean isFirstTurn() {
+        return firstTurn;
+    }
+
+    public void setFirstTurn(boolean firstTurn) {
+        this.firstTurn = firstTurn;
+    }
+
+    public boolean isEnergyAdded() {
+        return energyAdded;
+    }
+
+    public void setEnergyAdded(boolean energyAdded) {
+        this.energyAdded = energyAdded;
+    }
+
+    public GameView getView() {
+        return view;
+    }
+
+    public HumanPlayerController getHumanController() {
+        return player1Controller;
+    }
+
+    public AIPlayerController getAIController() {
+        return player2Controller;
     }
 
     public void displayChoiceDialog() {
@@ -110,360 +132,63 @@ public class GameController {
     public void playerChooseActive() {
 
         view.setCommand("Choose Active Pokemon (Click on a pokemon and hit enter)");
-
-        KeyListener listener = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {}
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_ENTER: {
-
-                        PokemonView chosenCard = (PokemonView) SwingUtilities.getAncestorOfClass(PokemonView.class, (Component) e.getSource());
-                        for (CardController cardController : player1Controller.getHandController().getCardControllers()) {
-                            if (cardController.getView() == chosenCard) {
-                                Pair<CardController, CardView> pair = player1Controller.getHandController().removeCard(cardController.getCard());
-                                ActivePokemonView activePokemonView = ((HumanPlayerController) player1Controller).
-                                        setActivePokemon(true, (PokemonController) pair.getKey(), (PokemonView) pair.getValue());
-                                view.setPlayerActive(activePokemonView);
-                                break;
-                            }
-                        }
-                        player1Controller.getHandController().removeAllListeners(this);
-
-                        if (player1Controller.handHasPokemon()) {
-                            view.setCommand("You can now do the following:\n" +
-                                    "1. Add Pokemon to your bench\n" +
-                                    "2. End Turn");
-                            firstTurn = true;
-                            setPlayerBench();
-                        } else {
-                            endFirstTurn();
-                        }
-                        break;
-                    }
-                    default: {
-                        System.out.println("Press Again.");
-                    }
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {}
-
-        };
-        player1Controller.getHandController().setPokemonListener(listener);
+        firstTurn = true;
+        player1Controller.getHandController().setPokemonListener(new ListenerActivePok(this));
 
     }
 
-    private void startGame() {
+    public void endFirstTurn() {
 
-        playerDealDeck(player1Controller);
-        KeyListener listener = new firstMenuListener();
-        view.addBoardListerner(listener);
-        energyAdded = false;
-
-    }
-
-    private void playerDealDeck(PlayerController playerController){
-        playerController.getHandController().addCard(playerController.getDeckController().dealCard().getKey().getCard());
-        if (playerController instanceof HumanPlayerController){
-            playerController.getHandController().returnAllCards();
-        }
-    }
-
-    private void endFirstTurn() {
         view.setCommand("AI is playing");
         view.setOpponentActive(player2Controller.setActivePokemon(true));
         player2Controller.getActivePokemonController().returnCard();
-        view.disableKeyListener();
         firstTurn = false;
 
-        playerDealDeck(player2Controller);
         player2Controller.putPokemonOnBench();
         player2Controller.getBenchController().returnAllCards();
 
         startGame();
     }
 
-    public void setHandToBench(PlayerController playerController) {
+    private void startGame() {
 
-        KeyListener listener = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {}
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_ENTER: {
-                        PokemonView chosenCard = (PokemonView) SwingUtilities.getAncestorOfClass(PokemonView.class, (Component) e.getSource());
-                        for (CardController cardController : playerController.getHandController().getCardControllers()) {
-                            if (cardController.getView() == chosenCard) {
-                                Pair<CardController, CardView> pair = playerController.getHandController().removeCard(cardController.getCard());
-                                playerController.getBenchController().addCard((Pokemon)pair.getKey().getCard());
-                                playerController.getBenchController().returnAllCards();
-                                break;
-                            }
-                        }
-                        playerController.getHandController().removeAllListeners(this);
-                        if (playerController.handHasPokemon() && firstTurn){
-                                view.setCommand("Options:\n" +
-                                        "1. Add pokemon to your bench\n" +
-                                        "2. End Turn");
-                            setPlayerBench();
-                        }else{
-                            decideNextAction();
-                        }
-                        break;
-                    }
-                    default:{
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {}
-        };
-        playerController.getHandController().setPokemonListener(listener);
+        playerDealDeck(player1Controller);
+        decideNextAction();
+        energyAdded = false;
 
     }
 
-    private void decideNextAction() {
-        if (!energyAdded){
-            view.addBoardListerner(new firstMenuListener());
-        }else{
-            view.addBoardListerner(new SecondMenuListener());
-        }
+    public void decideNextAction() {
+
+        view.addBoardListerner(new MainMenuListener(this));
     }
 
-    public void setPlayerBench(){
+    public void playerDealDeck(PlayerController playerController) {
 
-        KeyListener listener = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {}
+        playerController.dealDeck();
+        if (playerController instanceof HumanPlayerController) {
+            playerController.getHandController().returnAllCards();
+        }
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_1:
-                    case KeyEvent.VK_NUMPAD1: {
-                        view.setCommand("Choose Pokemon from hand (Click on a pokemon and hit enter)");
-                        view.disableKeyListener();
-                        setHandToBench(player1Controller);
-                        break;
-                    }
-                    case KeyEvent.VK_2:
-                    case KeyEvent.VK_NUMPAD2: {
-                        if (firstTurn){
-                            endFirstTurn();
-                        }else{
-                            decideNextAction();
-                        }
-                        break;
-                    }
-                    default: {
-                        System.out.println("Incorrect Key Pressed.");
-                    }
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {}
-        };
-
-        view.addBoardListerner(listener);
     }
 
-    class firstMenuListener implements KeyListener {
+    public CardController findCardInContainer(CardView view, CardContainerController container) {
 
-        firstMenuListener() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("You can now do the following:\n");
-            builder.append("1. Add Energy to your active pokemon\n");
-
-            if (player1Controller.handHasPokemon()){
-                builder.append("2. Add Pokemon to your bench\n");
-            }
-
-            builder.append("3. End Turn");
-            view.setCommand(builder.toString());
-        }
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_1:
-                case KeyEvent.VK_NUMPAD1: {
-                    view.setCommand("Select an Energy Card and press enter.");
-                    KeyListener listener1 = new KeyListener() {
-                        @Override
-                        public void keyTyped(KeyEvent e) {
-
-                        }
-
-                        @Override
-                        public void keyPressed(KeyEvent e) {
-                            switch (e.getKeyCode()) {
-                                case KeyEvent.VK_ENTER: {
-                                    EnergyView chosenCard = (EnergyView) SwingUtilities.getAncestorOfClass(EnergyView.class, (Component) e.getSource());
-                                    Pair<CardController, CardView> pair = null;
-                                    for (CardController cardController : player1Controller.getHandController().getCardControllers()) {
-                                        if (cardController.getView() == chosenCard) {
-                                            pair = player1Controller.getHandController().removeCard(cardController.getCard());
-                                            break;
-                                        }
-                                    }
-                                    assert pair != null;
-                                    player1Controller.getActivePokemonController().getPokemonController().addEnergy((Energy) pair.getKey().getCard());
-                                    player1Controller.getHandController().removeAllListeners(this);
-                                    energyAdded = true;
-                                    SecondMenuListener secondMenuListener = new SecondMenuListener();
-                                    view.addBoardListerner(secondMenuListener);
-                                    break;
-                                }
-                                default: {
-                                    System.out.println("Press correct key.");
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void keyReleased(KeyEvent e) {
-
-                        }
-                    };
-                    player1Controller.getHandController().setEnergyListener(listener1);
-                    view.disableKeyListener();
-                    break;
-                }
-                case KeyEvent.VK_2:
-                case KeyEvent.VK_NUMPAD2: {
-                    view.setCommand("Choose Pokemon from hand (Click on a pokemon and hit enter)");
-                    view.disableKeyListener();
-                    setHandToBench(player1Controller);
-                    break;
-                }
-                case KeyEvent.VK_3:
-                case KeyEvent.VK_NUMPAD3: {
-                    if (firstTurn){
-                        endFirstTurn();
-                    }else{
-                        gameAITurn(false);
-                    }
-                    break;
-                }
-                default: {
-                    System.out.println("Press the correct key.");
-                }
+        for (CardController cardController : container.getCardControllers()) {
+            if (cardController.getView() == view) {
+                return cardController;
             }
         }
+        throw new NullPointerException();
 
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-        }
     }
 
-    class SecondMenuListener implements KeyListener {
-
-        public SecondMenuListener() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("You can now do the following:\n");
-
-            if (player1Controller.canAttack()){
-                builder.append("1. Attack with Active Pokemon\n");
-            }
-
-            if (player1Controller.handHasPokemon()){
-                builder.append("2. Add Pokemon to your bench\n");
-            }
-
-            builder.append("3. End Turn");
-            view.setCommand(builder.toString());
-        }
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_1:
-                case KeyEvent.VK_NUMPAD1: {
-
-                    StringBuilder builder = new StringBuilder("Press the corresponding number for the attacks:\n");
-
-                    Pokemon card = (Pokemon) player1Controller.getActivePokemonController().getPokemonController().getCard();
-                    HashMap<String, Integer> dict = player1Controller.getActivePokemonController().getEnergyOnCard();
-
-                    int index = 1;
-                    for (Attack attack : card.getAttack()) {
-                        for (Requirement requirement : attack.getRequirement()) {
-                            if (dict.containsKey(requirement.getCategory()) && dict.get(requirement.getCategory()) == requirement.getEnergyAmount()) {
-                                builder.append(index).append(". ").append(attack.getAbility().getName()).append("\n");
-                            }
-                        }
-
-                        index++;
-                    }
-
-                    view.setCommand(builder.toString());
-                    view.addBoardListerner(new AttackMenuListener());
-                    break;
-                }
-                case KeyEvent.VK_2:
-                case KeyEvent.VK_NUMPAD2: {
-                    view.setCommand("Choose Pokemon from hand (Click on a pokemon and hit enter)");
-                    view.disableKeyListener();
-                    setHandToBench(player1Controller);
-                    break;
-                }
-                case KeyEvent.VK_3:
-                case KeyEvent.VK_NUMPAD3:
-                {
-                    energyAdded = false;
-                    gameAITurn(false);
-                    break;
-                }
-                default: {
-                    System.out.println("Press the correct key.");
-            }
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-        }
-    }
-
-    public boolean gameAITurn(boolean humanCanAttack){
+    public boolean gameAITurn() {
 
         StringBuilder sb = new StringBuilder();
-        Pokemon card1 = (Pokemon) player1Controller.getActivePokemonController().getPokemonController().getCard();
-        Attack attack = card1.getAttack().get(0);
-        Pokemon card2 = (Pokemon) player2Controller.getActivePokemonController().getPokemonController().getCard();
+        Pokemon card1 = player1Controller.getActivePokemonCard();
+        Pokemon card2 = player2Controller.getActivePokemonCard();
         Attack attack2 = card2.getAttack().get(0);
-        if (humanCanAttack){
-            player1Controller.getActivePokemonController().attackPokemon(
-                    player2Controller.getActivePokemonController(), attack.getAbility().getDamage());
-            sb.append("Attack caused: ").append(attack.getAbility().getDamage()).append("\nTurn Ended.\n");
-            view.disableKeyListener();
-            if (card2.getHealthPoints() <= card2.getDamagePoints()) {
-                sb.append("You won\n");
-                view.setCommand(sb.toString());
-                return true;
-            }
-        }
 
         sb.append("AI is playing...\n");
         playerDealDeck(player2Controller);
@@ -475,109 +200,28 @@ public class GameController {
             return true;
         }
 
-        sb.append("You can now do the following:\n" +
-                "1. Re-Attack with Active Pokemon\n" +
-                "E. Exit Attack Menu"
-        );
-
+        sb.append("Press Enter to continue.");
         view.setCommand(sb.toString());
-        playerDealDeck(player1Controller);
-        view.addBoardListerner(new AttackMenuListener());
+
+        view.addBoardListerner(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_ENTER: {
+                        playerDealDeck(player1Controller);
+                        decideNextAction();
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
 
         return false;
-    }
-
-    class AttackMenuListener implements KeyListener {
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_1:
-                case KeyEvent.VK_NUMPAD1: {
-
-                    gameAITurn(true);
-
-                    break;
-                }
-                case KeyEvent.VK_2:
-                case KeyEvent.VK_NUMPAD2: {
-                    System.out.println("2");
-                    break;
-                }
-                case KeyEvent.VK_3:
-                case KeyEvent.VK_NUMPAD3: {
-                    System.out.println("3");
-                    break;
-                }
-                case KeyEvent.VK_E: {
-                    view.addBoardListerner(new ChoiceMenuListener());
-                    break;
-                }
-                default: {
-                    System.out.println("Press the correct key.");
-                }
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-        }
-    }
-
-    class ChoiceMenuListener implements KeyListener {
-
-        ChoiceMenuListener() {
-            view.setCommand("You can now do the following:\n" +
-                    "1. Go to Energy Menu\n" +
-                    "2. Go to Attack Menu\n" +
-                    "3. Go to Bench Menu (TODO)\n" +
-                    "4. Go to Retreat Menu (TODO)");
-        }
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_1:
-                case KeyEvent.VK_NUMPAD1: {
-                    view.addBoardListerner(new firstMenuListener());
-                    break;
-                }
-                case KeyEvent.VK_2:
-                case KeyEvent.VK_NUMPAD2: {
-                    view.addBoardListerner(new SecondMenuListener());
-                    break;
-                }
-                case KeyEvent.VK_3:
-                case KeyEvent.VK_NUMPAD3: {
-                    System.out.println("Not implemented yet");
-                    break;
-                }
-                case KeyEvent.VK_4:
-                case KeyEvent.VK_NUMPAD4: {
-                    System.out.println("Not implemented yet");
-                    break;
-                }
-                default: {
-                    System.out.println("Press the correct key.");
-                }
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-        }
     }
 
 }

@@ -130,6 +130,16 @@ public abstract class PlayerController {
 
     }
 
+    public boolean handHasEnergy() {
+
+        for (CardController cardController : getHandController().getCardControllers()) {
+            if (cardController.getCard() instanceof Energy) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean canAttack() {
 
         Pokemon pokemon = (Pokemon) getActivePokemonController().getPokemonController().getCard();
@@ -144,6 +154,14 @@ public abstract class PlayerController {
 
         return false;
 
+    }
+
+    public void dealDeck(){
+        getHandController().addCard(getDeckController().dealCard().getKey().getCard());
+    }
+
+    public Pokemon getActivePokemonCard(){
+        return (Pokemon) getActivePokemonController().getPokemonController().getCard();
     }
 
 }

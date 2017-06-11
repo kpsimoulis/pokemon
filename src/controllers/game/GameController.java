@@ -224,4 +224,9 @@ public class GameController {
         return false;
     }
 
+    public void endGame() {
+
+        getView().disableKeyListener();
+
+    }
 }

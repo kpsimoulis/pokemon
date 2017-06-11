@@ -1,6 +1,7 @@
 package controllers.game.KeyListeners;
 
 import controllers.activepokemon.ActivePokemonController;
+import controllers.cardpiles.PrizeCardController;
 import controllers.game.GameController;
 import main.Attack;
 
@@ -62,11 +63,22 @@ public class PokemonAttack implements KeyListener {
         strBuilder.append("Attack caused: ").append(damage).append("\nTurn Ended.\n");
 
         if (defeatedOpp){
-            strBuilder.append("You defeated opponent's pokemon. Collect a prize card.");
-            //TODO: Implement prize card collection
+
+            PrizeCardController humanPrizeCard = controller.getHumanController().getPrizeCardController();
+            if (humanPrizeCard.getCardContainer().getNoOfCards() > 1){
+                strBuilder.append("You defeated opponent's pokemon.\n").append("Collect a prize card:\n");
+                strBuilder.append(controller.getHumanController().getPrizeCardController().getPrizeCardsNo());
+                strBuilder.append("\n").append("Press the correct no.");
+                controller.getView().addBoardListerner(new CollectPrizeCard(controller));
+            }else{
+                strBuilder.append("You defeated opponent's pokemon.\n").append("You have only one prize card left\n");
+                strBuilder.append("YOU WON THE GAME");
+                controller.getView().setCommand(strBuilder.toString());
+                controller.endGame();
+            }
+
         }else{
             strBuilder.append("Press Enter to continue.");
-            controller.getView().setCommand(strBuilder.toString());
             controller.getView().addBoardListerner(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent e) {}
@@ -86,6 +98,7 @@ public class PokemonAttack implements KeyListener {
                 public void keyReleased(KeyEvent e) {}
             });
         }
+        controller.getView().setCommand(strBuilder.toString());
 
         return true;
     }

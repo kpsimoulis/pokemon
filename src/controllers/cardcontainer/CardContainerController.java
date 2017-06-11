@@ -35,6 +35,14 @@ public abstract class CardContainerController {
         return cardControllers;
     }
 
+    public void addCard(Pair<CardController, CardView> pair){
+
+        container.addCard(pair.getKey().getCard());
+        view.addCardView(pair.getValue());
+        cardControllers.add(pair.getKey());
+
+    }
+
     public Pair<CardController, CardView> addCard(Card newCard){
 
         Pair<CardController, CardView> pairControllerView = ControllerViewBuilder.buildControllerView(newCard);

@@ -19,17 +19,28 @@ public class PrizeCardController extends PileController {
         super(prizeCards, prizeCardView);
     }
 
-    public Pair<CardController, CardView> chooseCard(Card chosenCard) {
+    public Pair<CardController, CardView> chooseCard(int cardIdx) {
         CardContainer container = this.getCardContainer();
         if (container.getNoOfCards() == 0){
             return null;
         }
-        if (((PrizeCards) container).removeCard(chosenCard)){
-            this.getView().decrementNoOfCards();
-            return ControllerViewBuilder.buildControllerView(chosenCard);
-        }else{
+
+        Card collectedCard;
+        try{
+            collectedCard = container.removeCard(cardIdx);
+        }
+        catch (NullPointerException e){
             return null;
         }
+        this.getView().decrementNoOfCards();
+        return ControllerViewBuilder.buildControllerView(collectedCard);
+
+    }
+
+    public String getPrizeCardsNo(){
+
+      return getCardContainer().toString();
+
     }
 
 }

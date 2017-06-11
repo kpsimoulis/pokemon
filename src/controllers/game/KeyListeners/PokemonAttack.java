@@ -67,7 +67,7 @@ public class PokemonAttack implements KeyListener {
             PrizeCardController humanPrizeCard = controller.getHumanController().getPrizeCardController();
             if (humanPrizeCard.getCardContainer().getNoOfCards() > 1){
                 strBuilder.append("You defeated opponent's pokemon.\n").append("Collect a prize card:\n");
-                strBuilder.append(controller.getHumanController().getPrizeCardController().getPrizeCardsNo());
+                strBuilder.append(humanPrizeCard.getPrizeCardsNo());
                 strBuilder.append("\n").append("Press the correct no.");
                 controller.getView().addBoardListerner(new CollectPrizeCard(controller));
             }else{

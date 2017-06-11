@@ -29,6 +29,7 @@ public class AIPlayerController extends PlayerController {
             getPlayer().setActivePokemon((Pokemon) pair.getKey().getCard());
             ActivePokemonView view = new ActivePokemonView( (PokemonView) pair.getValue());
             setActivePokemonController(new ActivePokemonController((PokemonController) pair.getKey(), view));
+            getActivePokemonController().getPokemonController().setBlockedCard(false);
             return view;
 
         }
@@ -83,5 +84,12 @@ public class AIPlayerController extends PlayerController {
         Attack attack = getActivePokemonController().getPokemonController().getAttacks().get(0);
         getActivePokemonController().attackPokemon(opponentPokemon, attack.getAbility().getDamage());
 
+    }
+
+    @Override
+    public void dealDeck(){
+        Pair<CardController, CardView> dealtCard = getDeckController().dealCard();
+        getHandController().addCard(dealtCard);
+        dealtCard.getKey().setBlockedCard(true);
     }
 }

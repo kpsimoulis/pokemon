@@ -10,6 +10,7 @@ public abstract class CardController {
     private Card card;
     private CardView view;
     private ActionListener actionListener;
+    private boolean blockedCard;
 
     public CardController(Card cardModel, CardView cardView){
         card = cardModel;
@@ -27,9 +28,19 @@ public abstract class CardController {
         return view;
     }
 
+    public void setBlockedCard(boolean blockedCard) {
+        this.blockedCard = blockedCard;
+    }
+
+    public boolean isBlockedCard() {
+        return blockedCard;
+    }
+
     public void backBtnListener(){
         actionListener = actionEvent -> {
-            view.getBackSideBtn().setVisible(false);
+            if (!blockedCard){
+                view.getBackSideBtn().setVisible(false);
+            }
         };
         view.getBackSideBtn().addActionListener(actionListener);
     }

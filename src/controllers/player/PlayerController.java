@@ -78,7 +78,7 @@ public abstract class PlayerController {
             System.exit(0);
         } else {
             for (int i = 0; i < 7; i++) {
-                handController.addCard(deckController.dealCard().getKey().getCard());
+                this.dealDeck();
             }
             for (int i = 0; i < 6; i++) {
                 prizeCardController.addCard(player.getDeck().dealCard());

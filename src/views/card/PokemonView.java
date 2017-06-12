@@ -67,7 +67,7 @@ public class PokemonView extends CardView {
                 energySb.toString() + "\n" +
                 "HP: " + getHP() + "\n" +
                 "Stage: " + getStage() + "\n\n" +
-                "Retreat: " + this.retreat.getCategoryShort()+ " (x" +this.retreat.getEnergyAmount()+ ")\n\n" +
+                //TODO: "Retreat: " + this.retreat.getCategoryShort()+ " (x" +this.retreat.getEnergyAmount()+ ")\n\n" +
                 attack;
     }
 
@@ -120,12 +120,6 @@ public class PokemonView extends CardView {
 
     public void setRetreat(Retreat retreat) {
         this.retreat = retreat;
-    }
-
-    public void addAbilityBtns(){
-
-
-
     }
 
 }

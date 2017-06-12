@@ -156,6 +156,7 @@ public class GameController {
         }else {
             view.setCommand("Choose Active Pokemon (Click on a pokemon and hit enter)");
             firstTurn = true;
+            view.disableKeyListener();
             player1Controller.getHandController().setPokemonListener(new ListenerActivePok(this));
         }
     }

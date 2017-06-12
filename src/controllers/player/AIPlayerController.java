@@ -1,11 +1,13 @@
 package controllers.player;
 
 import card.Card;
+import card.Energy;
 import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
 import controllers.card.PokemonController;
 import javafx.util.Pair;
+import main.Attack;
 import views.activepokemon.ActivePokemonView;
 import views.card.CardView;
 import views.card.PokemonView;

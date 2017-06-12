@@ -173,7 +173,7 @@ public abstract class PlayerController {
             deckController.addCard(controller.getCard());
         }
         deckController.shuffleDeck();
-        for (int i=1; i<=7; i++){
+        for (int i=0; i<removedCards.size(); i++){
             dealDeck();
         }
 

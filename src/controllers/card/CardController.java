@@ -46,7 +46,7 @@ public abstract class CardController {
     }
 
     public void returnBackCover() {
-        view.getBackSideBtn().doClick();
+        view.getBackSideBtn().setVisible(false);
     }
 
 }

@@ -6,4 +6,9 @@ public class HandView extends ContainerView {
         super(7);
     }
 
+    public void removeAllCardViews(){
+        getPanel().removeAll();
+        getPanel().revalidate();
+    }
+
 }

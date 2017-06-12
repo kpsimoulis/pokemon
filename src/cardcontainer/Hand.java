@@ -51,6 +51,12 @@ public class Hand extends CardContainer {
         }
     }
 
+    public ArrayList<Card> removeAllCards(){
+        ArrayList<Card> removedCard = new ArrayList<>(cards);
+        getCards().clear();
+        return removedCard;
+    }
+
     /**
      * Method to represent the hand in String
      *

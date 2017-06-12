@@ -131,30 +131,93 @@ public class GameController {
 
     public void playerChooseActive() {
 
-        view.setCommand("Choose Active Pokemon (Click on a pokemon and hit enter)");
-        firstTurn = true;
-        player1Controller.getHandController().setPokemonListener(new ListenerActivePok(this));
+        if (!player1Controller.handHasPokemon()){
+            view.setCommand("YOU HAVE A MULLIGAN.\nOpponent looked at your hand and drew a card." +
+                    "\nYour hand will get shuffled into your deck" +
+                    "\nand you will get a new hand." +
+                    "\nPress ENTER to continue.");
+            playerDealDeck(player2Controller);
+            view.addBoardListerner(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent e) {}
 
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER){
+                        player1Controller.shuffleHandInDeck();
+                        player1Controller.getHandController().returnAllCards();
+                        playerChooseActive();
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {}
+            });
+        }else {
+            view.setCommand("Choose Active Pokemon (Click on a pokemon and hit enter)");
+            firstTurn = true;
+            player1Controller.getHandController().setPokemonListener(new ListenerActivePok(this));
+        }
     }
 
     public void endFirstTurn() {
 
         view.setCommand("AI is playing");
-        view.setOpponentActive(player2Controller.setActivePokemon(true));
-        player2Controller.getActivePokemonController().returnCard();
-        firstTurn = false;
 
-        player2Controller.putPokemonOnBench();
-        player2Controller.getBenchController().returnAllCards();
+        if (!player2Controller.handHasPokemon()){
 
-        startGame();
+            view.setCommand("OPPONENT HAS A MULLIGAN.\nYou can look at his hand." +
+                    "\nPress ENTER to draw a card.");
+            player2Controller.getHandController().returnAllCards();
+            view.addBoardListerner(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent e) {}
+
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER){
+                        playerDealDeck(player1Controller);
+                        player2Controller.shuffleHandInDeck();
+                        endFirstTurn();
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {}
+            });
+
+        }else{
+            view.setOpponentActive(player2Controller.setActivePokemon(true));
+            player2Controller.getActivePokemonController().returnCard();
+            firstTurn = false;
+
+            player2Controller.putPokemonOnBench();
+            player2Controller.getBenchController().returnAllCards();
+
+            startGame();
+        }
+
     }
 
     private void startGame() {
 
-        playerDealDeck(player1Controller);
-        decideNextAction();
-        energyAdded = false;
+        view.setCommand("Game is about to start.\n Press ENTER to continue.");
+        view.addBoardListerner(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER){
+                    playerDealDeck(player1Controller);
+                    decideNextAction();
+                    energyAdded = false;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
 
     }
 

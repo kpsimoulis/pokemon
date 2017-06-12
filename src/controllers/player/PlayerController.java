@@ -1,5 +1,6 @@
 package controllers.player;
 
+import card.Card;
 import card.Energy;
 import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;
@@ -20,6 +21,7 @@ import views.cardpiles.DiscardPileView;
 import views.cardpiles.PrizeCardView;
 import views.coin.CoinView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class PlayerController {
@@ -162,6 +164,19 @@ public abstract class PlayerController {
 
     public Pokemon getActivePokemonCard(){
         return (Pokemon) getActivePokemonController().getPokemonController().getCard();
+    }
+
+    public void shuffleHandInDeck(){
+
+        ArrayList<CardController> removedCards = handController.removeAllCards();
+        for (CardController controller: removedCards){
+            deckController.addCard(controller.getCard());
+        }
+        deckController.shuffleDeck();
+        for (int i=1; i<=7; i++){
+            dealDeck();
+        }
+
     }
 
 }

@@ -5,16 +5,17 @@ import main.Attack;
 import main.Requirement;
 import main.Retreat;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
 public class PokemonView extends CardView {
 
-    private ArrayList<Attack> attacks;
-    private ArrayList<Energy> energies;
-    private Retreat retreat;
+    private JTextArea energyTxt;
+    private JTextArea attackTxt;
+    private JTextArea retreatTxt;
 
-    public PokemonView(){
+    public PokemonView(ArrayList<Energy> energies, ArrayList<Attack> attacks, int dmgPts, int hp, String stage){
 
         super();
         String[][] cardInfo = new String[][]{
@@ -26,55 +27,28 @@ public class PokemonView extends CardView {
         }
         this.getInfoTable().setModel(infoModel);
 
+        energyTxt = new JTextArea(genEnergyStr(energies));
+        attackTxt = new JTextArea(genAttackStr(attacks));
+        setDmgPts(dmgPts);
+        setNoEnergies(energies.size());
+        setHP(hp);
+        setStage(stage);
+
     }
 
     @Override
     protected String getCardDesc() {
-
-        String attack;
-        attack = "Attacks:\n\n";
-        for (Attack aAttackInfo : this.attacks) {
-            if (aAttackInfo.getAbility().getAction().equals("dam")) {
-                attack += aAttackInfo.getAbility().getName() + " (Dmg: " + aAttackInfo.getAbility().getDamage()+ ")\n";
-            }
-            else {
-                attack += aAttackInfo.getAbility().getName() + " (Desc: " + aAttackInfo.getAbility().getDescription()+ ")\n";
-            }
-            attack += "Req: ";
-            for (Requirement aRequirement: aAttackInfo.getRequirement()) {
-                attack += aRequirement.getCategoryShort() + "(x" + aRequirement.getEnergyAmount() + ") ";
-            }
-
-            attack += "\n\n";
-
-        }
-
-        StringBuilder energySb = new StringBuilder();
-        if (this.energies.size() > 0) {
-            for(Energy item: this.energies){
-                if(energySb.length() > 0){
-                    energySb.append(',');
-                }
-                energySb.append(item.getCategory());
-            }
-        }
 
         return "== POKEMON CARD ==\n\n" +
                 "Name: " + getCardName() + "\n" +
                 "Type: " + getCardType() + "\n" +
                 "Damage Pts.: " + getDmgPts() + "\n" +
                 "# Energies: " + getNoEnergies() + "\n" +
-                energySb.toString() + "\n" +
+                getEnergyTxt() + "\n" +
                 "HP: " + getHP() + "\n" +
                 "Stage: " + getStage() + "\n\n" +
                 //TODO: "Retreat: " + this.retreat.getCategoryShort()+ " (x" +this.retreat.getEnergyAmount()+ ")\n\n" +
-                attack;
-    }
-
-    public void addAttack(int idx, String name) {
-        DefaultTableModel infoModel = (DefaultTableModel) this.getInfoTable().getModel();
-        String[] cardInfo = new String[]{"Attack:", name};
-        infoModel.addRow(cardInfo);
+                getAttackTxt();
     }
 
     public void setDmgPts(int dmgPts){
@@ -93,6 +67,10 @@ public class PokemonView extends CardView {
         this.getInfoTable().getModel().setValueAt(pokStage, 5, 1);
     }
 
+    public void setEnergyTxt(ArrayList<Energy> energies){ this.energyTxt.setText(genEnergyStr(energies)); }
+
+    public void setAttackTxt(ArrayList<Attack> attacks){ this.attackTxt.setText(genAttackStr(attacks)); }
+
     public int getDmgPts(){
         return Integer.valueOf( this.getInfoTable().getModel().getValueAt(2, 1).toString());
     }
@@ -110,16 +88,46 @@ public class PokemonView extends CardView {
         return (String) this.getInfoTable().getModel().getValueAt(5, 1);
     }
 
-    public void setAttacks(ArrayList<Attack> attacks){
-        this.attacks = new ArrayList<>(attacks);
+    public String getEnergyTxt() {
+        return energyTxt.getText();
     }
 
-    public void setEnergies(ArrayList<Energy> energies) {
-        this.energies = new ArrayList<>(energies);
+    public String getAttackTxt() {
+        return attackTxt.getText();
     }
 
-    public void setRetreat(Retreat retreat) {
-        this.retreat = retreat;
+    private String genEnergyStr(ArrayList<Energy> energies){
+        StringBuilder energySb = new StringBuilder();
+        if (energies.size() > 0) {
+            for(Energy item: energies){
+                if(energySb.length() > 0){
+                    energySb.append(',');
+                }
+                energySb.append(item.getCategory());
+            }
+        }
+        return energySb.toString();
+    }
+
+    private String genAttackStr(ArrayList<Attack> attacks){
+        StringBuilder attack;
+        attack = new StringBuilder("Attacks:\n\n");
+        for (Attack aAttackInfo : attacks) {
+            if (aAttackInfo.getAbility().getAction().equals("dam")) {
+                attack.append(aAttackInfo.getAbility().getName()).append(" (Dmg: ").append(aAttackInfo.getAbility().getDamage()).append(")\n");
+            }
+            else {
+                attack.append(aAttackInfo.getAbility().getName()).append(" (Desc: ").append(aAttackInfo.getAbility().getDescription()).append(")\n");
+            }
+            attack.append("Req: ");
+            for (Requirement aRequirement: aAttackInfo.getRequirement()) {
+                attack.append(aRequirement.getCategoryShort()).append("(x").append(aRequirement.getEnergyAmount()).append(") ");
+            }
+
+            attack.append("\n\n");
+
+        }
+        return attack.toString();
     }
 
 }

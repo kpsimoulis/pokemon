@@ -12,9 +12,9 @@ public abstract class CardController {
     private ActionListener actionListener;
     private boolean blockedCard;
 
-    public CardController(Card cardModel, CardView cardView){
+    public CardController(Card cardModel, CardView view){
         card = cardModel;
-        view = cardView;
+        this.view = view;
         backBtnListener();
         view.setName(card.getName());
         view.setType(card.getCategory());
@@ -27,6 +27,8 @@ public abstract class CardController {
     public CardView getView() {
         return view;
     }
+
+    public void setView(CardView view){ this.view = view; }
 
     public void setBlockedCard(boolean blockedCard) {
         this.blockedCard = blockedCard;

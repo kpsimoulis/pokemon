@@ -5,9 +5,10 @@ import card.Trainer;
 import views.card.TrainerView;
 
 public class TrainerController extends CardController {
-    public TrainerController(Trainer card, TrainerView view){
+    public TrainerController(Trainer card){
 
-        super(card, view);
+        super(card, new TrainerView());
+        TrainerView view = (TrainerView) getView();
         view.setAbility(card.getAbility().getName());
         view.setDescription(card.getAbility().getDescription());
 

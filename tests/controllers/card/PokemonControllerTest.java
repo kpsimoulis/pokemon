@@ -37,10 +37,10 @@ public class PokemonControllerTest {
       ArrayList<Attack> attacks = new ArrayList<Attack>();
       attacks.add(attack);
       pokemon1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "basic","",retreat,attacks);
-      pokemonView = new PokemonView();
+      pokemonView = new PokemonView(energyArray,attacks,0,90,"basic");
       energy1 = new Energy("Fight",20,"fight");
       energy2 = new Energy("Psychic",22,"psychic");
-      pokemonController = new PokemonController(pokemon1,pokemonView);
+      pokemonController = new PokemonController(pokemon1);
     }
     @Test
     public void addEnergy() throws Exception {

@@ -1,8 +1,14 @@
 package views.cardcontainer;
 
+import card.Energy;
+import main.Ability;
+import main.Attack;
+import main.Requirement;
 import org.junit.Test;
 import views.card.PokemonView;
 import views.card.TrainerView;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -15,7 +21,15 @@ public class BenchViewTest {
     private BenchView benchView;
     @Test
     public void addCardView() throws Exception {
-        pokemonView= new PokemonView();
+        ArrayList<Energy> energyArray= new ArrayList<Energy>(20);
+        Ability ability = new Ability("Rain Splash","damage","put 20 damage points on opponent","opponent-active");
+        Requirement requirement=new Requirement("general",2);
+        ArrayList<Requirement> requirements = new ArrayList<Requirement>();
+        requirements.add(requirement);
+        Attack attack = new Attack(requirements,ability);
+        ArrayList<Attack> attacks = new ArrayList<Attack>();
+        attacks.add(attack);
+        pokemonView= new PokemonView(energyArray,attacks,0,60,"basic");
         trainerView = new TrainerView();
         benchView = new BenchView();
         benchView.addCardView(trainerView);

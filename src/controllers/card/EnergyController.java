@@ -8,8 +8,8 @@ import views.card.EnergyView;
  */
 public class EnergyController extends CardController {
 
-    public EnergyController(Energy energyCard, EnergyView energyView){
-        super(energyCard, energyView);
+    public EnergyController(Energy energyCard) {
+        super(energyCard, new EnergyView());
     }
 
 }

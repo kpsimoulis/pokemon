@@ -17,18 +17,15 @@ public final class ControllerViewBuilder {
     public static Pair<CardController, CardView> buildControllerView(Card card){
 
         CardController controller = null;
-        CardView view = null;
         if (card.getClass() == Pokemon.class) {
-            view = new PokemonView();
-            controller = new PokemonController((Pokemon) card, (PokemonView) view);
+            controller = new PokemonController((Pokemon) card);
         }else if (card.getClass() == Energy.class){
-            view = new EnergyView();
-            controller = new EnergyController((Energy)card, (EnergyView) view);
+            controller = new EnergyController((Energy)card);
         }else if (card.getClass() == Trainer.class){
-            view = new TrainerView();
-            controller = new TrainerController((Trainer)card, (TrainerView) view);
+            controller = new TrainerController((Trainer)card);
         }
-        return new Pair<>(controller, view);
+        assert controller != null;
+        return new Pair<>(controller, controller.getView());
 
     }
 

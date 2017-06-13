@@ -16,12 +16,10 @@ public class Player {
     private Hand hand;
     private Bench bench;
     private DiscardPile discardPile;
-    private Card[] prizeCards;
+    private PrizeCards prizeCards;
     private Pokemon activePokemon;
     private Coin playerCoin;
     private String name;
-
-    private static final int PRIZE_CARD_LIMIT = 6;
 
     /**
      * Default Constructor for the Player class
@@ -31,7 +29,7 @@ public class Player {
         hand = new Hand();
         bench = new Bench();
         discardPile = new DiscardPile();
-        prizeCards = new Card[PRIZE_CARD_LIMIT];
+        prizeCards = new PrizeCards();
         playerCoin = new Coin();
         name = "default";
     }
@@ -47,7 +45,7 @@ public class Player {
         hand = new Hand();
         bench = new Bench();
         discardPile = new DiscardPile();
-        prizeCards = new Card[PRIZE_CARD_LIMIT];
+        prizeCards = new PrizeCards();
         playerCoin = new Coin();
         name = newName;
     }
@@ -84,8 +82,8 @@ public class Player {
      *
      * @param newPrizeCards Array of 6 prize cards
      */
-    public void setPrizeCards(Card[] newPrizeCards) {
-        prizeCards = newPrizeCards;
+    public void setPrizeCards(PrizeCards newPrizeCards) {
+        prizeCards = new PrizeCards(newPrizeCards);
     }
 
     /**
@@ -155,7 +153,7 @@ public class Player {
      *
      * @return Array obj - Player's prize cards
      */
-    public Card[] getPrizeCards() {
+    public PrizeCards getPrizeCards() {
         return prizeCards;
     }
 

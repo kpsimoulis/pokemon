@@ -26,6 +26,10 @@ public abstract class ContainerView extends JScrollPane {
         getViewport().setOpaque(false);
     }
 
+    public JPanel getPanel() {
+        return panel;
+    }
+
     public ArrayList<CardView> getCardViews(){
         return cardViews;
     }
@@ -33,7 +37,7 @@ public abstract class ContainerView extends JScrollPane {
     public void addCardView(CardView newView){
 
         cardViews.add(newView);
-        panel.add(newView);
+        panel.add(newView).revalidate();
 
     }
 

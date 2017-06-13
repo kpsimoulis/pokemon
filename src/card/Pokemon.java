@@ -11,16 +11,18 @@ public class Pokemon extends Card {
     private String stage;
     private String evolvesFrom;
     private Retreat retreat;
-
-    public Retreat getRetreat() {
-        return retreat;
-    }
-
-    public ArrayList<Attack> getAttack() {
-        return attack;
-    }
-
     private ArrayList<Attack> attack;
+
+    public Pokemon(String name, int index, String category, int hp, ArrayList<Energy> energy, String stage, String evolves_from, Retreat retreat, ArrayList<Attack> attack) {
+        super(name, index, category);
+        this.healthPoints = hp;
+        this.damagePoints = 0;
+        this.energy = energy;
+        this.stage = stage;
+        this.evolvesFrom = evolves_from;
+        this.retreat = retreat;
+        this.attack = attack;
+    }
 
     @Override
     public String toString() {
@@ -37,19 +39,6 @@ public class Pokemon extends Card {
                 ", Retreat='" + retreat + '\'' +
                 ", Attack='" + attack + '\'' +
                 '}';
-    }
-
-
-
-    public Pokemon(String name, int index, String category, int hp, ArrayList<Energy> energy, String stage, String evolves_from, Retreat retreat, ArrayList<Attack> attack) {
-        super(name, index, category);
-        this.healthPoints = hp;
-        this.damagePoints = 0;
-        this.energy = energy;
-        this.stage = stage;
-        this.evolvesFrom = evolves_from;
-        this.retreat = retreat;
-        this.attack = attack;
     }
 
 
@@ -73,6 +62,13 @@ public class Pokemon extends Card {
         return evolvesFrom;
     }
 
+    public Retreat getRetreat() {
+        return retreat;
+    }
+
+    public ArrayList<Attack> getAttack() {
+        return attack;
+    }
 
     public void setHealthPoints(int healthPoints) {
         this.healthPoints = healthPoints;

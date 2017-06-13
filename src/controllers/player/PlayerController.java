@@ -1,25 +1,28 @@
 package controllers.player;
 
 import card.Card;
-import cardcontainer.CardContainer;
+import card.Energy;
+import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
-import controllers.card.ControllerViewBuilder;
 import controllers.cardcontainer.BenchController;
 import controllers.cardcontainer.HandController;
 import controllers.cardpiles.DeckController;
 import controllers.cardpiles.DiscardPileController;
+import controllers.cardpiles.PrizeCardController;
 import controllers.coin.CoinController;
-import javafx.util.Pair;
+import main.Attack;
+import main.Requirement;
 import player.Player;
-import views.card.CardView;
 import views.cardcontainer.BenchView;
 import views.cardcontainer.HandView;
 import views.cardpiles.DeckView;
 import views.cardpiles.DiscardPileView;
+import views.cardpiles.PrizeCardView;
 import views.coin.CoinView;
 
-import static controllers.card.ControllerViewBuilder.buildControllerView;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class PlayerController {
 
@@ -30,17 +33,18 @@ public abstract class PlayerController {
     private DiscardPileController discardPileController;
     private BenchController benchController;
     private CoinController coinController;
+    private PrizeCardController prizeCardController;
 
-    public PlayerController(){
+    public PlayerController() {
 
         this.player = new Player();
         activePokemonController = null;
 
     }
 
-    public void buildViewController(){
+    public void buildViewController() {
 
-        if (player==null || player.getDeck() == null | player.getDeck().getNoOfCards() == 0){
+        if (player == null || player.getDeck() == null | player.getDeck().getNoOfCards() == 0) {
             System.out.println("Cannot build the views and controllers");
             System.exit(0);
         }
@@ -60,26 +64,27 @@ public abstract class PlayerController {
         CoinView coinView = new CoinView();
         coinController = new CoinController(player.getPlayerCoin(), coinView);
 
+        PrizeCardView prizeCardView = new PrizeCardView();
+        prizeCardController = new PrizeCardController(player.getPrizeCards(), prizeCardView);
+
     }
 
     public void setActivePokemonController(ActivePokemonController activePokemonController) {
         this.activePokemonController = activePokemonController;
     }
 
-    public void initiateGame(){
+    public void initiateGame() {
 
         if (!player.getDeck().validate()) {
             System.out.println("Incorrect Deck for Player " + player.getName());
             System.exit(0);
         } else {
             for (int i = 0; i < 7; i++) {
-                handController.addCard(deckController.dealCard().getKey().getCard());
+                this.dealDeck();
             }
-            Card [] prizeCards = new Card[6];
             for (int i = 0; i < 6; i++) {
-                prizeCards[i] = player.getDeck().dealCard();
+                prizeCardController.addCard(player.getDeck().dealCard());
             }
-            player.setPrizeCards(prizeCards);
         }
 
     }
@@ -111,4 +116,67 @@ public abstract class PlayerController {
     public CoinController getCoinController() {
         return coinController;
     }
+
+    public PrizeCardController getPrizeCardController() {
+        return prizeCardController;
+    }
+
+    public boolean handHasPokemon() {
+
+        for (CardController cardController : getHandController().getCardControllers()) {
+            if (cardController.getCard() instanceof Pokemon) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public boolean handHasEnergy() {
+
+        for (CardController cardController : getHandController().getCardControllers()) {
+            if (cardController.getCard() instanceof Energy) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canAttack() {
+
+        Pokemon pokemon = (Pokemon) getActivePokemonController().getPokemonController().getCard();
+        HashMap<String, Integer> dict = getActivePokemonController().getEnergyOnCard();
+        for (Attack attack : pokemon.getAttack()){
+            for (Requirement requirement : attack.getRequirement()) {
+                if (dict.containsKey(requirement.getCategory()) && dict.get(requirement.getCategory()) == requirement.getEnergyAmount()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+
+    }
+
+    public void dealDeck(){
+        getHandController().addCard(getDeckController().dealCard().getKey().getCard());
+    }
+
+    public Pokemon getActivePokemonCard(){
+        return (Pokemon) getActivePokemonController().getPokemonController().getCard();
+    }
+
+    public void shuffleHandInDeck(){
+
+        ArrayList<CardController> removedCards = handController.removeAllCards();
+        for (CardController controller: removedCards){
+            deckController.addCard(controller.getCard());
+        }
+        deckController.shuffleDeck();
+        for (int i=0; i<removedCards.size(); i++){
+            dealDeck();
+        }
+
+    }
+
 }

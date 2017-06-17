@@ -2,6 +2,7 @@ package controllers.game;
 
 import card.Pokemon;
 import controllers.card.CardController;
+import controllers.card.PokemonController;
 import controllers.cardcontainer.CardContainerController;
 import controllers.game.KeyListeners.ListenerActivePok;
 import controllers.game.KeyListeners.MainMenuListener;
@@ -290,6 +291,20 @@ public class GameController {
     public void endGame() {
 
         getView().disableKeyListener();
+
+    }
+
+    public void aiActiveDefeated() {
+
+        player2Controller.discardActivePokemon();
+        if (player2Controller.benchHasPokemon() || player2Controller.handHasPokemon()){
+            view.setOpponentActive(player2Controller.setActivePokemon(false));
+            player2Controller.getActivePokemonController().returnCard();
+            gameAITurn();
+        }else{
+            view.setCommand("AI has no basic pokemon to set as active.\n YOU WON THE GAME.");
+            endGame();
+        }
 
     }
 }

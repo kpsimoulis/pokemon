@@ -4,6 +4,7 @@ import card.Energy;
 import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
+import controllers.card.PokemonController;
 import controllers.cardcontainer.BenchController;
 import controllers.cardcontainer.HandController;
 import controllers.cardpiles.DeckController;
@@ -178,4 +179,25 @@ public abstract class PlayerController {
 
     }
 
+    public void discardActivePokemon() {
+
+        Pokemon exActive = new Pokemon( (Pokemon) getActivePokemonController().getPokemonController().getCard());
+        activePokemonController = null;
+        player.removeActivePokemon();
+        for (Energy energy: exActive.getEnergy()){
+            getDiscardPileController().addCard(energy);
+        }
+        exActive.emptyEnergy();
+
+        //TODO: Detach evolve pokemon and items
+
+        getDiscardPileController().addCard(exActive);
+
+    }
+
+    public boolean benchHasPokemon() {
+
+        return getBenchController().getContainer().getNoOfCards()>0;
+
+    }
 }

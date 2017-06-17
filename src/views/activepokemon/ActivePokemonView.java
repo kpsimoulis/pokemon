@@ -21,6 +21,7 @@ public class ActivePokemonView extends JPanel {
         this.setPreferredSize(new Dimension(150,160));
         this.pokemonView = pokemonView;
         add(pokemonView);
+        revalidate();
 
     }
 
@@ -38,6 +39,7 @@ public class ActivePokemonView extends JPanel {
 
     public void removePokemonView(){
         remove(pokemonView);
+        revalidate();
         this.pokemonView = null;
     }
 

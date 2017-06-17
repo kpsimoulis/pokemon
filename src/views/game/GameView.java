@@ -89,6 +89,7 @@ public class GameView extends JFrame {
     }
 
     public void setOpponentActive(ActivePokemonView pokemonView){
+        board.getOpponentActivePanel().removeAll();
         board.getOpponentActivePanel().add(pokemonView).revalidate();
     }
 

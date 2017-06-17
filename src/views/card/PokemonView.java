@@ -35,6 +35,27 @@ public class PokemonView extends CardView {
 
     }
 
+    public PokemonView(PokemonView view) {
+
+        super();
+        String[][] cardInfo = new String[][]{
+                {"Dmg Pts:", ""},{"# Energ.: ", "0"},{"HP: ", ""}, {"Stage: ", "Basic"}
+        };
+        DefaultTableModel infoModel = (DefaultTableModel) this.getInfoTable().getModel();
+        for (String[] aCardInfo : cardInfo) {
+            infoModel.addRow(aCardInfo);
+        }
+        this.getInfoTable().setModel(infoModel);
+
+        energyTxt = new JTextArea(view.getEnergyTxt());
+        attackTxt = new JTextArea(view.getAttackTxt());
+        setDmgPts(view.getDmgPts());
+        setNoEnergies(view.getNoEnergies());
+        setHP(view.getHP());
+        setStage(view.getStage());
+
+    }
+
     @Override
     protected String getCardDesc() {
 

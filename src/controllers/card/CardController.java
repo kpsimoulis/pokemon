@@ -20,6 +20,12 @@ public abstract class CardController {
         view.setType(card.getCategory());
     }
 
+    public CardController(CardController cardController) {
+        this.card = new Card(cardController.getCard());
+        this.view = cardController.view;
+        backBtnListener();
+    }
+
     public Card getCard() {
         return card;
     }

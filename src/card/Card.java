@@ -14,6 +14,12 @@ public class Card {
         this.category = category;
     }
 
+    public Card(Card card) {
+        this.name = card.name;
+        this.index = card.index;
+        this.category = card.category;
+    }
+
 
     public String getName() {
         return name;

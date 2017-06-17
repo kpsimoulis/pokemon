@@ -23,9 +23,16 @@ public class AIPlayerController extends PlayerController {
 
     public ActivePokemonView setActivePokemon(boolean firstTime) {
 
-        if (!getPlayer().hasActivePokemon() && firstTime) {
+        if (!getPlayer().hasActivePokemon()) {
 
-            Pair<CardController, CardView> pair = getHandController().removeCard(chooseActivePokemon());
+            Pair<CardController, CardView> pair = null;
+            if ((firstTime || !benchHasPokemon()) && handHasPokemon()){
+                pair = getHandController().removeCard(chooseActivePokemon(false));
+            }else if(!firstTime && benchHasPokemon()){
+                pair = getBenchController().removeCard(chooseActivePokemon(true));
+            }
+            assert pair != null;
+            System.out.print(getActivePokemonController());
             getPlayer().setActivePokemon((Pokemon) pair.getKey().getCard());
             ActivePokemonView view = new ActivePokemonView( (PokemonView) pair.getValue());
             setActivePokemonController(new ActivePokemonController((PokemonController) pair.getKey(), view));
@@ -37,21 +44,24 @@ public class AIPlayerController extends PlayerController {
 
     }
 
-    public Pokemon chooseActivePokemon() {
+    private Pokemon chooseActivePokemon(boolean fromBench) {
 
-        if (getBenchController().getContainer().getNoOfCards() == 0 && getHandController().getContainer().getNoOfCards() != 0) {
 
-            ArrayList<Pokemon> pokemonInHand = new ArrayList<>();
-            for (Card card : getHandController().getContainer().getCards()) {
-                if (card instanceof Pokemon) {
-                    pokemonInHand.add((Pokemon) card);
-                }
-            }
-            Collections.shuffle(pokemonInHand);
-            return pokemonInHand.get(0);
-
+        ArrayList<Pokemon> pokemonArrayList = new ArrayList<>();
+        ArrayList<Card> containerCards;
+        if (fromBench){
+            containerCards = getBenchController().getContainer().getCards();
+        }else{
+            containerCards = getHandController().getContainer().getCards();
         }
-        return null;
+        for (Card card : containerCards) {
+            if (card instanceof Pokemon) {
+                pokemonArrayList.add((Pokemon) card);
+            }
+        }
+        Collections.shuffle(pokemonArrayList);
+        return pokemonArrayList.get(0);
+
 
     }
 

@@ -8,12 +8,11 @@ import main.AbilitiesFileParser;
 import main.Ability;
 import main.CardsFileParser;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 

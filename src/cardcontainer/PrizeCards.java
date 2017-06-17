@@ -25,4 +25,12 @@ public class PrizeCards extends CardContainer {
         cards.add(newCard);
     }
 
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        for (int i=0; i<getCards().size(); i++){
+            builder.append(i+1).append(" ");
+        }
+        return builder.toString();
+    }
+
 }

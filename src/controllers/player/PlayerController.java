@@ -20,6 +20,7 @@ import views.cardpiles.DiscardPileView;
 import views.cardpiles.PrizeCardView;
 import views.coin.CoinView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class PlayerController {
@@ -78,7 +79,7 @@ public abstract class PlayerController {
             System.exit(0);
         } else {
             for (int i = 0; i < 7; i++) {
-                handController.addCard(deckController.dealCard().getKey().getCard());
+                this.dealDeck();
             }
             for (int i = 0; i < 6; i++) {
                 prizeCardController.addCard(player.getDeck().dealCard());
@@ -130,6 +131,16 @@ public abstract class PlayerController {
 
     }
 
+    public boolean handHasEnergy() {
+
+        for (CardController cardController : getHandController().getCardControllers()) {
+            if (cardController.getCard() instanceof Energy) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean canAttack() {
 
         Pokemon pokemon = (Pokemon) getActivePokemonController().getPokemonController().getCard();
@@ -143,6 +154,27 @@ public abstract class PlayerController {
         }
 
         return false;
+
+    }
+
+    public void dealDeck(){
+        getHandController().addCard(getDeckController().dealCard().getKey().getCard());
+    }
+
+    public Pokemon getActivePokemonCard(){
+        return (Pokemon) getActivePokemonController().getPokemonController().getCard();
+    }
+
+    public void shuffleHandInDeck(){
+
+        ArrayList<CardController> removedCards = handController.removeAllCards();
+        for (CardController controller: removedCards){
+            deckController.addCard(controller.getCard());
+        }
+        deckController.shuffleDeck();
+        for (int i=0; i<removedCards.size(); i++){
+            dealDeck();
+        }
 
     }
 

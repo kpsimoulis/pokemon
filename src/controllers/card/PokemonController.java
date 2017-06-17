@@ -9,16 +9,10 @@ import java.util.ArrayList;
 
 public class PokemonController extends CardController {
 
-    public PokemonController(Pokemon card, PokemonView view){
+    public PokemonController(Pokemon card){
 
-        super(card, view);
-        view.setDmgPts(card.getDamagePoints());
-        view.setHP(card.getHealthPoints());
-        view.setNoEnergies(card.getEnergy().size());
-        view.setStage(card.getStage());
-        view.setAttacks(card.getAttack());
-        view.setEnergies(card.getEnergy());
-        view.setRetreat(card.getRetreat());
+        super(card, new PokemonView(card.getEnergy(), card.getAttack(), card.getDamagePoints(), card.getHealthPoints(), card.getStage()));
+        PokemonView pokemonView = (PokemonView) getView();
 
     }
 
@@ -27,7 +21,7 @@ public class PokemonController extends CardController {
         Pokemon card = (Pokemon) this.getCard();
         ((Pokemon) this.getCard()).addEnergy(energyCard);
         ((PokemonView) this.getView()).setNoEnergies(card.getEnergy().size());
-        ((PokemonView) this.getView()).setEnergies(card.getEnergy());
+        ((PokemonView) this.getView()).setEnergyTxt(card.getEnergy());
 
     }
 
@@ -38,6 +32,7 @@ public class PokemonController extends CardController {
             Energy returnCard = pokemonCard.removeEnergy();
             PokemonView view = (PokemonView) getView();
             view.setNoEnergies(pokemonCard.getEnergy().size());
+            ((PokemonView) this.getView()).setEnergyTxt(( (Pokemon) this.getCard()).getEnergy());
             return returnCard;
         }
         catch (NullPointerException e){

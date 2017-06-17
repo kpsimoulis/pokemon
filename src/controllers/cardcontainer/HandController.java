@@ -1,38 +1,18 @@
 package controllers.cardcontainer;
 
-import card.Energy;
 import cardcontainer.Hand;
 import controllers.card.CardController;
 import views.card.EnergyView;
-import views.card.PokemonView;
 import views.cardcontainer.HandView;
 
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class HandController extends CardContainerController {
 
     public HandController(Hand newHand, HandView newView) {
 
         super(newHand, newView, 7);
-
-    }
-
-
-    public void setPokemonListener(KeyListener activeListener) {
-
-        for (CardController cardController : getCardControllers()) {
-            if (cardController.getView() instanceof PokemonView) {
-                cardController.getView().setListeners(activeListener);
-            }
-        }
-
-    }
-
-    public void removeAllListeners(KeyListener keyListener) {
-
-        for (CardController cardController : getCardControllers()) {
-            cardController.getView().invalidateKeyListeners(keyListener);
-        }
 
     }
 
@@ -43,4 +23,13 @@ public class HandController extends CardContainerController {
             }
         }
     }
+
+    public ArrayList<CardController> removeAllCards(){
+        ((Hand) getContainer()).removeAllCards();
+        ArrayList<CardController> removedControllers = new ArrayList<>(getCardControllers());
+        getCardControllers().clear();
+        ((HandView) getView()).removeAllCardViews();
+        return removedControllers;
+    }
+
 }

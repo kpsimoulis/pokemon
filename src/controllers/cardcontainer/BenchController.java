@@ -16,6 +16,7 @@ public class BenchController extends CardContainerController{
 
     }
 
+    @Override
     public Pair<CardController, CardView> addCard(Card newCard) {
         if (newCard.getClass() == Pokemon.class){
             return super.addCard(newCard);

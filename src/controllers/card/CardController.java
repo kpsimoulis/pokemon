@@ -10,10 +10,11 @@ public abstract class CardController {
     private Card card;
     private CardView view;
     private ActionListener actionListener;
+    private boolean blockedCard;
 
-    public CardController(Card cardModel, CardView cardView){
-        card = cardModel;
-        view = cardView;
+    public CardController(Card cardModel, CardView view){
+        this.card = cardModel;
+        this.view = view;
         backBtnListener();
         view.setName(card.getName());
         view.setType(card.getCategory());
@@ -27,15 +28,27 @@ public abstract class CardController {
         return view;
     }
 
+    public void setView(CardView view){ this.view = view; }
+
+    public void setBlockedCard(boolean blockedCard) {
+        this.blockedCard = blockedCard;
+    }
+
+    public boolean isBlockedCard() {
+        return blockedCard;
+    }
+
     public void backBtnListener(){
         actionListener = actionEvent -> {
-            view.getBackSideBtn().setVisible(false);
+            if (!blockedCard){
+                view.getBackSideBtn().setVisible(false);
+            }
         };
         view.getBackSideBtn().addActionListener(actionListener);
     }
 
     public void returnBackCover() {
-        view.getBackSideBtn().doClick();
+        view.getBackSideBtn().setVisible(false);
     }
 
 }

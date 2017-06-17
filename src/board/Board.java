@@ -1,8 +1,5 @@
 package board;
 
-import card.Card;
-import views.cardpiles.DeckView;
-
 import javax.swing.*;
 import java.awt.*;
 

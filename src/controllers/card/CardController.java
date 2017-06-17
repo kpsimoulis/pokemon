@@ -13,7 +13,7 @@ public abstract class CardController {
     private boolean blockedCard;
 
     public CardController(Card cardModel, CardView view){
-        card = cardModel;
+        this.card = cardModel;
         this.view = view;
         backBtnListener();
         view.setName(card.getName());

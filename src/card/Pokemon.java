@@ -1,7 +1,9 @@
 package card;
 
+import main.Attack;
+import main.Retreat;
+
 import java.util.ArrayList;
-import main.*;
 
 public class Pokemon extends Card {
 

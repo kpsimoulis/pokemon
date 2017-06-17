@@ -1,6 +1,5 @@
 package controllers.player;
 
-import card.Card;
 import card.Energy;
 import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;

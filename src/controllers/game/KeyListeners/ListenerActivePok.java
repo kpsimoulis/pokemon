@@ -4,7 +4,6 @@ import card.Card;
 import controllers.card.CardController;
 import controllers.card.PokemonController;
 import controllers.game.GameController;
-import controllers.player.HumanPlayerController;
 import javafx.util.Pair;
 import views.activepokemon.ActivePokemonView;
 import views.card.CardView;

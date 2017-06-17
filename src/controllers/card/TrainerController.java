@@ -1,6 +1,5 @@
 package controllers.card;
 
-import card.Pokemon;
 import card.Trainer;
 import views.card.TrainerView;
 

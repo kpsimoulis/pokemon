@@ -1,9 +1,7 @@
 package controllers.player;
 
-import card.Energy;
 import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;
-import controllers.card.CardController;
 import controllers.card.PokemonController;
 import views.activepokemon.ActivePokemonView;
 import views.card.PokemonView;

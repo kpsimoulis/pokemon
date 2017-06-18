@@ -6,7 +6,7 @@ import controllers.card.EnergyController;
 import controllers.card.PokemonController;
 import controllers.game.GameController;
 import javafx.util.Pair;
-import testMainController.Game;
+//import testMainController.Game;
 import views.card.CardView;
 import views.card.EnergyView;
 

@@ -37,6 +37,16 @@ public class AbilitiesFileParserTest {
         assertEquals("target:them:destination:deck:bottom:choice:target:1",abilities.getLogic());
     }
 
+    @Test
+    public void parseDescription() throws Exception {
+        abilities.parseName();
+        abilities.parseAction();
+        abilities.parseLogic();
+        abilities.parseDescription();
+        assertEquals("Your opponent puts a card from his or her hand on the bottom of his or her deck.",abilities.getDescription());
+
+
+    }
 
 
 }

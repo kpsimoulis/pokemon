@@ -2,7 +2,6 @@ package controllers.game;
 
 import card.Pokemon;
 import controllers.card.CardController;
-import controllers.card.PokemonController;
 import controllers.cardcontainer.CardContainerController;
 import controllers.game.KeyListeners.ListenerActivePok;
 import controllers.game.KeyListeners.MainMenuListener;
@@ -131,7 +130,7 @@ public class GameController {
 
     public void playerChooseActive() {
 
-        if (!player1Controller.handHasPokemon()){
+        if (!player1Controller.handHasPokemon()) {
             view.setCommand("YOU HAVE A MULLIGAN.\nOpponent looked at your hand and drew a card." +
                     "\nYour hand will get shuffled into your deck" +
                     "\nand you will get a new hand." +
@@ -139,11 +138,12 @@ public class GameController {
             playerDealDeck(player2Controller);
             view.addBoardListerner(new KeyListener() {
                 @Override
-                public void keyTyped(KeyEvent e) {}
+                public void keyTyped(KeyEvent e) {
+                }
 
                 @Override
                 public void keyPressed(KeyEvent e) {
-                    if (e.getKeyCode() == KeyEvent.VK_ENTER){
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                         player1Controller.shuffleHandInDeck();
                         player1Controller.getHandController().returnAllCards();
                         playerChooseActive();
@@ -151,13 +151,15 @@ public class GameController {
                 }
 
                 @Override
-                public void keyReleased(KeyEvent e) {}
+                public void keyReleased(KeyEvent e) {
+                }
             });
-        }else {
+        } else {
             view.setCommand("Choose Active Pokemon (Click on a pokemon and hit enter)");
             firstTurn = true;
             view.disableKeyListener();
-            player1Controller.getHandController().setPokemonListener(new ListenerActivePok(this));
+            player1Controller.getHandController().setPokemonListener(new ListenerActivePok(this,
+                    player1Controller.getHandController()));
         }
     }
 
@@ -165,18 +167,19 @@ public class GameController {
 
         view.setCommand("AI is playing");
 
-        if (!player2Controller.handHasPokemon()){
+        if (!player2Controller.handHasPokemon()) {
 
             view.setCommand("OPPONENT HAS A MULLIGAN.\nYou can look at his hand." +
                     "\nPress ENTER to draw a card.");
             player2Controller.getHandController().returnAllCards();
             view.addBoardListerner(new KeyListener() {
                 @Override
-                public void keyTyped(KeyEvent e) {}
+                public void keyTyped(KeyEvent e) {
+                }
 
                 @Override
                 public void keyPressed(KeyEvent e) {
-                    if (e.getKeyCode() == KeyEvent.VK_ENTER){
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                         playerDealDeck(player1Controller);
                         player2Controller.shuffleHandInDeck();
                         endFirstTurn();
@@ -184,10 +187,11 @@ public class GameController {
                 }
 
                 @Override
-                public void keyReleased(KeyEvent e) {}
+                public void keyReleased(KeyEvent e) {
+                }
             });
 
-        }else{
+        } else {
             view.setOpponentActive(player2Controller.setActivePokemon(true));
             player2Controller.getActivePokemonController().returnCard();
             firstTurn = false;
@@ -205,11 +209,12 @@ public class GameController {
         view.setCommand("Game is about to start.\n Press ENTER to continue.");
         view.addBoardListerner(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER){
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     playerDealDeck(player1Controller);
                     decideNextAction();
                     energyAdded = false;
@@ -217,7 +222,8 @@ public class GameController {
             }
 
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
         });
 
     }
@@ -229,7 +235,7 @@ public class GameController {
 
     public void playerDealDeck(PlayerController playerController) {
 
-        playerController.dealDeck();
+        playerController.dealDeckHand();
         if (playerController instanceof HumanPlayerController) {
             playerController.getHandController().returnAllCards();
         }
@@ -247,45 +253,74 @@ public class GameController {
 
     }
 
-    public boolean gameAITurn() {
+    public void gameAITurn() {
 
         StringBuilder sb = new StringBuilder();
-        Pokemon card1 = player1Controller.getActivePokemonCard();
-        Pokemon card2 = player2Controller.getActivePokemonCard();
-        Attack attack2 = card2.getAttack().get(0);
+        Pokemon humanActivePok = player1Controller.getActivePokemonCard();
+        Pokemon aiActivePok = player2Controller.getActivePokemonCard();
+        Attack attack2 = aiActivePok.getAttack().get(0);
 
         sb.append("AI is playing...\n");
         playerDealDeck(player2Controller);
         player2Controller.attack(player1Controller.getActivePokemonController());
         sb.append("Attack caused: ").append(attack2.getAbility().getDamage()).append("\nTurn Ended.\n");
-        if (card1.getHealthPoints() <= card1.getDamagePoints()) {
-            sb.append("Computer won\n");
-            view.setCommand(sb.toString());
-            return true;
-        }
 
-        sb.append("Press Enter to continue.");
-        view.setCommand(sb.toString());
+        if (humanActivePok.getHealthPoints() <= humanActivePok.getDamagePoints()) {
 
-        view.addBoardListerner(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {}
+            player2Controller.collectPrizeCards();
+            sb.append("YOUR POKEMON HAS BEEN DEFEATED.\n").append("Opponent has collected a prize card.\n");
+            player1Controller.discardActivePokemon();
+            view.getBoard().getPlayerActivePanel().removeAll();
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_ENTER: {
-                        playerDealDeck(player1Controller);
-                        decideNextAction();
-                    }
+            if (player2Controller.getPrizeCardController().getCardContainer().getNoOfCards() == 0) {
+                sb.append("OPPONENT HAS NO MORE PRIZE CARDS.\n").append("YOU LOST THE GAME. :(");
+                view.setCommand(sb.toString());
+                endGame();
+
+            } else {
+
+                if (player1Controller.benchHasPokemon()) {
+
+                    view.disableKeyListener();
+                    player1Controller.getBenchController().setPokemonListener(new ListenerActivePok(this,
+                            player1Controller.getBenchController()));
+                    sb.append("Choose a new active pokemon\nfrom your bench").append("\n(Click on a card and press Enter)");
+                    view.setCommand(sb.toString());
+
+                } else {
+                    sb.append("YOU DO NOT HAVE A BASIC POKEMON TO PLAY\n").append("YOU LOST THE GAME. :(");
+                    view.setCommand(sb.toString());
+                    endGame();
                 }
             }
 
-            @Override
-            public void keyReleased(KeyEvent e) {}
-        });
+        } else {
 
-        return false;
+            sb.append("Press Enter to continue.");
+            view.setCommand(sb.toString());
+
+            view.addBoardListerner(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+                }
+
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_ENTER: {
+                            playerDealDeck(player1Controller);
+                            decideNextAction();
+                        }
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+                }
+            });
+
+        }
+
     }
 
     public void endGame() {
@@ -297,12 +332,12 @@ public class GameController {
     public void aiActiveDefeated() {
 
         player2Controller.discardActivePokemon();
-        if (player2Controller.benchHasPokemon() || player2Controller.handHasPokemon()){
+        if (player2Controller.benchHasPokemon()) {
             view.setOpponentActive(player2Controller.setActivePokemon(false));
             player2Controller.getActivePokemonController().returnCard();
             gameAITurn();
-        }else{
-            view.setCommand("AI has no basic pokemon to set as active.\n YOU WON THE GAME.");
+        } else {
+            view.setCommand("AI has no basic pokemon to set as active.\n YOU WON THE GAME.\nCONGRATULATIONS :D !!!!");
             endGame();
         }
 

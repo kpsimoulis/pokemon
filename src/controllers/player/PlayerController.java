@@ -1,10 +1,10 @@
 package controllers.player;
 
+import card.Card;
 import card.Energy;
 import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
-import controllers.card.PokemonController;
 import controllers.cardcontainer.BenchController;
 import controllers.cardcontainer.HandController;
 import controllers.cardpiles.DeckController;
@@ -80,10 +80,10 @@ public abstract class PlayerController {
             System.exit(0);
         } else {
             for (int i = 0; i < 7; i++) {
-                this.dealDeck();
+                this.dealDeckHand();
             }
             for (int i = 0; i < 6; i++) {
-                prizeCardController.addCard(player.getDeck().dealCard());
+                prizeCardController.addCard(this.dealCardDeck());
             }
         }
 
@@ -158,8 +158,12 @@ public abstract class PlayerController {
 
     }
 
-    public void dealDeck(){
-        getHandController().addCard(getDeckController().dealCard().getKey().getCard());
+    public Card dealCardDeck(){
+        return getDeckController().dealCard().getKey().getCard();
+    }
+
+    public void dealDeckHand(){
+        getHandController().addCard(this.dealCardDeck());
     }
 
     public Pokemon getActivePokemonCard(){
@@ -174,7 +178,7 @@ public abstract class PlayerController {
         }
         deckController.shuffleDeck();
         for (int i=0; i<removedCards.size(); i++){
-            dealDeck();
+            dealDeckHand();
         }
 
     }

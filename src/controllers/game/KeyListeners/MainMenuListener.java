@@ -36,7 +36,7 @@ public class MainMenuListener implements KeyListener {
             builder.append("A. Attack with Active Pokemon\n");
         }
 
-        if (controller.getHumanController().handHasPokemon()){
+        if (controller.getHumanController().handHasPokemon() && !controller.getHumanController().getBenchController().isFull()){
             builder.append("P. Add Pokemon to your bench\n");
         }
 

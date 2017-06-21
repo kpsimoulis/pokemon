@@ -22,8 +22,8 @@ public class CoinTest {
     public void getFaceUp() throws Exception {
         String face1 = coin.getFaceUp();
 
-        if(face1=="HEAD"||face1=="TAIL"){
-            getFace=true;
+        if (face1 == "HEAD" || face1 == "TAIL") {
+            getFace = true;
         }
         assertTrue(getFace);
     }
@@ -31,11 +31,17 @@ public class CoinTest {
     @Test
     public void isHead() throws Exception {
         Boolean headUp = coin.isHead();
-        if(headUp == true){
-            assertEquals("HEAD",coin.getFaceUp());
+        if (headUp == true) {
+            assertEquals("HEAD", coin.getFaceUp());
         }
     }
 
-
-
+    @Test
+    public void flip() throws Exception {
+        coin.flip();
+        if (coin.getFaceUp() == "HEAD" || coin.getFaceUp() == "TAIL") {
+            getFace = true;
+        }
+        assertTrue(getFace);
+    }
 }

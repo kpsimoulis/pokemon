@@ -2,6 +2,7 @@ package cardcontainer;
 
 import card.Card;
 import card.Energy;
+import card.Pokemon;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +15,7 @@ public class DeckTest {
     private Deck deck1;
     private Deck deck2;
     private Card energyCard;
+
     @Before
     public void beforeEachTest() throws Exception {
         deck1 = new Deck();
@@ -21,23 +23,36 @@ public class DeckTest {
 
     }
 
+    @Test
+    public void addCard() throws Exception {
+        {
+            energyCard = new Energy("Psychic", 20, "psychic");
+            int size = deck1.getNoOfCards();
+            deck1.addCard(energyCard);
+            assertEquals(size+1, deck1.getNoOfCards());
+            deck1.addCard(energyCard);
+            assertEquals(size+2, deck1.getNoOfCards());
+
+
+        }
+    }
 
     @Test
     public void dealCard() throws Exception {
         assertNull(deck2.dealCard());
         deck2.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
-        assertEquals(60,deck2.getNoOfCards());
+        assertEquals(60, deck2.getNoOfCards());
         deck2.dealCard();
-        assertEquals(59,deck2.getNoOfCards());
+        assertEquals(59, deck2.getNoOfCards());
     }
 
     @Test
     public void populateDeck() throws Exception {
         deck1.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck3.txt");
-        assertEquals(0,deck1.getNoOfCards());
+        assertEquals(0, deck1.getNoOfCards());
         deck1.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
-        assertEquals(60,deck1.getNoOfCards());
-        assertEquals("Jirachi",deck1.dealCard().getName());
+        assertEquals(60, deck1.getNoOfCards());
+        assertEquals("Jirachi", deck1.dealCard().getName());
 
     }
 
@@ -58,7 +73,7 @@ public class DeckTest {
     public void shuffle() throws Exception {
         deck1.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
         deck1.shuffle();
-        assertEquals(60,deck1.getNoOfCards());
+        assertEquals(60, deck1.getNoOfCards());
     }
 
 }

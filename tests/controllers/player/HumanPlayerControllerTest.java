@@ -15,7 +15,7 @@ public class HumanPlayerControllerTest {
     public void initiateGame() throws Exception {
         player = new Player();
         humanPlayerController = new HumanPlayerController();
-        humanPlayerController.getPlayer().getDeck().populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
+        humanPlayerController.getPlayer().getDeck().populateDeck("res\\deck\\deck1.txt");
         humanPlayerController.buildViewController();
         humanPlayerController.initiateGame();
         assertEquals(7, humanPlayerController.getHandController().getContainer().getNoOfCards());

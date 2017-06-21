@@ -294,6 +294,11 @@ public class GameController {
                 }
             }
 
+        } else if (player1Controller.getDeckController().getCardContainer().isEmpty()) {
+
+            view.setCommand("YOU DO NOT HAVE A BASIC POKEMON TO PLAY\nYOU LOST THE GAME. :(");
+            endGame();
+
         } else {
 
             sb.append("Press Enter to continue.");

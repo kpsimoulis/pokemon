@@ -64,6 +64,11 @@ public class BenchTest {
             assertFalse(bench.validate());
         }
 
+        if(!bench.validate()) {
+            assertNotEquals(5,bench.getNoOfCards());
+        }
+
+
     }
 
 
@@ -75,12 +80,18 @@ public class BenchTest {
         Card card3 = new Pokemon("Pikachu", 60, "pokemon", 60,energyArray, "basic","",retreat,attacks);
         Card card4 = new Pokemon("Shellder", 47, "pokemon", 60, energyArray, "basic","",retreat,attacks);
         Card card5 = new Pokemon("Goldeen", 20, "pokemon", 60, energyArray, "basic","",retreat,attacks);
+        Card card6 = new Pokemon("Goldeen", 20, "pokemon", 60, energyArray, "basic","",retreat,attacks);
         bench.addCard(card1);
+        assertFalse(bench.isFull());
         bench.addCard(card2);
+        assertFalse(bench.isFull());
         bench.addCard(card3);
+        assertFalse(bench.isFull());
         bench.addCard(card4);
         assertFalse(bench.isFull());
         bench.addCard(card5);
+        assertTrue(bench.isFull());
+        bench.addCard(card6);
         assertTrue(bench.isFull());
 
     }

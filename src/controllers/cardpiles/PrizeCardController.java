@@ -7,7 +7,6 @@ import controllers.card.CardController;
 import controllers.card.ControllerViewBuilder;
 import javafx.util.Pair;
 import views.card.CardView;
-import views.cardpiles.PileView;
 import views.cardpiles.PrizeCardView;
 
 /**

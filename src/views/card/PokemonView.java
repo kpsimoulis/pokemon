@@ -3,7 +3,6 @@ package views.card;
 import card.Energy;
 import main.Attack;
 import main.Requirement;
-import main.Retreat;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

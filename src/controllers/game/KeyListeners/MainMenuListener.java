@@ -1,16 +1,11 @@
 package controllers.game.KeyListeners;
 
-import card.Energy;
 import card.Pokemon;
-import controllers.card.CardController;
 import controllers.card.PokemonController;
 import controllers.game.GameController;
-import javafx.util.Pair;
 import main.Attack;
 import main.Requirement;
 import views.activepokemon.ActivePokemonView;
-import views.card.CardView;
-import views.card.EnergyView;
 import views.card.PokemonView;
 
 import javax.swing.*;

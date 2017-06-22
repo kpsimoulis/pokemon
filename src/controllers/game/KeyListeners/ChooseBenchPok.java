@@ -1,7 +1,6 @@
 package controllers.game.KeyListeners;
 
 import controllers.game.GameController;
-import views.ChoiceDialog;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

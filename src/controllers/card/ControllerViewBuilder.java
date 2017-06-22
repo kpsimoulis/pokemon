@@ -6,9 +6,6 @@ import card.Pokemon;
 import card.Trainer;
 import javafx.util.Pair;
 import views.card.CardView;
-import views.card.EnergyView;
-import views.card.PokemonView;
-import views.card.TrainerView;
 
 public final class ControllerViewBuilder {
 

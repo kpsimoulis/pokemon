@@ -20,9 +20,9 @@ public class SetHandToBench implements KeyListener {
 
     private GameController controller;
 
-    public SetHandToBench(GameController controller){
-        this.controller = controller;
-        controller.getView().setCommand("Choose Pokemon from hand\n(Click on a pokemon and hit ENTER)");
+    public SetHandToBench(GameController gameController){
+        this.controller = gameController;
+        controller.getView().setCommand("Choose Pokemon from hand\n(Click on a pokemon and hit ENTER)\n(Press Esc to exit)");
     }
 
     @Override

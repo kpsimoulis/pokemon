@@ -36,7 +36,6 @@ public class AIPlayerController extends PlayerController {
                 throw new NullPointerException();
             }
             assert pair != null;
-            System.out.print(getActivePokemonController());
             getPlayer().setActivePokemon((Pokemon) pair.getKey().getCard());
             ActivePokemonView view = new ActivePokemonView((PokemonView) pair.getValue());
             setActivePokemonController(new ActivePokemonController((PokemonController) pair.getKey(), view));

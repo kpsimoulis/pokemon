@@ -33,6 +33,11 @@ public class PokemonAttack implements KeyListener {
                 if (!attack(1)){
                     break;
                 }
+                break;
+            }
+            case KeyEvent.VK_ESCAPE:{
+                controller.getView().addBoardListerner(new MainMenuListener(controller));
+                break;
             }
         }
     }

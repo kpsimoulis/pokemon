@@ -1,5 +1,6 @@
 package controllers.game.KeyListeners;
 
+import card.Energy;
 import card.Pokemon;
 import controllers.card.PokemonController;
 import controllers.game.GameController;
@@ -12,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -40,7 +42,13 @@ public class MainMenuListener implements KeyListener {
             builder.append("P. Add Pokemon to your bench\n");
         }
 
-        builder.append("X. End Turn");
+
+        if (controller.getHumanController().getActivePokemonCard().getEnergy().size() >=
+                controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount() && controller.getHumanController().benchHasPokemon()) {
+            builder.append("R. Retreat your Active Pokemon.\n");
+        }
+        builder.append("X. End Turn\n");
+        builder.append("Retreat Requirement: " + controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount() + " energy card(s)");
         controller.getView().setCommand(builder.toString());
 
     }
@@ -208,6 +216,64 @@ public class MainMenuListener implements KeyListener {
                 controller.setEnergyAdded(false);
                 controller.gameAITurn();
                 break;
+            }
+            case KeyEvent.VK_R: {
+                /*
+                This operation will somehow violate the limit of bench's size when player's bench is full,
+                because the active pokemon will show on the bench before player choose new active pokemon.
+                but it is good because we do not need creating new Keylistener.
+
+                 */
+                int energyNeed = controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount();
+
+                //build menu
+                StringBuilder builder = new StringBuilder("Choose a Pokemon from bench and Press enter:\n");
+                builder.append("(You cannot active the Pokemon who has retreated this turn)\n");
+                builder.append("You discard: " + energyNeed + " energy cards and " + "now damage point is " + controller.getHumanController().getActivePokemonCard().getDamagePoints());
+                controller.getView().setCommand(builder.toString());
+
+                // make sure pressing R when player cannot retreat wont crash the game.
+                if (!controller.getHumanController().benchHasPokemon()
+                        || controller.getHumanController().getActivePokemonCard().getEnergy().size() <
+                        controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount()) {
+                    controller.getView().addBoardListerner(new MainMenuListener(controller));
+                    break;
+                }
+
+
+                //get pokemon and damage point from activepokemon controller
+                Pokemon exActive = new Pokemon(controller.getHumanController().getActivePokemonCard());
+                ArrayList<Energy> energys = exActive.getEnergy();
+
+                int exDamage = controller.getHumanController().getActivePokemonCard().getDamagePoints();
+                controller.getHumanController().setActivePokemonController(null);
+                controller.getHumanController().getPlayer().removeActivePokemon();
+                for (int i = 0; i < energyNeed; i++) {
+                    controller.getHumanController().getDiscardPileController().addCard(exActive.removeEnergy());
+
+                }
+                //TODO: Detach items and clear the stat
+                //DiscardPileController().addCard(Items);
+                //exActive.removeStat;
+                //exActive.removeItems;
+
+                //clear active panel
+                controller.getView().getBoard().getPlayerActivePanel().removeAll();
+                controller.getView().disableKeyListener();
+
+
+                //call listener, here the 1st parameter of setActivePokemon() is always true caz I dont wanna rewrite it.
+                ListenerActivePok listenerActivePok = new ListenerActivePok(controller,
+                        controller.getHumanController().getBenchController());
+                controller.getHumanController().getBenchController().setPokemonListener(listenerActivePok);
+
+                //rewrite the information from ex-activepokemon
+                exActive.setDamagePoints(exDamage);
+                controller.getHumanController().getBenchController().addCard(exActive);
+                controller.getHumanController().getBenchController().returnAllCards();
+                break;
+
+
             }
             default: {
                 System.out.println("Press the correct key.");

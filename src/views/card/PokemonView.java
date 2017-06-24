@@ -14,11 +14,12 @@ public class PokemonView extends CardView {
     private JTextArea attackTxt;
     private JTextArea retreatTxt;
 
-    public PokemonView(ArrayList<Energy> energies, ArrayList<Attack> attacks, int dmgPts, int hp, String stage){
+    public PokemonView(ArrayList<Energy> energies, ArrayList<Attack> attacks, int dmgPts, int hp, String stage, int retreatRequirement){
 
         super();
         String[][] cardInfo = new String[][]{
                 {"Dmg Pts:", ""},{"# Energ.: ", "0"},{"HP: ", ""}, {"Stage: ", "Basic"}
+                ,{"Retreat Req: ", ""}
         };
         DefaultTableModel infoModel = (DefaultTableModel) this.getInfoTable().getModel();
         for (String[] aCardInfo : cardInfo) {
@@ -32,14 +33,18 @@ public class PokemonView extends CardView {
         setNoEnergies(energies.size());
         setHP(hp);
         setStage(stage);
+        setRetreatRequirement(retreatRequirement);
 
     }
+
+
 
     public PokemonView(PokemonView view) {
 
         super();
         String[][] cardInfo = new String[][]{
                 {"Dmg Pts:", ""},{"# Energ.: ", "0"},{"HP: ", ""}, {"Stage: ", "Basic"}
+                ,{"Retreat Req:", ""}
         };
         DefaultTableModel infoModel = (DefaultTableModel) this.getInfoTable().getModel();
         for (String[] aCardInfo : cardInfo) {
@@ -53,6 +58,8 @@ public class PokemonView extends CardView {
         setNoEnergies(view.getNoEnergies());
         setHP(view.getHP());
         setStage(view.getStage());
+        setRetreatRequirement(view.getRetreatRequirement());
+
 
     }
 
@@ -66,8 +73,9 @@ public class PokemonView extends CardView {
                 "# Energies: " + getNoEnergies() + "\n" +
                 getEnergyTxt() + "\n" +
                 "HP: " + getHP() + "\n" +
-                "Stage: " + getStage() + "\n\n" +
+                "Stage: " + getStage() + "\n" +
                 //TODO: "Retreat: " + this.retreat.getCategoryShort()+ " (x" +this.retreat.getEnergyAmount()+ ")\n\n" +
+                "Retreat: Colorless "+ getRetreatRequirement() + "\n\n" +
                 getAttackTxt();
     }
 
@@ -91,6 +99,9 @@ public class PokemonView extends CardView {
 
     public void setAttackTxt(ArrayList<Attack> attacks){ this.attackTxt.setText(genAttackStr(attacks)); }
 
+    private void setRetreatRequirement(int retreatRequirment) {this.getInfoTable().getModel().setValueAt(String.valueOf(retreatRequirment), 6, 1);
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public int getDmgPts(){
         return Integer.valueOf( this.getInfoTable().getModel().getValueAt(2, 1).toString());
     }
@@ -114,6 +125,9 @@ public class PokemonView extends CardView {
 
     public String getAttackTxt() {
         return attackTxt.getText();
+    }
+
+    private int getRetreatRequirement() {return  Integer.valueOf( this.getInfoTable().getModel().getValueAt(6, 1).toString());
     }
 
     private String genEnergyStr(ArrayList<Energy> energies){

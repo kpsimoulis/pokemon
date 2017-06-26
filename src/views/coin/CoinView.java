@@ -11,14 +11,13 @@ public class CoinView extends JPanel{
 
         this.setMaximumSize(new Dimension(70, 70));
         coinImg = new JButton();
-        coinImg.setAutoscrolls(false);
-        coinImg.setBorderPainted(false);
-        coinImg.setInheritsPopupMenu(true);
-        coinImg.setBounds(0,0,70,70);
-        coinImg.setBorder(BorderFactory.createEmptyBorder());
-        coinImg.setOpaque(false);
-        coinImg.setContentAreaFilled(false);
-        coinImg.setBorderPainted(false);
+//        coinImg.setAutoscrolls(false);
+//        coinImg.setBorderPainted(false);
+//        coinImg.setInheritsPopupMenu(false);
+        coinImg.setBounds(0,0,60,60);
+//        coinImg.setContentAreaFilled(false);
+//        coinImg.setBackground(Color.RED);
+//        coinImg.setOpaque(false);
 
         ImageIcon coverImg = new ImageIcon(getClass().getResource("/images/pCoin.png"));
         coverImg.setImage(coverImg.getImage().getScaledInstance(coinImg.getWidth(), coinImg.getHeight(),  java.awt.Image.SCALE_SMOOTH));

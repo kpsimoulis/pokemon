@@ -253,9 +253,9 @@ public class MainMenuListener implements KeyListener {
                 //build menu
                 StringBuilder builder = new StringBuilder("Choose a Pokemon from bench and Press enter:\n");
                 builder.append("Your pokemon will:\n"
-                        +"1. Discard "
+                        + "1. Discard "
                         + energyNeed + " energy card(s), and\n"
-                        +"2. Remove all of the stat.\n"
+                        + "2. Remove all of the stat.\n"
                         + "Now damage point is " +
                         controller.getHumanController().getActivePokemonCard().getDamagePoints());
                 controller.getView().setCommand(builder.toString() + "\n"

@@ -39,13 +39,11 @@ public class RetreatListener implements KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_ENTER: {
-                ////////////////////////////////////////////////////////////////////////////////////
                 int energyNeed = controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount();
 
                 //get pokemon and damage point from activepokemon controller
                 Pokemon exActive = new Pokemon(controller.getHumanController().getActivePokemonCard());
                 ArrayList<Energy> energys = exActive.getEnergy();
-
                 int exDamage = controller.getHumanController().getActivePokemonCard().getDamagePoints();
                 controller.getHumanController().setActivePokemonController(null);
                 controller.getHumanController().getPlayer().removeActivePokemon();
@@ -84,7 +82,6 @@ public class RetreatListener implements KeyListener {
                 controller.getHumanController().getActivePokemonController().removeKeyListener(this);
                 controller.getView().addBoardListerner(new MainMenuListener(controller));
 
-                ////////////////////////////////////////////////////////////////////////////////////
                 break;
             }
             default: {

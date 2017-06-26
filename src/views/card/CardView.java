@@ -48,7 +48,6 @@ public abstract class CardView extends JLayeredPane {
         backSideBtn.setBorderPainted(false);
         backSideBtn.setOpaque(true);
         backSideBtn.setBounds(0, 0, 135, 80);
-        backSideBtn.setBorder(BorderFactory.createEmptyBorder());
 
         ImageIcon coverImg = new ImageIcon(getClass().getResource("/images/icon.png"));
         coverImg.setImage(coverImg.getImage().getScaledInstance(backSideBtn.getWidth(), backSideBtn.getHeight(), java.awt.Image.SCALE_SMOOTH));

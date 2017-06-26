@@ -56,9 +56,6 @@ public class ListenerActivePok implements KeyListener{
                 // Check if has more pokemon to add bench
                 if (controller.getHumanController().handHasPokemon() && controller.isFirstTurn()) {
 
-                    controller.getView().setCommand("You can now do the following:\n" +
-                                                    "1. Add Pokemon to your bench\n" +
-                                                    "2. End Turn");
                     controller.getView().addBoardListerner(new ChooseBenchPok(controller));
 
                 } else if (controller.isFirstTurn()) {

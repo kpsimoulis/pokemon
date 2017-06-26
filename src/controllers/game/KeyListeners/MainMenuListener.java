@@ -221,7 +221,6 @@ public class MainMenuListener implements KeyListener {
                         || (controller.getHumanController().getActivePokemonCard().getEnergy().size()
                         < controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount())
                         ) {
-
                     StringBuilder builder = new StringBuilder("You cannot retreat now! \n");
                     builder.append("To retreat you need:\n"
                             + "1. Your bench has at least 1 Pokemon, and\n"
@@ -274,8 +273,6 @@ public class MainMenuListener implements KeyListener {
                     public void keyPressed(KeyEvent e) {
                         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                             controller.getHumanController().getBenchController().removeAllListeners(retreatListener);
-//                            controller.getHumanController().getActivePokemonController().removeKeyListener(retreatListener);
-//                            controller.getHumanController().getHandController().removeAllListeners(retreatListener);
                             controller.getView().addBoardListerner(new MainMenuListener(controller));
                         }
                     }

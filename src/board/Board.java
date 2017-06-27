@@ -135,7 +135,7 @@ public class Board {
      */
     private void $$$setupUI$$$() {
         mainPanel = new JPanel();
-        mainPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(3, 2, new Insets(5, 5, 5, 5), -1, -1));
+        mainPanel.setLayout(new BorderLayout(0, 0));
         mainPanel.setAutoscrolls(true);
         mainPanel.setBackground(new Color(-10313816));
         mainPanel.setDoubleBuffered(true);
@@ -145,7 +145,7 @@ public class Board {
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(3, 9, new Insets(0, 0, 0, 0), -1, -1));
         panel1.setBackground(new Color(-13206289));
-        mainPanel.add(panel1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 3, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(-1, 20), new Dimension(-1, 50), null, 0, false));
+        mainPanel.add(panel1, BorderLayout.CENTER);
         opponentPanel = new JPanel();
         opponentPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         opponentPanel.setBackground(new Color(-10313816));

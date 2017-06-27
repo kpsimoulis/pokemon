@@ -20,9 +20,9 @@ public class SetHandToBench implements KeyListener {
 
     private GameController controller;
 
-    public SetHandToBench(GameController controller){
-        this.controller = controller;
-        controller.getView().setCommand("Choose Pokemon from hand\n(Click on a pokemon and hit ENTER)");
+    public SetHandToBench(GameController gameController){
+        this.controller = gameController;
+        controller.getView().setCommand("Choose Pokemon from hand\n(Click on a pokemon and hit ENTER)\n(Press Esc to exit)");
     }
 
     @Override
@@ -44,7 +44,8 @@ public class SetHandToBench implements KeyListener {
 
                 controller.getHumanController().getHandController().removeAllListeners(this);
 
-                if (controller.getHumanController().handHasPokemon() && controller.isFirstTurn()) {
+                if (controller.getHumanController().handHasPokemon() && controller.isFirstTurn() &&
+                        !controller.getHumanController().getBenchController().isFull()) {
 
                     controller.getView().setCommand("Options:\n" +
                                                     "1. Add pokemon to your bench\n" +

@@ -272,5 +272,9 @@ public class Player {
     }
 
 
+    public void removeActivePokemon() {
 
+        activePokemon = null;
+
+    }
 }

@@ -26,6 +26,17 @@ public class Pokemon extends Card {
         this.attack = attack;
     }
 
+    public Pokemon(Pokemon pokemon) {
+        super(pokemon);
+        this.healthPoints = pokemon.healthPoints;
+        this.damagePoints = pokemon.healthPoints;
+        this.energy = pokemon.energy;
+        this.stage = pokemon.stage;
+        this.evolvesFrom = pokemon.evolvesFrom;
+        this.retreat = pokemon.retreat;
+        this.attack = pokemon.attack;
+    }
+
     @Override
     public String toString() {
         return "Pokemon " +
@@ -98,5 +109,9 @@ public class Pokemon extends Card {
 
     public Energy removeEnergy() throws NullPointerException {
        return energy.remove(energy.size() - 1);
+    }
+
+    public void emptyEnergy() {
+        energy.clear();
     }
 }

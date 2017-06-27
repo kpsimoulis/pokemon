@@ -33,6 +33,11 @@ public class PokemonAttack implements KeyListener {
                 if (!attack(1)){
                     break;
                 }
+                break;
+            }
+            case KeyEvent.VK_ESCAPE:{
+                controller.getView().addBoardListerner(new MainMenuListener(controller));
+                break;
             }
         }
     }
@@ -89,7 +94,15 @@ public class PokemonAttack implements KeyListener {
                         case KeyEvent.VK_ENTER: {
                             controller.getView().disableKeyListener();
                             controller.setEnergyAdded(false);
-                            controller.gameAITurn();
+
+                            if (controller.getAIController().getDeckController().getCardContainer().isEmpty()){
+                                String stringBuilder = "AI has no more cards in Deck" + "\nYOU WON THE GAME :)\n" +
+                                        "CONGRATULATIONS!!!";
+                                controller.getView().setCommand(stringBuilder);
+                                controller.endGame();
+                            }else {
+                                controller.gameAITurn();
+                            }
                         }
                     }
                 }

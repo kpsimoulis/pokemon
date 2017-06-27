@@ -11,6 +11,11 @@ public class Trainer extends Card {
         this.ability = ability;
     }
 
+    public Trainer(Trainer trainer) {
+        super(trainer);
+        this.ability = trainer.ability;
+    }
+
     public Ability getAbility() {
         return ability;
     }

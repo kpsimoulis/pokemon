@@ -21,22 +21,22 @@ public class MainMenuListener implements KeyListener {
 
     private GameController controller;
 
-    public MainMenuListener(GameController controller){
+    public MainMenuListener(GameController controller) {
 
         this.controller = controller;
 
         StringBuilder builder = new StringBuilder();
         builder.append("You can now do the following:\n");
 
-        if (controller.getHumanController().handHasEnergy() && !controller.isEnergyAdded()){
+        if (controller.getHumanController().handHasEnergy() && !controller.isEnergyAdded()) {
             builder.append("E. Add Energy to a pokemon\n");
         }
 
-        if (controller.getHumanController().canAttack()){
+        if (controller.getHumanController().canAttack()) {
             builder.append("A. Attack with Active Pokemon\n");
         }
 
-        if (controller.getHumanController().handHasPokemon()){
+        if (controller.getHumanController().handHasPokemon() && !controller.getHumanController().getBenchController().isFull()) {
             builder.append("P. Add Pokemon to your bench\n");
         }
 
@@ -55,15 +55,16 @@ public class MainMenuListener implements KeyListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_E: {
 
-                if (!controller.getHumanController().handHasEnergy() && controller.isEnergyAdded()){
+                if (!controller.getHumanController().handHasEnergy() && controller.isEnergyAdded()) {
                     break;
                 }
 
-                controller.getView().setCommand("Select Pokemon and press Enter");
+                controller.getView().setCommand("Select Pokemon and press Enter.\n(Press Esc to exit)");
 
                 KeyListener pokemonListener = new KeyListener() {
                     @Override
-                    public void keyTyped(KeyEvent e) {}
+                    public void keyTyped(KeyEvent e) {
+                    }
 
                     @Override
                     public void keyPressed(KeyEvent e) {
@@ -73,43 +74,110 @@ public class MainMenuListener implements KeyListener {
                                 PokemonView chosenCard = (PokemonView) SwingUtilities.getAncestorOfClass(PokemonView.class, (Component) e.getSource());
                                 PokemonController chosenController;
 
-                                if (SwingUtilities.getAncestorOfClass(ActivePokemonView.class, (Component) e.getSource()) != null){
+                                if (SwingUtilities.getAncestorOfClass(ActivePokemonView.class, (Component) e.getSource()) != null) {
                                     chosenController = controller.getHumanController().
                                             getActivePokemonController().getPokemonController();
-                                }else{
+                                } else {
                                     chosenController = (PokemonController) controller.findCardInContainer(
                                             chosenCard, controller.getHumanController().getBenchController());
                                 }
 
-                                controller.getView().setCommand("Select Energy Card and press Enter");
+                                controller.getView().setCommand("Select Energy Card and press Enter.\n (Press Esc to exit)");
 
                                 controller.getHumanController().getBenchController().removeAllListeners(this);
                                 controller.getHumanController().getActivePokemonController().removeKeyListener(this);
 
-                                controller.getHumanController().getHandController().setEnergyListener(new SetEnergyPokemon(controller, chosenController));
+                                SetEnergyPokemon energyListener = new SetEnergyPokemon(controller, chosenController);
+                                controller.getHumanController().getHandController().setEnergyListener(energyListener);
 
+                                controller.getView().addBoardListerner(new KeyListener() {
+                                    @Override
+                                    public void keyTyped(KeyEvent e) {
+
+                                    }
+
+                                    @Override
+                                    public void keyPressed(KeyEvent e) {
+                                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                                            controller.getHumanController().getHandController().removeAllListeners(energyListener);
+                                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void keyReleased(KeyEvent e) {
+
+                                    }
+                                });
+
+                                break;
                             }
+
                         }
                     }
 
                     @Override
-                    public void keyReleased(KeyEvent e) {}
+                    public void keyReleased(KeyEvent e) {
+                    }
                 };
 
+                KeyListener exitBoard = new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                            controller.getHumanController().getBenchController().removeAllListeners(pokemonListener);
+                            controller.getHumanController().getActivePokemonController().removeKeyListener(pokemonListener);
+
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        }
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                    }
+                };
+
+                controller.getView().addBoardListerner(exitBoard);
                 controller.getHumanController().getBenchController().setPokemonListener(pokemonListener);
                 controller.getHumanController().getActivePokemonController().setKeyListener(pokemonListener);
 
-                controller.getView().disableKeyListener();
                 break;
 
             }
             case KeyEvent.VK_P: {
 
-                if (!controller.getHumanController().handHasPokemon()){
+                if (!controller.getHumanController().handHasPokemon()) {
                     break;
                 }
 
-                controller.getView().addBoardListerner(new SetHandToBench(controller));
+                SetHandToBench handToBench = new SetHandToBench(controller);
+                controller.getHumanController().getHandController().setPokemonListener(handToBench);
+
+                controller.getView().addBoardListerner(new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                            controller.getHumanController().getHandController().removeAllListeners(handToBench);
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        }
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                    }
+                });
 
                 break;
 
@@ -130,13 +198,13 @@ public class MainMenuListener implements KeyListener {
                     }
                     index++;
                 }
-
+                builder.append("(Press Esc to exit)");
                 controller.getView().setCommand(builder.toString());
                 controller.getView().addBoardListerner(new PokemonAttack(controller));
                 break;
 
             }
-            case KeyEvent.VK_X:{
+            case KeyEvent.VK_X: {
                 controller.setEnergyAdded(false);
                 controller.gameAITurn();
                 break;

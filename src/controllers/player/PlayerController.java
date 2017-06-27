@@ -1,5 +1,6 @@
 package controllers.player;
 
+import card.Card;
 import card.Energy;
 import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;
@@ -79,10 +80,10 @@ public abstract class PlayerController {
             System.exit(0);
         } else {
             for (int i = 0; i < 7; i++) {
-                this.dealDeck();
+                this.dealDeckHand();
             }
             for (int i = 0; i < 6; i++) {
-                prizeCardController.addCard(player.getDeck().dealCard());
+                prizeCardController.addCard(this.dealCardDeck());
             }
         }
 
@@ -157,8 +158,12 @@ public abstract class PlayerController {
 
     }
 
-    public void dealDeck(){
-        getHandController().addCard(getDeckController().dealCard().getKey().getCard());
+    public Card dealCardDeck(){
+        return getDeckController().dealCard().getKey().getCard();
+    }
+
+    public void dealDeckHand(){
+        getHandController().addCard(this.dealCardDeck());
     }
 
     public Pokemon getActivePokemonCard(){
@@ -173,9 +178,30 @@ public abstract class PlayerController {
         }
         deckController.shuffleDeck();
         for (int i=0; i<removedCards.size(); i++){
-            dealDeck();
+            dealDeckHand();
         }
 
     }
 
+    public void discardActivePokemon() {
+
+        Pokemon exActive = new Pokemon( (Pokemon) getActivePokemonController().getPokemonController().getCard());
+        activePokemonController = null;
+        player.removeActivePokemon();
+        for (Energy energy: exActive.getEnergy()){
+            getDiscardPileController().addCard(energy);
+        }
+        exActive.emptyEnergy();
+
+        //TODO: Detach evolve pokemon and items
+
+        getDiscardPileController().addCard(exActive);
+
+    }
+
+    public boolean benchHasPokemon() {
+
+        return getBenchController().getContainer().getNoOfCards()>0;
+
+    }
 }

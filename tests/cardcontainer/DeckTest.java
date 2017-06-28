@@ -25,7 +25,7 @@ public class DeckTest {
     @Test
     public void dealCard() throws Exception {
         assertNull(deck2.dealCard());
-        deck2.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
+        deck2.populateDeck("res/deck/deck1.txt");
         assertEquals(60,deck2.getNoOfCards());
         deck2.dealCard();
         assertEquals(59,deck2.getNoOfCards());
@@ -33,9 +33,9 @@ public class DeckTest {
 
     @Test
     public void populateDeck() throws Exception {
-        deck1.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck3.txt");
+        deck1.populateDeck("res/deck/deck3.txt");
         assertEquals(0,deck1.getNoOfCards());
-        deck1.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
+        deck1.populateDeck("res/deck/deck1.txt");
         assertEquals(60,deck1.getNoOfCards());
         assertEquals("Jirachi",deck1.dealCard().getName());
 
@@ -43,7 +43,7 @@ public class DeckTest {
 
     @Test
     public void validate() throws Exception {
-        deck2.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck2.txt");
+        deck2.populateDeck("res/deck/deck2.txt");
         assertTrue(deck2.validate());
     }
 
@@ -56,7 +56,7 @@ public class DeckTest {
 
     @Test
     public void shuffle() throws Exception {
-        deck1.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
+        deck1.populateDeck("res/deck/deck1.txt");
         deck1.shuffle();
         assertEquals(60,deck1.getNoOfCards());
     }

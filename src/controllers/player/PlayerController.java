@@ -80,10 +80,10 @@ public abstract class PlayerController {
             System.exit(0);
         } else {
             for (int i = 0; i < 7; i++) {
-                this.dealDeck();
+                this.dealDeckHand();
             }
             for (int i = 0; i < 6; i++) {
-                prizeCardController.addCard(player.getDeck().dealCard());
+                prizeCardController.addCard(this.dealCardDeck());
             }
         }
 
@@ -145,21 +145,102 @@ public abstract class PlayerController {
     public boolean canAttack() {
 
         Pokemon pokemon = (Pokemon) getActivePokemonController().getPokemonController().getCard();
-        HashMap<String, Integer> dict = getActivePokemonController().getEnergyOnCard();
+        HashMap<String, Integer> energyPok = getActivePokemonController().getEnergyOnCard();
+
         for (Attack attack : pokemon.getAttack()){
-            for (Requirement requirement : attack.getRequirement()) {
-                if (dict.containsKey(requirement.getCategory()) && dict.get(requirement.getCategory()) == requirement.getEnergyAmount()) {
-                    return true;
-                }
+
+            HashMap<String, Integer> energyPokTmp = new HashMap<>(energyPok);
+
+            // Check with specific energies first
+
+            if (checkAttackEnergy(attack, energyPokTmp)){
+                return true;
             }
+
         }
 
         return false;
 
     }
 
-    public void dealDeck(){
-        getHandController().addCard(getDeckController().dealCard().getKey().getCard());
+    public boolean checkAttackEnergy(Attack checkAttack, HashMap<String, Integer> energyOnCard){
+
+        // Checks that required energy is not higher than energy attached to pokemon
+        int totalEnergyReq = 0;
+        int totalEnergyOnCard = energyOnCard.values().stream().mapToInt(Number::intValue).sum();
+        for (Requirement requirement: checkAttack.getRequirement()){
+            totalEnergyReq += requirement.getEnergyAmount();
+        }
+        if (totalEnergyOnCard < totalEnergyReq){
+            return false;
+        }
+
+        // Check for specific energies requirement first
+        boolean reqSatisfied = true;
+        for (Requirement requirement : checkAttack.getRequirement()) {
+            String reqCat = requirement.getCategory();
+            if (!reqCat.equals("colorless")){
+                if (energyOnCard.containsKey(reqCat) && energyOnCard.get(reqCat) != 0){
+                    energyOnCard.replace(reqCat, energyOnCard.get(reqCat) - requirement.getEnergyAmount());
+                }else if (!energyOnCard.containsKey(reqCat)){
+                    return false;
+                }else if (energyOnCard.containsKey(reqCat) && energyOnCard.get(reqCat) <= 0){
+                    return false;
+                }else{
+                    reqSatisfied=false;
+                }
+            }else{
+                reqSatisfied=false;
+            }
+        }
+
+        // If colorless energy required, check again for colorless
+        if (!reqSatisfied){
+            return checkAttackEnergyCol(checkAttack, energyOnCard);
+        }
+
+        return true;
+
+    }
+
+    private boolean checkAttackEnergyCol(Attack checkAttack, HashMap<String, Integer> energyOnCard){
+
+        int energyAmt = energyOnCard.values().stream().mapToInt(Number::intValue).sum();
+
+        boolean reqSatisfied = false;
+
+        //Check for colorless requirement
+        for (Requirement requirement : checkAttack.getRequirement()) {
+            String reqCat = requirement.getCategory();
+
+            if (!reqCat.equals("colorless")){
+                if (energyOnCard.containsKey(reqCat)){
+                    reqSatisfied = true;
+                }else{
+                    return false;
+                }
+            }else{
+                if (energyAmt != 0 && energyAmt >= requirement.getEnergyAmount()){
+                    energyAmt -= requirement.getEnergyAmount();
+                    reqSatisfied=true;
+                }else if (energyAmt <= 0){
+                    return false;
+                }
+            }
+
+        }
+
+        return reqSatisfied;
+
+    }
+
+
+    public Card dealCardDeck(){
+        return getDeckController().dealCard().getKey().getCard();
+    }
+
+    public void dealDeckHand(){
+        getHandController().addCard(this.dealCardDeck());
     }
 
     public Pokemon getActivePokemonCard(){
@@ -174,9 +255,30 @@ public abstract class PlayerController {
         }
         deckController.shuffleDeck();
         for (int i=0; i<removedCards.size(); i++){
-            dealDeck();
+            dealDeckHand();
         }
 
     }
 
+    public void discardActivePokemon() {
+
+        Pokemon exActive = new Pokemon( (Pokemon) getActivePokemonController().getPokemonController().getCard());
+        activePokemonController = null;
+        player.removeActivePokemon();
+        for (Energy energy: exActive.getEnergy()){
+            getDiscardPileController().addCard(energy);
+        }
+        exActive.emptyEnergy();
+
+        //TODO: Detach evolve pokemon and items
+
+        getDiscardPileController().addCard(exActive);
+
+    }
+
+    public boolean benchHasPokemon() {
+
+        return getBenchController().getContainer().getNoOfCards()>0;
+
+    }
 }

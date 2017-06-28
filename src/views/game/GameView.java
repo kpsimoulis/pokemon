@@ -63,32 +63,19 @@ public class GameView extends JFrame {
 
     public void setCommand(String command) {
 
-        board.getCommandPanel().removeAll();
-        JTextArea textArea = new JTextArea(command);
-        textArea.setEditable(false);
-        board.getCommandPanel().add(textArea).revalidate();
+      board.getCmdTextArea().setText(command);
+
 
     }
 
-    public Component addCommandCombo(Object[] items) {
 
-       return board.getCommandPanel().add(new JComboBox<Object>(items));
-
-    }
-
-    public void addCommandButton(String btnText, ActionListener listener) {
-
-        JButton button = new JButton(btnText);
-        button.addActionListener(listener);
-        board.getCommandPanel().add(button);
-
-    }
 
     public void setPlayerActive(ActivePokemonView pokemonView) {
         board.getPlayerActivePanel().add(pokemonView).revalidate();
     }
 
     public void setOpponentActive(ActivePokemonView pokemonView){
+        board.getOpponentActivePanel().removeAll();
         board.getOpponentActivePanel().add(pokemonView).revalidate();
     }
 

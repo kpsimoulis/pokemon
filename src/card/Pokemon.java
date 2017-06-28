@@ -1,7 +1,9 @@
 package card;
 
+import main.Attack;
+import main.Retreat;
+
 import java.util.ArrayList;
-import main.*;
 
 public class Pokemon extends Card {
 
@@ -22,6 +24,17 @@ public class Pokemon extends Card {
         this.evolvesFrom = evolves_from;
         this.retreat = retreat;
         this.attack = attack;
+    }
+
+    public Pokemon(Pokemon pokemon) {
+        super(pokemon);
+        this.healthPoints = pokemon.healthPoints;
+        this.damagePoints = pokemon.healthPoints;
+        this.energy = pokemon.energy;
+        this.stage = pokemon.stage;
+        this.evolvesFrom = pokemon.evolvesFrom;
+        this.retreat = pokemon.retreat;
+        this.attack = pokemon.attack;
     }
 
     @Override
@@ -96,5 +109,9 @@ public class Pokemon extends Card {
 
     public Energy removeEnergy() throws NullPointerException {
        return energy.remove(energy.size() - 1);
+    }
+
+    public void emptyEnergy() {
+        energy.clear();
     }
 }

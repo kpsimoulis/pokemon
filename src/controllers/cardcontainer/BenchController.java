@@ -29,4 +29,7 @@ public class BenchController extends CardContainerController{
         return super.addCard(newCard);
     }
 
+    public boolean isFull() {
+        return ((Bench) getContainer()).isFull();
+    }
 }

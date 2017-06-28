@@ -1,10 +1,11 @@
 package controllers.game.KeyListeners;
 
 import card.Card;
+import cardcontainer.CardContainer;
 import controllers.card.CardController;
 import controllers.card.PokemonController;
+import controllers.cardcontainer.CardContainerController;
 import controllers.game.GameController;
-import controllers.player.HumanPlayerController;
 import javafx.util.Pair;
 import views.activepokemon.ActivePokemonView;
 import views.card.CardView;
@@ -18,9 +19,11 @@ import java.awt.event.KeyListener;
 public class ListenerActivePok implements KeyListener{
 
     private GameController controller;
+    private CardContainerController appliedContainer;
 
-    public ListenerActivePok(GameController controller){
+    public ListenerActivePok(GameController controller, CardContainerController usedContainer){
         this.controller = controller;
+        this.appliedContainer = usedContainer;
     }
 
     @Override
@@ -37,31 +40,32 @@ public class ListenerActivePok implements KeyListener{
                 PokemonView chosenCard = (PokemonView) SwingUtilities.getAncestorOfClass(PokemonView.class, (Component) e.getSource());
 
                 // Search for pokemon controller
-                Card pokCard = controller.findCardInContainer(chosenCard, controller.getHumanController().getHandController()).getCard();
+                Card pokCard = controller.findCardInContainer(chosenCard, appliedContainer).getCard();
 
                 // Remove from hand and set as active for both player controller and in the view
-                Pair<CardController, CardView> pair = controller.getHumanController().getHandController().removeCard(pokCard);
+                Pair<CardController, CardView> pair = appliedContainer.removeCard(pokCard);
                 ActivePokemonView activePokemonView = controller.getHumanController().
                         setActivePokemon(true, (PokemonController) pair.getKey(), (PokemonView) pair.getValue());
                 controller.getView().setPlayerActive(activePokemonView);
 
-                // Remove all key listeners of this type for the hand
-                controller.getHumanController().getHandController().removeAllListeners(this);
+                // Remove all key listeners of this type for the hand & bench
+                appliedContainer.removeAllListeners(this);
 
                 controller.getHumanController().getActivePokemonController().removeKeyListener(this);
 
                 // Check if has more pokemon to add bench
-                if (controller.getHumanController().handHasPokemon()) {
+                if (controller.getHumanController().handHasPokemon() && controller.isFirstTurn()) {
 
-                    controller.getView().setCommand("You can now do the following:\n" +
-                                                    "1. Add Pokemon to your bench\n" +
-                                                    "2. End Turn");
                     controller.getView().addBoardListerner(new ChooseBenchPok(controller));
 
                 } else if (controller.isFirstTurn()) {
 
                     // End the first turn if it is the first turn
                     controller.endFirstTurn();
+
+                } else {
+
+                    controller.getView().addBoardListerner(new MainMenuListener(controller));
 
                 }
 

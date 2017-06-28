@@ -35,7 +35,7 @@ public abstract class CardContainer {
      *
      * @return True if holds card, False otherwise
      */
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return cards.size() == 0;
     }
 

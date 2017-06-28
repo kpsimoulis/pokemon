@@ -1,7 +1,6 @@
 package controllers.game.KeyListeners;
 
 import controllers.game.GameController;
-import views.ChoiceDialog;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -15,6 +14,9 @@ public class ChooseBenchPok implements KeyListener {
 
     public ChooseBenchPok(GameController controller){
         this.controller = controller;
+        this.controller.getView().setCommand("You can now do the following:\n" +
+                "1. Add Pokemon to your bench\n" +
+                "2. End Turn");
     }
 
     @Override
@@ -29,7 +31,29 @@ public class ChooseBenchPok implements KeyListener {
             case KeyEvent.VK_NUMPAD1: {
 
                 controller.getView().disableKeyListener();
-                controller.getHumanController().getHandController().setPokemonListener(new SetHandToBench(controller));
+                SetHandToBench listener = new SetHandToBench(controller);
+                controller.getHumanController().getHandController().setPokemonListener(listener);
+
+                controller.getView().addBoardListerner(new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                            controller.getHumanController().getHandController().removeAllListeners(listener);
+                            controller.getView().addBoardListerner(new ChooseBenchPok(controller));
+                        }
+
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                    }
+                });
                 break;
 
             }

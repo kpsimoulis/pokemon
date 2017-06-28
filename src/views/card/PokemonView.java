@@ -3,7 +3,6 @@ package views.card;
 import card.Energy;
 import main.Attack;
 import main.Requirement;
-import main.Retreat;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -11,8 +10,8 @@ import java.util.ArrayList;
 
 public class PokemonView extends CardView {
 
-    private JTextArea energyTxt;
-    private JTextArea attackTxt;
+    private String energyTxt;
+    private String attackTxt;
     private JTextArea retreatTxt;
 
     public PokemonView(ArrayList<Energy> energies, ArrayList<Attack> attacks, int dmgPts, int hp, String stage){
@@ -27,12 +26,33 @@ public class PokemonView extends CardView {
         }
         this.getInfoTable().setModel(infoModel);
 
-        energyTxt = new JTextArea(genEnergyStr(energies));
-        attackTxt = new JTextArea(genAttackStr(attacks));
+        energyTxt = genEnergyStr(energies);
+        attackTxt = genAttackStr(attacks);
         setDmgPts(dmgPts);
         setNoEnergies(energies.size());
         setHP(hp);
         setStage(stage);
+
+    }
+
+    public PokemonView(PokemonView view) {
+
+        super();
+        String[][] cardInfo = new String[][]{
+                {"Dmg Pts:", ""},{"# Energ.: ", "0"},{"HP: ", ""}, {"Stage: ", "Basic"}
+        };
+        DefaultTableModel infoModel = (DefaultTableModel) this.getInfoTable().getModel();
+        for (String[] aCardInfo : cardInfo) {
+            infoModel.addRow(aCardInfo);
+        }
+        this.getInfoTable().setModel(infoModel);
+
+        energyTxt = view.getEnergyTxt();
+        attackTxt = view.getAttackTxt();
+        setDmgPts(view.getDmgPts());
+        setNoEnergies(view.getNoEnergies());
+        setHP(view.getHP());
+        setStage(view.getStage());
 
     }
 
@@ -44,7 +64,7 @@ public class PokemonView extends CardView {
                 "Type: " + getCardType() + "\n" +
                 "Damage Pts.: " + getDmgPts() + "\n" +
                 "# Energies: " + getNoEnergies() + "\n" +
-                getEnergyTxt() + "\n" +
+                "Energies Desc:\n" + getEnergyTxt() + "\n\n" +
                 "HP: " + getHP() + "\n" +
                 "Stage: " + getStage() + "\n\n" +
                 //TODO: "Retreat: " + this.retreat.getCategoryShort()+ " (x" +this.retreat.getEnergyAmount()+ ")\n\n" +
@@ -67,9 +87,9 @@ public class PokemonView extends CardView {
         this.getInfoTable().getModel().setValueAt(pokStage, 5, 1);
     }
 
-    public void setEnergyTxt(ArrayList<Energy> energies){ this.energyTxt.setText(genEnergyStr(energies)); }
+    public void setEnergyTxt(ArrayList<Energy> energies){ this.energyTxt = genEnergyStr(energies); }
 
-    public void setAttackTxt(ArrayList<Attack> attacks){ this.attackTxt.setText(genAttackStr(attacks)); }
+    public void setAttackTxt(ArrayList<Attack> attacks){ this.attackTxt = genAttackStr(attacks); }
 
     public int getDmgPts(){
         return Integer.valueOf( this.getInfoTable().getModel().getValueAt(2, 1).toString());
@@ -89,11 +109,11 @@ public class PokemonView extends CardView {
     }
 
     public String getEnergyTxt() {
-        return energyTxt.getText();
+        return energyTxt;
     }
 
     public String getAttackTxt() {
-        return attackTxt.getText();
+        return attackTxt;
     }
 
     private String genEnergyStr(ArrayList<Energy> energies){
@@ -101,7 +121,7 @@ public class PokemonView extends CardView {
         if (energies.size() > 0) {
             for(Energy item: energies){
                 if(energySb.length() > 0){
-                    energySb.append(',');
+                    energySb.append(", ");
                 }
                 energySb.append(item.getCategory());
             }

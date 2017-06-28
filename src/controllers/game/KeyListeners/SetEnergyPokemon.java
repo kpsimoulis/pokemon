@@ -2,11 +2,9 @@ package controllers.game.KeyListeners;
 
 import card.Energy;
 import controllers.card.CardController;
-import controllers.card.EnergyController;
 import controllers.card.PokemonController;
 import controllers.game.GameController;
 import javafx.util.Pair;
-//import testMainController.Game;
 import views.card.CardView;
 import views.card.EnergyView;
 
@@ -43,7 +41,7 @@ public class SetEnergyPokemon implements KeyListener {
                 EnergyView chosenCardView = (EnergyView) SwingUtilities.getAncestorOfClass(EnergyView.class, (Component) e.getSource());
 
                 Energy card = (Energy) controller.findCardInContainer(chosenCardView, controller.getHumanController().getHandController()).getCard();
-                Pair<CardController, CardView> pair = controller.getHumanController().getHandController().removeCard(card);
+                controller.getHumanController().getHandController().removeCard(card);
 
                 pokemonController.addEnergy(card);
 

@@ -73,7 +73,7 @@ public class CollectPrizeCard extends AbstractGameListener implements KeyListene
             controller.getHumanController().getHandController().addCard(pair);
             pair.getKey().returnBackCover();
             controller.getView().disableKeyListener();
-            controller.gameAITurn();
+            controller.aiActiveDefeated();
         }
 
     }

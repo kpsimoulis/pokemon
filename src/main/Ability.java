@@ -10,20 +10,22 @@ public class Ability {
     private int amount;
     private int times;
     private String statusEffect;
+    private boolean parsed = false;
 
     /**
      *
      * @param name
      * @param action
      * @param description
-     * @param target
+     * @param logic
      */
-    public Ability(String name, String action, String description, String target) {
+    public Ability(String name, String action, String description, String logic, Boolean parsed) {
         this.name = name;
         this.action = action;
-        this.target = target;
+//        this.target = target;
         this.description = description;
         this.logic = logic;
+        this.parsed = parsed;
     }
 
     public String getName() {
@@ -34,6 +36,10 @@ public class Ability {
         return description;
     }
 
+    /**
+     * TODO Fix damage parsing
+     * @return
+     */
     public int getDamage() {
         if (name.equals("Rollout") || name.equals("Flail")) {
             return 10;
@@ -51,6 +57,10 @@ public class Ability {
 
     public String getAction() {
         return action;
+    }
+
+    public boolean isParsed() {
+        return parsed;
     }
 
     /**

@@ -40,6 +40,29 @@ public class Attack {
         return ability;
     }
 
+    /**
+     * Attack is supported
+     *
+     * supported:
+     * dam
+     *
+     * TODO:
+     * applystat
+     * cond
+     * deck
+     * draw
+     * redamage
+     * search
+     *
+     * @return boolean
+     */
+    public boolean isSupported() {
+        if (getAbility().isParsed()) {
+            return true;
+        }
+        else return false;
+    }
+
 
     /**
      *

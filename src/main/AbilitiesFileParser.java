@@ -13,14 +13,14 @@ public class AbilitiesFileParser {
     private String description;
     private String logic;
     private String target;
-    private int amount;
+    private int damagePoints;
+    private String damageLogic;
     private int times;
     private String statusEffect;
     private AbilityDescriptionMap descriptionMap;
-
+    private boolean parsed = false;
 
     /**
-     *
      * @param items
      */
     public AbilitiesFileParser(String[] items) {
@@ -29,7 +29,6 @@ public class AbilitiesFileParser {
     }
 
     /**
-     *
      * @return
      */
     public String getTarget() {
@@ -37,15 +36,13 @@ public class AbilitiesFileParser {
     }
 
     /**
-     *
      * @return
      */
-    public int getAmount() {
-        return amount;
+    public int getDamagePoints() {
+        return damagePoints;
     }
 
     /**
-     *
      * @return
      */
     public int getTimes() {
@@ -53,7 +50,6 @@ public class AbilitiesFileParser {
     }
 
     /**
-     *
      * @return
      */
     public String getStatusEffect() {
@@ -61,7 +57,6 @@ public class AbilitiesFileParser {
     }
 
     /**
-     *
      * @return
      */
     public String getName() {
@@ -69,7 +64,6 @@ public class AbilitiesFileParser {
     }
 
     /**
-     *
      * @return
      */
     public String getAction() {
@@ -77,7 +71,6 @@ public class AbilitiesFileParser {
     }
 
     /**
-     *
      * @return
      */
     public String getLogic() {
@@ -85,12 +78,20 @@ public class AbilitiesFileParser {
     }
 
     /**
-     *
      * @return
      */
     public String getDescription() {
         return description;
     }
+
+    /**
+     * Ability is parsed
+     * @return
+     */
+    public boolean isParsed() {
+        return parsed;
+    }
+
 
     /**
      *
@@ -113,6 +114,52 @@ public class AbilitiesFileParser {
      */
     public void parseLogic() {
 
+        String logicLine = String.join(":", itemList);
+        String[] logicItems = logicLine.split(",");
+
+        if (logicItems.length == 1) {
+            if (action.equals("dam")) {
+                if (!this.itemList.get(0).equals("target")) {
+                    throw new IllegalArgumentException("Expecting word 'target'");
+                }
+//                itemList.remove(0);
+                this.target = itemList.get(1);
+                if (target.equals("opponent-active")) {
+//                    itemList.remove(0);
+                    try {
+                        this.damagePoints = Integer.parseInt(itemList.get(0));
+                        this.parsed = true;
+//                        itemList.remove(0);
+                    } catch (Exception e) {
+                        // TODO process damageLogic
+                        // print();
+                        this.damageLogic = String.join(":", itemList);
+                    }
+                }
+                else {
+                    // TODO process remaining
+//                    this.parsed = false;
+//                    System.out.print(getName() + ": ");
+//                    print();
+                }
+
+            } else {
+                // TODO process other Actions
+//                this.parsed = false;
+//                System.out.print(getName() + " (" + getAction() + "): ");
+//                print();
+            }
+
+
+        }
+        else {
+            // TODO process multi-abilities, length > 1
+            this.parsed = false;
+            System.out.print(getName() + " (" + getAction() + "): ");
+            print();
+        }
+
+
         this.logic = String.join(":", itemList);
     }
 
@@ -126,7 +173,7 @@ public class AbilitiesFileParser {
     /**
      *
      */
-    public void print(){
+    public void print() {
         System.out.println(String.join(":", itemList));
     }
 

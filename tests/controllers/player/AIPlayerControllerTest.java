@@ -48,7 +48,7 @@ public class AIPlayerControllerTest {
         aiPlayerController.getPlayer().getDeck().populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
         aiPlayerController.buildViewController();
         aiPlayerController.initiateGame();
-        pokemon=aiPlayerController.chooseActivePokemon();
+//        pokemon=aiPlayerController.chooseActivePokemon();
         for (Card card : aiPlayerController.getHandController().getContainer().getCards()) {
             if (card.equals(pokemon)) {
                 choosePokemon=true;

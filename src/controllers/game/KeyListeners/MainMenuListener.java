@@ -193,7 +193,10 @@ public class MainMenuListener implements KeyListener {
                 for (Attack attack : card.getAttack()) {
                     for (Requirement requirement : attack.getRequirement()) {
                         if (dict.containsKey(requirement.getCategory()) && dict.get(requirement.getCategory()) == requirement.getEnergyAmount()) {
-                            builder.append(index).append(". ").append(attack.getAbility().getName()).append("\n");
+                            // @TODO this line should be removed when all attacks have been implemented
+                            if (attack.isSupported()) {
+                                builder.append(index).append(". ").append(attack.getAbility().getName()).append("\n");
+                            }
                         }
                     }
                     index++;

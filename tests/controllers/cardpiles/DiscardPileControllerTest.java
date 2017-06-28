@@ -30,7 +30,7 @@ public class DiscardPileControllerTest {
     discardPileController = new DiscardPileController(discardPile,discardPileView);
     ArrayList<Energy> energyArray= new ArrayList<Energy>(20);
     Retreat retreat = new Retreat("fighting",1);
-    Ability ability = new Ability("Rain Splash","damage","put 20 damage points on opponent","opponent-active");
+    Ability ability = new Ability("Rain Splash","damage","put 20 damage points on opponent","opponent-active", true);
     Requirement requirement=new Requirement("general",2);
     ArrayList<Requirement> requirements = new ArrayList<Requirement>();
     requirements.add(requirement);

@@ -145,9 +145,11 @@ public class CardsFileParser {
                         abilitiesParser = new AbilitiesFileParser(abilityLineVariables);
                         abilitiesParser.parseName();
                         abilitiesParser.parseAction();
-                        abilitiesParser.parseLogic();
                         abilitiesParser.parseDescription();
-                        tmpAbility = new Ability(abilitiesParser.getName(), abilitiesParser.getAction(), abilitiesParser.getDescription(), abilitiesParser.getLogic());
+                        abilitiesParser.parseLogic();
+//                        System.out.println("ACTION: " + abilitiesParser.getAction() + ", LOGIC: " + abilitiesParser.getLogic());
+//                        abilitiesParser.print();
+                        tmpAbility = new Ability(abilitiesParser.getName(), abilitiesParser.getAction(), abilitiesParser.getDescription(), abilitiesParser.getLogic(), abilitiesParser.isParsed());
 
                         attack.add(new Attack(requirement, tmpAbility));
                         // Reset Requirement Arraylist

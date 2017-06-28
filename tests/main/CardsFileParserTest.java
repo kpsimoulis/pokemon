@@ -114,7 +114,7 @@ public class CardsFileParserTest {
         abilityFile1.parseLogic();
         abilityFile1.parseDescription();
        // assertEquals("target",abilityFile1.getLogic());
-        Ability ability1 = new Ability(abilityFile1.getName(),abilityFile1.getAction(),abilityFile1.getDescription(),abilityFile1.getLogic());
+        Ability ability1 = new Ability(abilityFile1.getName(),abilityFile1.getAction(),abilityFile1.getDescription(),abilityFile1.getLogic(), true);
         Attack attack1 = new Attack(requirements1,ability1);
         Requirement requirement2= new Requirement("colorless",2);
         ArrayList<Requirement> requirements2 = new ArrayList<Requirement>();
@@ -127,7 +127,7 @@ public class CardsFileParserTest {
         abilityFile2.parseAction();
         abilityFile2.parseLogic();
         abilityFile2.parseDescription();
-        Ability ability2 = new Ability(abilityFile2.getName(),abilityFile2.getAction(),abilityFile2.getDescription(),abilityFile2.getLogic());
+        Ability ability2 = new Ability(abilityFile2.getName(),abilityFile2.getAction(),abilityFile2.getDescription(),abilityFile2.getLogic(), true);
         Attack attack2 = new Attack(requirements2,ability2);
         attacks = new Attack[]{attack1,attack2};
 

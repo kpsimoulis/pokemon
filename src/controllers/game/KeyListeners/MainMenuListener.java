@@ -4,7 +4,6 @@ import card.Pokemon;
 import controllers.card.PokemonController;
 import controllers.game.GameController;
 import main.Attack;
-import main.Requirement;
 import views.activepokemon.ActivePokemonView;
 import views.card.PokemonView;
 
@@ -187,17 +186,20 @@ public class MainMenuListener implements KeyListener {
                 StringBuilder builder = new StringBuilder("Press the corresponding number for the attacks:\n");
 
                 Pokemon card = (Pokemon) controller.getHumanController().getActivePokemonController().getPokemonController().getCard();
-                HashMap<String, Integer> dict = controller.getHumanController().getActivePokemonController().getEnergyOnCard();
+                HashMap<String, Integer> energyOnCard = controller.getHumanController().getActivePokemonController().getEnergyOnCard();
 
                 int index = 1;
                 for (Attack attack : card.getAttack()) {
-                    for (Requirement requirement : attack.getRequirement()) {
-                        if (dict.containsKey(requirement.getCategory()) && dict.get(requirement.getCategory()) == requirement.getEnergyAmount()) {
-                            builder.append(index).append(". ").append(attack.getAbility().getName()).append("\n");
-                        }
+
+                    HashMap<String, Integer> energyPokTmp = new HashMap<>(energyOnCard);
+
+                    if (controller.getHumanController().checkAttackEnergy(attack, energyPokTmp)){
+                        builder.append(index).append(". ").append(attack.getAbility().getName()).append("\n");
                     }
+
                     index++;
                 }
+
                 builder.append("(Press Esc to exit)");
                 controller.getView().setCommand(builder.toString());
                 controller.getView().addBoardListerner(new PokemonAttack(controller));

@@ -1,9 +1,12 @@
 package controllers.game.KeyListeners;
 
 import controllers.activepokemon.ActivePokemonController;
+import controllers.card.CardController;
 import controllers.cardpiles.PrizeCardController;
 import controllers.game.GameController;
+import javafx.util.Pair;
 import main.Attack;
+import views.card.CardView;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -30,9 +33,12 @@ public class PokemonAttack implements KeyListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_1:
             case KeyEvent.VK_NUMPAD1: {
-                if (!attack(1)){
-                    break;
-                }
+                attack(1);
+                break;
+            }
+            case KeyEvent.VK_2:
+            case KeyEvent.VK_NUMPAD2: {
+                attack(2);
                 break;
             }
             case KeyEvent.VK_ESCAPE:{
@@ -65,7 +71,10 @@ public class PokemonAttack implements KeyListener {
         boolean defeatedOpp = activePok.attackPokemon(oppPok, damage);
 
         StringBuilder strBuilder = new StringBuilder();
-        strBuilder.append("Attack caused: ").append(damage).append("\nTurn Ended.\n");
+
+        strBuilder.append("Ability used: ");
+        strBuilder.append(attackCaused.getAbility().getName()).append(",\nDmg Caused: ")
+                .append(attackCaused.getAbility().getDamage()).append("\nTurn Ended.\n");
 
         if (defeatedOpp){
 
@@ -76,7 +85,13 @@ public class PokemonAttack implements KeyListener {
                 strBuilder.append("\n").append("Press the correct no.");
                 controller.getView().addBoardListerner(new CollectPrizeCard(controller));
             }else{
-                strBuilder.append("You defeated opponent's pokemon.\n").append("You have only one prize card left\n");
+                Pair<CardController, CardView> pair = controller.getHumanController().getPrizeCardController().chooseCard(0);
+                if (pair != null) {
+                    controller.getHumanController().getHandController().addCard(pair);
+                    pair.getKey().returnBackCover();
+                    controller.getView().disableKeyListener();
+                }
+                strBuilder.append("You defeated opponent's pokemon.\n").append("You have no prize card left\n");
                 strBuilder.append("YOU WON THE GAME");
                 controller.getView().setCommand(strBuilder.toString());
                 controller.endGame();

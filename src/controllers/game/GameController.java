@@ -256,16 +256,20 @@ public class GameController {
     public void gameAITurn() {
 
         StringBuilder sb = new StringBuilder();
-        Pokemon humanActivePok = player1Controller.getActivePokemonCard();
-        Pokemon aiActivePok = player2Controller.getActivePokemonCard();
-        Attack attack2 = aiActivePok.getAttack().get(0);
 
         sb.append("AI is playing...\n");
-        playerDealDeck(player2Controller);
-        player2Controller.attack(player1Controller.getActivePokemonController());
-        sb.append("Attack caused: ").append(attack2.getAbility().getDamage()).append("\nTurn Ended.\n");
 
-        if (humanActivePok.getHealthPoints() <= humanActivePok.getDamagePoints()) {
+        playerDealDeck(player2Controller);
+        Attack attack_caused = player2Controller.play(player1Controller);
+        sb.append("Ability used: ");
+        if (attack_caused == null){
+            sb.append("None").append("\nTurn Ended.\n");
+        }else{
+            sb.append(attack_caused.getAbility().getName()).append(",\nDmg Caused: ")
+                    .append(attack_caused.getAbility().getDamage()).append("\nTurn Ended.\n");
+        }
+
+        if (player1Controller.getActivePokemonCard().getHealthPoints() <= player1Controller.getActivePokemonCard().getDamagePoints()) {
 
             player2Controller.collectPrizeCards();
             sb.append("YOUR POKEMON HAS BEEN DEFEATED.\n").append("Opponent has collected a prize card.\n");
@@ -296,7 +300,7 @@ public class GameController {
 
         } else if (player1Controller.getDeckController().getCardContainer().isEmpty()) {
 
-            view.setCommand("YOU DO NOT HAVE A BASIC POKEMON TO PLAY\nYOU LOST THE GAME. :(");
+            view.setCommand("YOU DO NOT HAVE ANY CARDS IN YOUR DECK\nYOU LOST THE GAME. :(");
             endGame();
 
         } else {

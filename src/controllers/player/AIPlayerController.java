@@ -9,13 +9,12 @@ import controllers.card.CardController;
 import controllers.card.PokemonController;
 import javafx.util.Pair;
 import main.Attack;
+import main.Requirement;
 import views.activepokemon.ActivePokemonView;
 import views.card.CardView;
 import views.card.PokemonView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 
 public class AIPlayerController extends PlayerController {
 
@@ -84,21 +83,6 @@ public class AIPlayerController extends PlayerController {
 
     }
 
-    public void attack(ActivePokemonController opponentPokemon) {
-
-        for (Card card : getHandController().getContainer().getCards()) {
-            if (card instanceof Energy && card.getCategory().equals("fight")) {
-                Pair<CardController, CardView> pair = getHandController().removeCard(card);
-                getActivePokemonController().getPokemonController().addEnergy((Energy) card);
-                break;
-            }
-        }
-
-        Attack attack = getActivePokemonController().getPokemonController().getAttacks().get(0);
-        getActivePokemonController().attackPokemon(opponentPokemon, attack.getAbility().getDamage());
-
-    }
-
     @Override
     public void dealDeckHand() {
         Pair<CardController, CardView> dealtCard = getDeckController().dealCard();
@@ -121,4 +105,119 @@ public class AIPlayerController extends PlayerController {
         getHandController().addCard(collectedCard);
 
     }
+
+    public Attack play(PlayerController opponentHuman) {
+
+        if (handHasPokemon() && !getBenchController().isFull()){
+            putPokemonOnBench();
+            getBenchController().returnAllCards();
+        }
+
+        //TODO: Evolve Pokemon
+
+        if (handHasEnergy()){
+
+            // Try attaching to active pokemon
+            if (!attachPokemonEnergy(getActivePokemonController().getPokemonController())){
+
+                //If not work, attach to a bench pokemon (Only one energy can be attached)
+                for (CardController card: getBenchController().getCardControllers()){
+                    if (attachPokemonEnergy((PokemonController) card)){
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        if (canAttack()){
+            return attack(opponentHuman.getActivePokemonController());
+        }else{
+            return null;
+        }
+
+    }
+
+    private Attack attack(ActivePokemonController opponentPokemon) {
+
+        Pokemon activePok = getActivePokemonCard();
+
+        // Get all possible attacks based on energy attached and attacks energy requirements
+        ArrayList<Attack> possibleAttacks = new ArrayList<>();
+        HashMap<String, Integer> energyOnCard = getActivePokemonController().getEnergyOnCard();
+
+        for (Attack attack : activePok.getAttack()) {
+
+            HashMap<String, Integer> energyPokTmp = new HashMap<>(energyOnCard);
+
+            if (checkAttackEnergy(attack, energyPokTmp)){
+                possibleAttacks.add(attack);
+            }
+
+        }
+
+        //Temporarily take a random possible attack
+        Random rand = new Random();
+        int randomIdx = rand.nextInt(possibleAttacks.size());
+        int dmg = possibleAttacks.get(randomIdx).getAbility().getDamage();
+        getActivePokemonController().attackPokemon(opponentPokemon, dmg);
+
+        return possibleAttacks.get(randomIdx);
+        //TODO: When abilities get implemented, check attack with highest damage
+
+    }
+
+    private boolean attachPokemonEnergy(PokemonController pokCard){
+
+        Pokemon card = (Pokemon) pokCard.getCard();
+
+        // Get energy required for all attacks of pokemon
+        for (Attack attack: card.getAttack()) {
+
+            // Get all energy required
+            HashMap<String, Integer> energyReq = new HashMap<>();
+            for (Requirement requirement : attack.getRequirement()) {
+                energyReq.put(requirement.getCategory(), requirement.getEnergyAmount());
+            }
+
+            // Remove all energy already attached
+            for (Energy energy: card.getEnergy()){
+                String cat = energy.getCategory();
+                if (energyReq.containsKey(cat)){
+                    energyReq.replace(cat, energyReq.get(cat) - 1);
+                }
+            }
+
+            // Look for energy required in hand
+            for (CardController controller: getHandController().getCardControllers()){
+                if (controller.getCard() instanceof Energy){
+                    Energy energyCard = (Energy) controller.getCard();
+                    if (energyReq.containsKey(energyCard.getCategory()) && energyReq.get(energyCard.getCategory()) > 0){
+                        pokCard.addEnergy(energyCard);
+                        getHandController().removeCard(energyCard);
+                        return true;
+                    }
+                }
+            }
+
+            // If nothing found based on specific energy category, look for colorless
+            if (energyReq.containsKey("colorless") && handHasEnergy()){
+
+                for (CardController controller: getHandController().getCardControllers()){
+                    if (controller.getCard() instanceof Energy){
+                        Energy energyCard = (Energy) controller.getCard();
+                        pokCard.addEnergy(energyCard);
+                        getHandController().removeCard(energyCard);
+                        return true;
+                    }
+                }
+
+            }
+
+        }
+
+        return false;
+
+    }
+
 }

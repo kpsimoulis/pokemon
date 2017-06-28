@@ -54,7 +54,7 @@ public class MainMenuListener implements KeyListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_E: {
 
-                if (!controller.getHumanController().handHasEnergy() && controller.isEnergyAdded()) {
+                if (!controller.getHumanController().handHasEnergy() || controller.isEnergyAdded()) {
                     break;
                 }
 
@@ -151,7 +151,7 @@ public class MainMenuListener implements KeyListener {
             }
             case KeyEvent.VK_P: {
 
-                if (!controller.getHumanController().handHasPokemon()) {
+                if (!controller.getHumanController().handHasPokemon() || controller.getHumanController().getBenchController().isFull()) {
                     break;
                 }
 
@@ -182,6 +182,10 @@ public class MainMenuListener implements KeyListener {
 
             }
             case KeyEvent.VK_A: {
+
+                if (!controller.getHumanController().canAttack()) {
+                    break;
+                }
 
                 StringBuilder builder = new StringBuilder("Press the corresponding number for the attacks:\n");
 

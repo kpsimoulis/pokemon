@@ -68,12 +68,15 @@ public class CollectPrizeCard extends AbstractGameListener implements KeyListene
 
     private void choosePrizeCard(int index) {
 
-        Pair<CardController, CardView> pair = controller.getHumanController().getPrizeCardController().chooseCard(index);
-        if (pair != null) {
-            controller.getHumanController().getHandController().addCard(pair);
-            pair.getKey().returnBackCover();
-            controller.getView().disableKeyListener();
-            controller.aiActiveDefeated();
+        try{
+            Pair<CardController, CardView> pair = controller.getHumanController().getPrizeCardController().chooseCard(index);
+            if (pair != null) {
+                controller.getHumanController().getHandController().addCard(pair);
+                pair.getKey().returnBackCover();
+                controller.getView().disableKeyListener();
+                controller.aiActiveDefeated();
+            }
+        }catch (IndexOutOfBoundsException ignored){
         }
 
     }

@@ -174,6 +174,14 @@ public class AIPlayerController extends PlayerController {
         // Get energy required for all attacks of pokemon
         for (Attack attack: card.getAttack()) {
 
+            int allEnergyReq = 0;
+            for (Requirement requirement: attack.getRequirement()){
+                allEnergyReq += requirement.getEnergyAmount();
+            }
+            if (card.getEnergy().size() >= allEnergyReq){
+                break;
+            }
+
             // Get all energy required
             HashMap<String, Integer> energyReq = new HashMap<>();
             for (Requirement requirement : attack.getRequirement()) {

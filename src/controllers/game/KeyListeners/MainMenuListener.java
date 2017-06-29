@@ -51,7 +51,7 @@ public class MainMenuListener implements KeyListener {
 
         builder.append("\n");
         builder.append("C. Cheating List for Test.\n");
-        builder.append("D. Look at discard pile.\n");
+        builder.append("D. Look at deck and pile.\n");
         controller.getView().setCommand(builder.toString());
 
     }
@@ -363,10 +363,14 @@ public class MainMenuListener implements KeyListener {
             //show discardpile
             case KeyEvent.VK_D: {
                 //build menu
-                StringBuilder builder = new StringBuilder("Look at discardpile: \n\n");
+                StringBuilder builder = new StringBuilder("Look at pile: \n\n");
                 builder.append("Choose one of the following by pressing:\n"
                         + "1. Look at your discard pile \n"
-                        + "2. Look at AI's discard pile \n");
+                        + "2. Look at AI's discard pile \n"
+                        + "3. Look at your deck \n"
+                        + "4. Look at AI's deck \n"
+
+                );
                 controller.getView().setCommand(builder.toString() + "\n"
                         + "(Press Esc to exit)");
                 //add listener
@@ -392,8 +396,7 @@ public class MainMenuListener implements KeyListener {
                             controller.getView().setCommand(builder.toString() + "\n"
                                     + "(Press Esc to exit)");
 
-                        }
-                        else if (e.getKeyCode() == KeyEvent.VK_2) {
+                        } else if (e.getKeyCode() == KeyEvent.VK_2) {
                             StringBuilder builder = new StringBuilder("AI's discardpile: \n\n");
                             int index = 1;
                             for (Card card : controller.getAIController().getDiscardPileController().getCardContainer().getCards()) {
@@ -401,6 +404,32 @@ public class MainMenuListener implements KeyListener {
                                         + card.getName() + " "
                                         + "(" + card.getClass().getSimpleName() + ")"
                                         + "\n");
+                            }
+                            controller.getView().setCommand(builder.toString() + "\n"
+                                    + "(Press Esc to exit)");
+
+                        }
+                        else if (e.getKeyCode() == KeyEvent.VK_3) {
+                            StringBuilder builder = new StringBuilder("");
+                            int index = 1;
+                            for (Card card : controller.getHumanController().getDeckController().getCardContainer().getCards()) {
+                                builder.append(index++ + ": "
+                                        + card.getName() + " "
+                                        + "(" + card.getClass().getSimpleName() + ")"
+                                        + "  ");
+                            }
+                            controller.getView().setCommand(builder.toString() + "\n"
+                                    + "(Press Esc to exit)");
+
+                        }
+                        else if (e.getKeyCode() == KeyEvent.VK_4) {
+                            StringBuilder builder = new StringBuilder("");
+                            int index = 1;
+                            for (Card card : controller.getAIController().getDeckController().getCardContainer().getCards()) {
+                                builder.append(index++ + ": "
+                                        + card.getName() + " "
+                                        + "(" + card.getClass().getSimpleName() + ")"
+                                        + "  ");
                             }
                             controller.getView().setCommand(builder.toString() + "\n"
                                     + "(Press Esc to exit)");

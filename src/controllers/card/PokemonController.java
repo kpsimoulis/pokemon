@@ -56,4 +56,12 @@ public class PokemonController extends CardController {
         ((PokemonView) getView()).setDmgPts(card.getDamagePoints());
 
     }
+
+    public void heal(int healPoints) {
+
+        Pokemon card = (Pokemon) getCard();
+        card.setDamagePoints(Math.max(0,card.getDamagePoints() - healPoints));
+        ((PokemonView) getView()).setDmgPts(card.getDamagePoints());
+
+    }
 }

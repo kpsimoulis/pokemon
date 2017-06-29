@@ -1,5 +1,7 @@
 package controllers.game.KeyListeners;
 
+import card.Card;
+import card.Energy;
 import card.Pokemon;
 import controllers.card.PokemonController;
 import controllers.game.GameController;
@@ -45,6 +47,11 @@ public class MainMenuListener implements KeyListener {
             builder.append("R. Retreat your Active Pokemon.\n");
         }
         builder.append("X. End Turn\n");
+
+
+        builder.append("\n");
+        builder.append("C. Cheating List for Test.\n");
+        builder.append("D. Look at discard pile.\n");
         controller.getView().setCommand(builder.toString());
 
     }
@@ -202,7 +209,7 @@ public class MainMenuListener implements KeyListener {
 
                     HashMap<String, Integer> energyPokTmp = new HashMap<>(energyOnCard);
 
-                    if (controller.getHumanController().checkAttackEnergy(attack, energyPokTmp)){
+                    if (controller.getHumanController().checkAttackEnergy(attack, energyPokTmp)) {
                         builder.append(index).append(". ").append(attack.getAbility().getName()).append("\n");
                     }
 
@@ -294,6 +301,125 @@ public class MainMenuListener implements KeyListener {
 
 
             }
+
+            //cheat
+            case KeyEvent.VK_C: {
+                Energy cheatEngrey1 = new Energy("TestFight", 99, "fight");
+                Energy cheatEngrey2 = new Energy("TestPsy", 99, "psychic");
+                Energy cheatEngrey3 = new Energy("TestLightning", 99, "lightning");
+                Energy cheatEngrey4 = new Energy("TestWater", 99, "water");
+
+                //build menu
+                StringBuilder builder = new StringBuilder("Cheat list, for testing:\n");
+                builder.append("Choose one of the following by pressing:\n"
+                        + "1. Add 4 energies to your pokemon \n"
+                        + "2. Heal your active Pokemon 15 points\n"
+                        + "3. Add 4 energies to AI's pokemon\n"
+                        + "4. Heal AI's active Pokemon 15 points\n");
+                controller.getView().setCommand(builder.toString() + "\n"
+                        + "(Press Esc to exit)");
+                //add listener
+                controller.getView().addBoardListerner(new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        } else if (e.getKeyCode() == KeyEvent.VK_1) {
+                            controller.getHumanController().getActivePokemonController().getPokemonController().addEnergy(cheatEngrey1);
+                            controller.getHumanController().getActivePokemonController().getPokemonController().addEnergy(cheatEngrey2);
+                            controller.getHumanController().getActivePokemonController().getPokemonController().addEnergy(cheatEngrey3);
+                            controller.getHumanController().getActivePokemonController().getPokemonController().addEnergy(cheatEngrey4);
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        } else if (e.getKeyCode() == KeyEvent.VK_2) {
+                            controller.getHumanController().getActivePokemonController().getPokemonController().heal(15);
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        } else if (e.getKeyCode() == KeyEvent.VK_3) {
+                            Energy cheatEngrey = new Energy("Test", 99, "Test");
+                            controller.getAIController().getActivePokemonController().getPokemonController().addEnergy(cheatEngrey1);
+                            controller.getAIController().getActivePokemonController().getPokemonController().addEnergy(cheatEngrey2);
+                            controller.getAIController().getActivePokemonController().getPokemonController().addEnergy(cheatEngrey3);
+                            controller.getAIController().getActivePokemonController().getPokemonController().addEnergy(cheatEngrey4);
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        } else if (e.getKeyCode() == KeyEvent.VK_4) {
+                            controller.getAIController().getActivePokemonController().getPokemonController().heal(15);
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        }
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                    }
+                });
+                break;
+
+            }
+
+            //show discardpile
+            case KeyEvent.VK_D: {
+                //build menu
+                StringBuilder builder = new StringBuilder("Look at discardpile: \n\n");
+                builder.append("Choose one of the following by pressing:\n"
+                        + "1. Look at your discard pile \n"
+                        + "2. Look at AI's discard pile \n");
+                controller.getView().setCommand(builder.toString() + "\n"
+                        + "(Press Esc to exit)");
+                //add listener
+                controller.getView().addBoardListerner(new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        } else if (e.getKeyCode() == KeyEvent.VK_1) {
+                            StringBuilder builder = new StringBuilder("Your discardpile: \n\n");
+                            int index = 1;
+                            for (Card card : controller.getHumanController().getDiscardPileController().getCardContainer().getCards()) {
+                                builder.append(index++ + ": "
+                                        + card.getName() + " "
+                                        + "(" + card.getClass().getSimpleName() + ")"
+                                        + "\n");
+                            }
+                            controller.getView().setCommand(builder.toString() + "\n"
+                                    + "(Press Esc to exit)");
+
+                        }
+                        else if (e.getKeyCode() == KeyEvent.VK_2) {
+                            StringBuilder builder = new StringBuilder("AI's discardpile: \n\n");
+                            int index = 1;
+                            for (Card card : controller.getAIController().getDiscardPileController().getCardContainer().getCards()) {
+                                builder.append(index++ + ": "
+                                        + card.getName() + " "
+                                        + "(" + card.getClass().getSimpleName() + ")"
+                                        + "\n");
+                            }
+                            controller.getView().setCommand(builder.toString() + "\n"
+                                    + "(Press Esc to exit)");
+
+                        }
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                    }
+                });
+
+
+                break;
+
+            }
+
+
             default: {
                 System.out.println("Press the correct key.");
             }

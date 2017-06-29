@@ -11,7 +11,7 @@ public class PokemonController extends CardController {
 
     public PokemonController(Pokemon card){
 
-        super(card, new PokemonView(card.getEnergy(), card.getAttack(), card.getDamagePoints(), card.getHealthPoints(), card.getStage()));
+        super(card, new PokemonView(card.getEnergy(), card.getAttack(), card.getDamagePoints(), card.getHealthPoints(), card.getStage(), card.getRetreat().getEnergyAmount()));
 
     }
 

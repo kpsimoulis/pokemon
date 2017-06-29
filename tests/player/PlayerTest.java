@@ -67,7 +67,7 @@ public class PlayerTest {
     @Test
     public void shuffleDeck() throws Exception {
         newDeck = new Deck();
-        newDeck.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
+        newDeck.populateDeck("res/deck/deck1.txt");
         player.setDeck(newDeck);
         player.shuffleDeck();
         assertEquals(60,player.getDeck().getNoOfCards());
@@ -78,7 +78,7 @@ public class PlayerTest {
     @Test
     public void drawCard() throws Exception {
         newDeck = new Deck();
-        newDeck.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
+        newDeck.populateDeck("res/deck/deck1.txt");
         player.setDeck(newDeck);
         player.drawCard();
         assertEquals(59,player.getDeck().getNoOfCards());
@@ -113,7 +113,7 @@ public class PlayerTest {
     @Test
     public void getNoCardsDeck() throws Exception {
         newDeck = new Deck();
-        newDeck.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
+        newDeck.populateDeck("res/deck/deck1.txt");
         player.setDeck(newDeck);
         assertEquals(60,player.getNoCardsDeck());
         player.drawCard();

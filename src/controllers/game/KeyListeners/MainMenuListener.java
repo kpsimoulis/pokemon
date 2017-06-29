@@ -39,7 +39,12 @@ public class MainMenuListener implements KeyListener {
             builder.append("P. Add Pokemon to your bench\n");
         }
 
-        builder.append("X. End Turn");
+
+        if (controller.getHumanController().getActivePokemonCard().getEnergy().size() >=
+                controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount() && controller.getHumanController().benchHasPokemon()) {
+            builder.append("R. Retreat your Active Pokemon.\n");
+        }
+        builder.append("X. End Turn\n");
         controller.getView().setCommand(builder.toString());
 
     }
@@ -214,6 +219,80 @@ public class MainMenuListener implements KeyListener {
                 controller.setEnergyAdded(false);
                 controller.gameAITurn();
                 break;
+            }
+            case KeyEvent.VK_R: {
+                int energyNeed = controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount();
+                // make sure pressing R wont crash the game, when player cannot retreat.
+                if (!controller.getHumanController().benchHasPokemon()
+                        || (controller.getHumanController().getActivePokemonCard().getEnergy().size()
+                        < controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount())
+                        ) {
+                    StringBuilder builder = new StringBuilder("You cannot retreat now! \n");
+                    builder.append("To retreat you need:\n"
+                            + "1. Your bench has at least 1 Pokemon, and\n"
+                            + "2. Your active Pokemon has attached at least " + energyNeed + " energy card(s).\n"
+                            + "(Press Esc to exit)");
+                    controller.getView().setCommand(builder.toString());
+
+                    controller.getView().addBoardListerner(new KeyListener() {
+                        @Override
+                        public void keyTyped(KeyEvent e) {
+
+                        }
+
+                        @Override
+                        public void keyPressed(KeyEvent e) {
+                            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                                controller.getView().addBoardListerner(new MainMenuListener(controller));
+                            }
+                        }
+
+                        @Override
+                        public void keyReleased(KeyEvent e) {
+
+                        }
+                    });
+
+                    break;
+                }
+
+                //build menu
+                StringBuilder builder = new StringBuilder("Choose a Pokemon from bench and Press enter:\n");
+                builder.append("Your pokemon will:\n"
+                        + "1. Discard "
+                        + energyNeed + " energy card(s), and\n"
+                        + "2. Remove all of the stat.\n"
+                        + "Now damage point is " +
+                        controller.getHumanController().getActivePokemonCard().getDamagePoints());
+                controller.getView().setCommand(builder.toString() + "\n"
+                        + "(Press Esc to exit)");
+
+                RetreatListener retreatListener = new RetreatListener(controller, controller.getHumanController().getBenchController());
+                controller.getHumanController().getBenchController().setPokemonListener(retreatListener);
+                controller.getView().addBoardListerner(new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                            controller.getHumanController().getBenchController().removeAllListeners(retreatListener);
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        }
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                    }
+                });
+
+
+                break;
+
+
             }
             default: {
                 System.out.println("Press the correct key.");

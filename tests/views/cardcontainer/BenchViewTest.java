@@ -29,7 +29,7 @@ public class BenchViewTest {
         Attack attack = new Attack(requirements,ability);
         ArrayList<Attack> attacks = new ArrayList<Attack>();
         attacks.add(attack);
-        pokemonView= new PokemonView(energyArray,attacks,0,60,"basic");
+        pokemonView= new PokemonView(energyArray,attacks,0,60,"basic",1);
         trainerView = new TrainerView();
         benchView = new BenchView();
         benchView.addCardView(trainerView);

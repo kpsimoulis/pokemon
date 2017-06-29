@@ -19,7 +19,7 @@ public class DeckControllerTest {
     public void shuffleDeck() throws Exception {
         deck = new Deck();
         deckView = new DeckView();
-        deck.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
+        deck.populateDeck("res/deck/deck1.txt");
         deckController= new DeckController(deck,deckView);
         assertEquals(60,deckController.getCardContainer().getNoOfCards());
         deckController.shuffleDeck();
@@ -32,7 +32,7 @@ public class DeckControllerTest {
         deckView = new DeckView();
         deckController= new DeckController(deck,deckView);
         assertNull(deckController.dealCard());
-        deck.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
+        deck.populateDeck("res/deck/deck1.txt");
         deckController.setCardContainer(deck);
         assertEquals(60,deckController.getCardContainer().getNoOfCards());
         deckController.dealCard();

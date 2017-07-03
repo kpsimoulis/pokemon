@@ -147,13 +147,13 @@ public abstract class PlayerController {
         Pokemon pokemon = (Pokemon) getActivePokemonController().getPokemonController().getCard();
         HashMap<String, Integer> energyPok = getActivePokemonController().getEnergyOnCard();
 
-        for (Attack attack : pokemon.getAttack()){
+        for (Attack attack : pokemon.getAttack()) {
 
             HashMap<String, Integer> energyPokTmp = new HashMap<>(energyPok);
 
             // Check with specific energies first
 
-            if (checkAttackEnergy(attack, energyPokTmp)){
+            if (checkAttackEnergy(attack, energyPokTmp)) {
                 return true;
             }
 
@@ -163,15 +163,15 @@ public abstract class PlayerController {
 
     }
 
-    public boolean checkAttackEnergy(Attack checkAttack, HashMap<String, Integer> energyOnCard){
+    public boolean checkAttackEnergy(Attack checkAttack, HashMap<String, Integer> energyOnCard) {
 
         // Checks that required energy is not higher than energy attached to pokemon
         int totalEnergyReq = 0;
         int totalEnergyOnCard = energyOnCard.values().stream().mapToInt(Number::intValue).sum();
-        for (Requirement requirement: checkAttack.getRequirement()){
+        for (Requirement requirement : checkAttack.getRequirement()) {
             totalEnergyReq += requirement.getEnergyAmount();
         }
-        if (totalEnergyOnCard < totalEnergyReq){
+        if (totalEnergyOnCard < totalEnergyReq) {
             return false;
         }
 
@@ -179,23 +179,23 @@ public abstract class PlayerController {
         boolean reqSatisfied = true;
         for (Requirement requirement : checkAttack.getRequirement()) {
             String reqCat = requirement.getCategory();
-            if (!reqCat.equals("colorless")){
-                if (energyOnCard.containsKey(reqCat) && energyOnCard.get(reqCat) != 0){
+            if (!reqCat.equals("colorless")) {
+                if (energyOnCard.containsKey(reqCat) && energyOnCard.get(reqCat) != 0) {
                     energyOnCard.replace(reqCat, energyOnCard.get(reqCat) - requirement.getEnergyAmount());
-                }else if (!energyOnCard.containsKey(reqCat)){
+                } else if (!energyOnCard.containsKey(reqCat)) {
                     return false;
-                }else if (energyOnCard.containsKey(reqCat) && energyOnCard.get(reqCat) <= 0){
+                } else if (energyOnCard.containsKey(reqCat) && energyOnCard.get(reqCat) <= 0) {
                     return false;
-                }else{
-                    reqSatisfied=false;
+                } else {
+                    reqSatisfied = false;
                 }
-            }else{
-                reqSatisfied=false;
+            } else {
+                reqSatisfied = false;
             }
         }
 
         // If colorless energy required, check again for colorless
-        if (!reqSatisfied){
+        if (!reqSatisfied) {
             return checkAttackEnergyCol(checkAttack, energyOnCard);
         }
 
@@ -203,7 +203,7 @@ public abstract class PlayerController {
 
     }
 
-    private boolean checkAttackEnergyCol(Attack checkAttack, HashMap<String, Integer> energyOnCard){
+    private boolean checkAttackEnergyCol(Attack checkAttack, HashMap<String, Integer> energyOnCard) {
 
         int energyAmt = energyOnCard.values().stream().mapToInt(Number::intValue).sum();
 
@@ -213,17 +213,17 @@ public abstract class PlayerController {
         for (Requirement requirement : checkAttack.getRequirement()) {
             String reqCat = requirement.getCategory();
 
-            if (!reqCat.equals("colorless")){
-                if (energyOnCard.containsKey(reqCat)){
+            if (!reqCat.equals("colorless")) {
+                if (energyOnCard.containsKey(reqCat)) {
                     reqSatisfied = true;
-                }else{
+                } else {
                     return false;
                 }
-            }else{
-                if (energyAmt != 0 && energyAmt >= requirement.getEnergyAmount()){
+            } else {
+                if (energyAmt != 0 && energyAmt >= requirement.getEnergyAmount()) {
                     energyAmt -= requirement.getEnergyAmount();
-                    reqSatisfied=true;
-                }else if (energyAmt <= 0){
+                    reqSatisfied = true;
+                } else if (energyAmt <= 0) {
                     return false;
                 }
             }
@@ -235,26 +235,26 @@ public abstract class PlayerController {
     }
 
 
-    public Card dealCardDeck(){
+    public Card dealCardDeck() {
         return getDeckController().dealCard().getKey().getCard();
     }
 
-    public void dealDeckHand(){
+    public void dealDeckHand() {
         getHandController().addCard(this.dealCardDeck());
     }
 
-    public Pokemon getActivePokemonCard(){
+    public Pokemon getActivePokemonCard() {
         return (Pokemon) getActivePokemonController().getPokemonController().getCard();
     }
 
-    public void shuffleHandInDeck(){
+    public void shuffleHandInDeck() {
 
         ArrayList<CardController> removedCards = handController.removeAllCards();
-        for (CardController controller: removedCards){
+        for (CardController controller : removedCards) {
             deckController.addCard(controller.getCard());
         }
         deckController.shuffleDeck();
-        for (int i=0; i<removedCards.size(); i++){
+        for (int i = 0; i < removedCards.size(); i++) {
             dealDeckHand();
         }
 
@@ -262,10 +262,10 @@ public abstract class PlayerController {
 
     public void discardActivePokemon() {
 
-        Pokemon exActive = new Pokemon( (Pokemon) getActivePokemonController().getPokemonController().getCard());
+        Pokemon exActive = new Pokemon((Pokemon) getActivePokemonController().getPokemonController().getCard());
         activePokemonController = null;
         player.removeActivePokemon();
-        for (Energy energy: exActive.getEnergy()){
+        for (Energy energy : exActive.getEnergy()) {
             getDiscardPileController().addCard(energy);
         }
         exActive.emptyEnergy();
@@ -278,7 +278,90 @@ public abstract class PlayerController {
 
     public boolean benchHasPokemon() {
 
-        return getBenchController().getContainer().getNoOfCards()>0;
+        return getBenchController().getContainer().getNoOfCards() > 0;
 
     }
+
+    public ArrayList<Pokemon> getStage1PokemonInHand() {
+        //set is better, but this is a team poject so ArrayList is fine.
+        ArrayList<Pokemon> stage1Pokemon = new ArrayList<>();
+        ArrayList<Pokemon> result = new ArrayList<>();
+        for (Card card : getHandController().getContainer().getCards()) {
+            if (card.getClass().getSimpleName().equals("Pokemon")) {
+                Pokemon pok = (Pokemon) card;
+                if (!pok.getStage().equals("basic"))
+                    stage1Pokemon.add(pok);
+            }
+        }
+        if (stage1Pokemon.size() > 1) {
+            for (int i = 0; i < stage1Pokemon.size() - 1; i++) {
+                for (int j = stage1Pokemon.size() - 1; j > i; j--) {
+                    if (stage1Pokemon.get(i).getName().equals(stage1Pokemon.get(j).getName())) {
+                        stage1Pokemon.remove(i);
+                    }
+
+                }
+            }
+            for (int i = 0; i < stage1Pokemon.size(); i++) {
+                if (getActivePokemonCard().getName().equals(stage1Pokemon.get(i).getEvolvesFrom())) {
+                    result.add(stage1Pokemon.get(i));
+                    break;
+                } else {
+                    for (int j = 0; j < getBenchController().getContainer().getCards().size(); j++) {
+                        if (getBenchController().getContainer().getCards().get(j).getName().equals(stage1Pokemon.get(i).getEvolvesFrom())) {
+                            result.add(stage1Pokemon.get(i));
+                            break;
+                        }
+                    }
+                }
+            }
+
+        }
+        return result;
+    }
+
+    public boolean isEvolvable() {
+        return isActivePokemonEvolvable() || isBenchPokemonEvolvable();
+    }
+
+    public boolean isActivePokemonEvolvable() {
+        boolean result = false;
+        ArrayList<Pokemon> stage1Pokemon = getStage1PokemonInHand();
+
+        int numberOfStage1 = stage1Pokemon.size();
+        if (numberOfStage1 == 0) {
+            return result;
+        } else {
+            for (int i = 0; i < numberOfStage1; i++) {
+                if (getActivePokemonCard().getName().equals(stage1Pokemon.get(i).getEvolvesFrom())) {
+                    result = true;
+                    break;
+                }
+
+            }
+        }
+        return result;
+    }
+
+    public boolean isBenchPokemonEvolvable() {
+        boolean result = false;
+        ArrayList<Pokemon> stage1Pokemon = getStage1PokemonInHand();
+
+        int numberOfStage1 = stage1Pokemon.size();
+        if (numberOfStage1 == 0) {
+            return result;
+        } else {
+            for (Pokemon pok : stage1Pokemon) {
+                for (int j = 0; j < getBenchController().getContainer().getNoOfCards(); j++) {
+                    if (pok.getEvolvesFrom().equals(getBenchController().getContainer().getCards().get(j).getName())) {
+                        result = true;
+                        return result;
+
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
 }

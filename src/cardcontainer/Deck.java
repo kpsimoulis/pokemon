@@ -92,6 +92,8 @@ public class Deck extends CardContainer {
                     if (cardsParser.getCardType().equals("pokemon")) {
                         cardsParser.parseStage();
                         ArrayList<Energy> tmpEnergy = new ArrayList<Energy>();
+                        ArrayList<Pokemon> tmpPokemons = new ArrayList<Pokemon>();
+
                         if (!cardsParser.getStage().equals("basic")) {
                             cardsParser.parseEvolvesFrom();
                             cardsParser.parseCategory();
@@ -106,7 +108,8 @@ public class Deck extends CardContainer {
                                     cardsParser.getStage(), // Stage
                                     cardsParser.getEvolvesFrom(), // Evolves From
                                     cardsParser.getRetreat(),
-                                    cardsParser.getAttack()
+                                    cardsParser.getAttack(),
+                                    tmpPokemons
                             );
                             cards.add(tmpCard);
                         } else {
@@ -122,7 +125,8 @@ public class Deck extends CardContainer {
                                     cardsParser.getStage(), // Stage
                                     "", // Evolves From
                                     cardsParser.getRetreat(),
-                                    cardsParser.getAttack()
+                                    cardsParser.getAttack(),
+                                    tmpPokemons
                             );
                             cards.add(tmpCard);
                         }

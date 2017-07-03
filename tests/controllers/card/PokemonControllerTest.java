@@ -25,6 +25,8 @@ public class PokemonControllerTest {
     private Energy energy1;
     private Energy energy2;
     private PokemonController pokemonController;
+    private ArrayList<Pokemon> poks;
+
     @Before
     public void beforeEachTest(){
       ArrayList<Energy> energyArray= new ArrayList<Energy>(20);
@@ -36,7 +38,7 @@ public class PokemonControllerTest {
       Attack attack = new Attack(requirements,ability);
       ArrayList<Attack> attacks = new ArrayList<Attack>();
       attacks.add(attack);
-      pokemon1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "basic","",retreat,attacks);
+      pokemon1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "basic","",retreat,attacks,poks);
       pokemonView = new PokemonView(energyArray,attacks,0,90,"basic",1);
       energy1 = new Energy("Fight",20,"fight");
       energy2 = new Energy("Psychic",22,"psychic");

@@ -30,6 +30,8 @@ public class BenchControllerTest {
         benchView = new BenchView();
         benchController = new BenchController(bench,benchView);
         ArrayList<Energy> energyArray= new ArrayList<Energy>(20);
+        ArrayList<Pokemon> poks = null;
+
         Retreat retreat = new Retreat("fighting",1);
         Ability ability = new Ability("Rain Splash","damage","put 20 damage points on opponent","opponent-active");
         Requirement requirement=new Requirement("general",2);
@@ -38,7 +40,7 @@ public class BenchControllerTest {
         Attack attack = new Attack(requirements,ability);
         ArrayList<Attack> attacks = new ArrayList<Attack>();
         attacks.add(attack);
-        pokemon1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "basic","",retreat,attacks);
+        pokemon1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "basic","",retreat,attacks,poks);
         energy1 = new Energy("Fight",20,"fight");
 
 

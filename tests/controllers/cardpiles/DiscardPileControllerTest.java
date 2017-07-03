@@ -23,7 +23,9 @@ public class DiscardPileControllerTest {
     private DiscardPileView discardPileView;
     private DiscardPileController discardPileController;
     private Pokemon pokemon;
-@Test
+    private ArrayList<Pokemon> poks;
+
+    @Test
     public void addCards(){
     discardPile = new DiscardPile();
     discardPileView = new DiscardPileView();
@@ -37,7 +39,7 @@ public class DiscardPileControllerTest {
     Attack attack = new Attack(requirements,ability);
     ArrayList<Attack> attacks = new ArrayList<Attack>();
     attacks.add(attack);
-    pokemon = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "basic","",retreat,attacks);
+    pokemon = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "basic","",retreat,attacks,poks);
     discardPileController.addCard(pokemon);
     assertEquals(1,discardPileController.getCardContainer().getNoOfCards());
 

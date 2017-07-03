@@ -23,6 +23,8 @@ public class BenchTest {
     private Retreat retreat;
     private ArrayList<Energy> energyArray;
     private ArrayList<Attack> attacks;
+    private ArrayList<Pokemon> poks;
+
 
     @Before
     public void beforeEachTest()
@@ -43,7 +45,7 @@ public class BenchTest {
     @Test
     public void addCard() throws Exception {
 
-        Card card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "stage-one","pikachu",retreat,attacks);
+        Card card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "stage-one","pikachu",retreat,attacks,poks);
         int size = bench.getNoOfCards();
         if(bench.isFull()) {
             bench.addCard(card1);
@@ -70,11 +72,11 @@ public class BenchTest {
     @Test
     public void isFull() throws Exception {
 
-        Card card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "basic","",retreat,attacks);
-        Card card2 = new Pokemon("Glameow", 22, "pokemon", 60, energyArray, "basic","",retreat,attacks);
-        Card card3 = new Pokemon("Pikachu", 60, "pokemon", 60,energyArray, "basic","",retreat,attacks);
-        Card card4 = new Pokemon("Shellder", 47, "pokemon", 60, energyArray, "basic","",retreat,attacks);
-        Card card5 = new Pokemon("Goldeen", 20, "pokemon", 60, energyArray, "basic","",retreat,attacks);
+        Card card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "basic","",retreat,attacks,poks);
+        Card card2 = new Pokemon("Glameow", 22, "pokemon", 60, energyArray, "basic","",retreat,attacks,poks);
+        Card card3 = new Pokemon("Pikachu", 60, "pokemon", 60,energyArray, "basic","",retreat,attacks,poks);
+        Card card4 = new Pokemon("Shellder", 47, "pokemon", 60, energyArray, "basic","",retreat,attacks,poks);
+        Card card5 = new Pokemon("Goldeen", 20, "pokemon", 60, energyArray, "basic","",retreat,attacks,poks );
         bench.addCard(card1);
         bench.addCard(card2);
         bench.addCard(card3);
@@ -88,9 +90,9 @@ public class BenchTest {
     @Test
     public void swapCards() throws Exception {
 
-        Card card1 = new Pokemon("Shellder", 47, "pokemon", 60, energyArray, "basic","",retreat,attacks);
-        Card card2 = new Pokemon("Glameow", 22, "pokemon", 60, energyArray, "basic","",retreat,attacks);
-        Card card3 = new Pokemon("Pikachu", 60, "pokemon", 60, energyArray, "basic","",retreat,attacks);
+        Card card1 = new Pokemon("Shellder", 47, "pokemon", 60, energyArray, "basic","",retreat,attacks,poks);
+        Card card2 = new Pokemon("Glameow", 22, "pokemon", 60, energyArray, "basic","",retreat,attacks,poks);
+        Card card3 = new Pokemon("Pikachu", 60, "pokemon", 60, energyArray, "basic","",retreat,attacks,poks);
         bench.addCard(card1);
         bench.addCard(card2);
         bench.swapCards(card3,1);

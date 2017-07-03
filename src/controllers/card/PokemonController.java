@@ -43,6 +43,24 @@ public class PokemonController extends CardController {
         }
 
     }
+    public void attachPokemon(Pokemon pokemonCard){
+
+        Pokemon card = (Pokemon) this.getCard();
+        ((Pokemon) this.getCard()).attachPokemon(pokemonCard);
+    }
+
+    public Pokemon removeAttatchedPokemon(){
+
+        Pokemon pokemonCard = (Pokemon) this.getCard();
+        try{
+            Pokemon returnCard = pokemonCard.removeAttachedBasicPokemon();
+            return returnCard;
+        }
+        catch (NullPointerException e){
+            return null;
+        }
+
+    }
 
     public ArrayList<Attack> getAttacks() {
         return ((Pokemon) getCard()).getAttack();

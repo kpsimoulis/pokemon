@@ -22,6 +22,7 @@ public class HandTest {
     private Retreat retreat;
     private ArrayList<Energy> energyArray;
     private ArrayList<Attack> attacks;
+    private ArrayList<Pokemon> poks;
 
     @Before
     public void beforeEachTest(){
@@ -39,7 +40,7 @@ public class HandTest {
     @Test
     public void addCard() throws Exception {
 
-        Card card1 = new Pokemon("Glameow", 22, "pokemon", 60, energyArray, "basic","",retreat,attacks);
+        Card card1 = new Pokemon("Glameow", 22, "pokemon", 60, energyArray, "basic","",retreat,attacks,poks);
         hand.addCard(card1);
         assertEquals(1,hand.getNoOfCards());
     }
@@ -48,7 +49,7 @@ public class HandTest {
 
     public void chooseCard() throws Exception {
 
-        Card card1 = new Pokemon("Shellder", 47, "pokemon", 60, energyArray, "basic","",retreat,attacks);
+        Card card1 = new Pokemon("Shellder", 47, "pokemon", 60, energyArray, "basic","",retreat,attacks,poks);
         hand.addCard(card1);
         hand.chooseCard(0);
         assertEquals(0,hand.getNoOfCards());

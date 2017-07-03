@@ -3,16 +3,20 @@ package controllers.game.KeyListeners;
 import card.Card;
 import card.Energy;
 import card.Pokemon;
+import controllers.card.CardController;
 import controllers.card.PokemonController;
 import controllers.game.GameController;
+import javafx.util.Pair;
 import main.Attack;
 import views.activepokemon.ActivePokemonView;
+import views.card.CardView;
 import views.card.PokemonView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -46,6 +50,11 @@ public class MainMenuListener implements KeyListener {
                 controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount() && controller.getHumanController().benchHasPokemon()) {
             builder.append("R. Retreat your Active Pokemon.\n");
         }
+
+        if (controller.getHumanController().isEvolvable()) {
+            builder.append("V. Evolve your pokemon.\n");
+        }
+
         builder.append("X. End Turn\n");
 
 
@@ -408,8 +417,7 @@ public class MainMenuListener implements KeyListener {
                             controller.getView().setCommand(builder.toString() + "\n"
                                     + "(Press Esc to exit)");
 
-                        }
-                        else if (e.getKeyCode() == KeyEvent.VK_3) {
+                        } else if (e.getKeyCode() == KeyEvent.VK_3) {
                             StringBuilder builder = new StringBuilder("");
                             int index = 1;
                             for (Card card : controller.getHumanController().getDeckController().getCardContainer().getCards()) {
@@ -421,8 +429,7 @@ public class MainMenuListener implements KeyListener {
                             controller.getView().setCommand(builder.toString() + "\n"
                                     + "(Press Esc to exit)");
 
-                        }
-                        else if (e.getKeyCode() == KeyEvent.VK_4) {
+                        } else if (e.getKeyCode() == KeyEvent.VK_4) {
                             StringBuilder builder = new StringBuilder("");
                             int index = 1;
                             for (Card card : controller.getAIController().getDeckController().getCardContainer().getCards()) {
@@ -445,6 +452,168 @@ public class MainMenuListener implements KeyListener {
 
 
                 break;
+
+            }
+
+
+            case KeyEvent.VK_V: {
+                // make sure pressing R wont crash the game, when player cannot retreat.
+                if (!controller.getHumanController().isEvolvable()) {
+                    StringBuilder builder = new StringBuilder("You cannot evolve your any of your Pokemon now! \n");
+                    builder.append("(Press Esc to exit)");
+                    controller.getView().setCommand(builder.toString());
+
+                    controller.getView().addBoardListerner(new KeyListener() {
+                        @Override
+                        public void keyTyped(KeyEvent e) {
+
+                        }
+
+                        @Override
+                        public void keyPressed(KeyEvent e) {
+                            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                                controller.getView().addBoardListerner(new MainMenuListener(controller));
+                            }
+                        }
+
+                        @Override
+                        public void keyReleased(KeyEvent e) {
+
+                        }
+                    });
+
+                    break;
+                }
+
+
+                //build menu
+                StringBuilder builder = new StringBuilder("");
+                builder.append("Now you can do the following by Pressing: \n\n");
+
+                if (controller.getHumanController().isActivePokemonEvolvable()) {
+                    builder.append("V. Evolve your active Pokemon! \n\n");
+                }
+                if (controller.getHumanController().isBenchPokemonEvolvable()) {
+                    builder.append("B. Evolve one of your bench Pokemon! \n\n");
+
+                }
+
+                builder.append("(Press Esc to exit)\n\n");
+                controller.getView().setCommand(builder.toString());
+
+                builder.append("Available card(s): \n");
+                for (int i = 0; i < controller.getHumanController().getStage1PokemonInHand().size(); i++) {
+                    builder.append(controller.getHumanController().getStage1PokemonInHand().get(i).getName() + " evolves from " + controller.getHumanController().getStage1PokemonInHand().get(i).getEvolvesFrom() + "\n");
+                }
+                controller.getView().setCommand(builder.toString());
+                controller.getView().addBoardListerner(new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                            controller.getHumanController().getActivePokemonController().removeKeyListener(this);
+                            controller.getHumanController().getBenchController().removeAllListeners(this);
+                            controller.getView().disableKeyListener();
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        } else if (e.getKeyCode() == KeyEvent.VK_V &&
+                                controller.getHumanController().isActivePokemonEvolvable()) {
+                            //get pokemon and damage point from activepokemon controller
+                            Pokemon exActive = new Pokemon(controller.getHumanController().getActivePokemonCard());
+                            Pokemon stage1Pokemon = null;
+                            ArrayList<Energy> energies =
+                                    ((Pokemon) controller.getHumanController().getActivePokemonController().getPokemonController().getCard()).getEnergy();
+                            int exDamage = controller.getHumanController().getActivePokemonCard().getDamagePoints();
+                            ArrayList<Pokemon> stage1Pokemons = controller.getHumanController().getStage1PokemonInHand();
+                            for (Pokemon pok : stage1Pokemons) {
+                                if (pok.getEvolvesFrom().equals(controller.getHumanController().getActivePokemonCard().getName())) {
+                                    stage1Pokemon = pok;
+                                    break;
+                                }
+                            }
+                            //TODO: Detach items and clear the stat
+
+                            //clear active panel
+                            controller.getHumanController().setActivePokemonController(null);
+                            controller.getHumanController().getPlayer().removeActivePokemon();
+                            controller.getView().getBoard().getPlayerActivePanel().removeAll();
+
+
+                            // Remove from container and set as active for both player controller and in the view
+                            Pair<CardController, CardView> pair = controller.getHumanController().getHandController().removeCard(stage1Pokemon);
+
+                            ActivePokemonView activePokemonView = controller.getHumanController().
+                                    setActivePokemon(true, (PokemonController) pair.getKey(), (PokemonView) pair.getValue());
+                            controller.getView().setPlayerActive(activePokemonView);
+
+
+                            //rewrite the information from ex-activepokemon
+                            controller.getHumanController().getActivePokemonController().getPokemonController().causeDamage(exDamage);
+                            for (Energy eng : energies) {
+                                controller.getHumanController().getActivePokemonController().getPokemonController().addEnergy(eng);
+                            }
+                            exActive.emptyEnergy();
+                            controller.getHumanController().getActivePokemonCard().attachPokemon(exActive);
+                            // Remove all key listeners of this type and go back to menu
+                            controller.getHumanController().getActivePokemonController().removeKeyListener(this);
+                            controller.getView().disableKeyListener();
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        }
+                        //evolve bench pokemon
+                        else if (e.getKeyCode() == KeyEvent.VK_B &&
+                                controller.getHumanController().isBenchPokemonEvolvable()) {
+                            controller.getView().setCommand("Choose a basic Pokemon from your bench to evolve!"
+                                    + "\n(Press Esc to exit)");
+
+
+                            //get pokemon and damage point from activepokemon controller
+                            ArrayList<Pokemon> stage1Pokemons = controller.getHumanController().getStage1PokemonInHand();
+
+                            EvolveListener evolveListener = new EvolveListener(controller, controller.getHumanController().getBenchController(), stage1Pokemons);
+                            for (int i = 0; i < controller.getHumanController().getBenchController().getContainer().getCards().size(); i++) {
+                                for (Pokemon pok : stage1Pokemons) {
+
+                                    if (pok.getEvolvesFrom().equals(controller.getHumanController().getBenchController().getCardControllers().get(i).getCard().getName())) {
+                                        controller.getHumanController().getBenchController().getCardControllers().get(i).getView().setListeners(evolveListener);
+                                        break;
+                                    }
+                                }
+                            }
+                            controller.getView().addBoardListerner(new KeyListener() {
+                                @Override
+                                public void keyTyped(KeyEvent e) {
+
+                                }
+
+                                @Override
+                                public void keyPressed(KeyEvent e) {
+                                    if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                                        controller.getView().disableKeyListener();
+                                        controller.getHumanController().getBenchController().removeAllListeners(evolveListener);
+                                        controller.getView().addBoardListerner(new MainMenuListener(controller));
+                                    }
+                                }
+
+                                @Override
+                                public void keyReleased(KeyEvent e) {
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                    }
+                });
+
+
+                break;
+
 
             }
 

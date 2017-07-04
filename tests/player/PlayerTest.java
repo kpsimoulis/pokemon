@@ -28,6 +28,8 @@ public class PlayerTest {
     private ArrayList<Attack> attacks;
     private Deck newDeck;
     private Hand newHand;
+    private ArrayList<Pokemon> poks;
+
 
 
 
@@ -60,14 +62,14 @@ public class PlayerTest {
     public void putPokOnBench() throws Exception {
 
 
-        Pokemon card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "stage-one","pikachu",retreat,attacks);
+        Pokemon card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "stage-one","pikachu",retreat,attacks,poks);
         player.putPokOnBench(card1);
         assertEquals(1,player.getBench().getNoOfCards());
     }
     @Test
     public void shuffleDeck() throws Exception {
         newDeck = new Deck();
-        newDeck.populateDeck("res\\deck\\deck1.txt");
+        newDeck.populateDeck("res/deck/deck1.txt");
         player.setDeck(newDeck);
         player.shuffleDeck();
         assertEquals(60,player.getDeck().getNoOfCards());
@@ -78,7 +80,7 @@ public class PlayerTest {
     @Test
     public void drawCard() throws Exception {
         newDeck = new Deck();
-        newDeck.populateDeck("res\\deck\\deck1.txt");
+        newDeck.populateDeck("res/deck/deck1.txt");
         player.setDeck(newDeck);
         player.drawCard();
         assertEquals(59,player.getDeck().getNoOfCards());
@@ -105,7 +107,7 @@ public class PlayerTest {
     @Test
     public void hasActivePokemon() throws Exception {
         assertFalse((player.hasActivePokemon()));
-        Pokemon card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "stage-one","pikachu",retreat,attacks);
+        Pokemon card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "stage-one","pikachu",retreat,attacks,poks);
         player.setActivePokemon(card1);
         assertTrue(player.hasActivePokemon());
     }
@@ -113,7 +115,7 @@ public class PlayerTest {
     @Test
     public void getNoCardsDeck() throws Exception {
         newDeck = new Deck();
-        newDeck.populateDeck("res\\deck\\deck1.txt");
+        newDeck.populateDeck("res/deck/deck1.txt");
         player.setDeck(newDeck);
         assertEquals(60,player.getNoCardsDeck());
         player.drawCard();

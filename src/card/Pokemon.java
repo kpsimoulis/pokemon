@@ -10,12 +10,13 @@ public class Pokemon extends Card {
     private int healthPoints;
     private int damagePoints;
     private ArrayList<Energy> energy;
+    private ArrayList<Pokemon> attachedPokemon;
     private String stage;
     private String evolvesFrom;
     private Retreat retreat;
     private ArrayList<Attack> attack;
 
-    public Pokemon(String name, int index, String category, int hp, ArrayList<Energy> energy, String stage, String evolves_from, Retreat retreat, ArrayList<Attack> attack) {
+    public Pokemon(String name, int index, String category, int hp, ArrayList<Energy> energy, String stage, String evolves_from, Retreat retreat, ArrayList<Attack> attack,ArrayList<Pokemon> pokemons) {
         super(name, index, category);
         this.healthPoints = hp;
         this.damagePoints = 0;
@@ -24,6 +25,7 @@ public class Pokemon extends Card {
         this.evolvesFrom = evolves_from;
         this.retreat = retreat;
         this.attack = attack;
+        this.attachedPokemon = pokemons;
     }
 
     public Pokemon(Pokemon pokemon) {
@@ -35,6 +37,7 @@ public class Pokemon extends Card {
         this.evolvesFrom = pokemon.evolvesFrom;
         this.retreat = pokemon.retreat;
         this.attack = pokemon.attack;
+        this.attachedPokemon =pokemon.attachedPokemon;
     }
 
     @Override
@@ -108,10 +111,29 @@ public class Pokemon extends Card {
     }
 
     public Energy removeEnergy() throws NullPointerException {
-       return energy.remove(energy.size() - 1);
+        return energy.remove(energy.size() - 1);
     }
 
     public void emptyEnergy() {
         energy.clear();
     }
+
+    public void attachPokemon(Pokemon pokemon) {
+        attachedPokemon.add(pokemon);
+    }
+
+    public ArrayList<Pokemon> getAttachedPokemon() {
+        return attachedPokemon;
+    }
+
+    public Pokemon removeAttachedBasicPokemon() throws NullPointerException {
+        if (!(attachedPokemon.size() == 0))
+            return attachedPokemon.remove(attachedPokemon.size() - 1);
+        else
+            return null;
+    }
+    public void emptyAttachedPokemon() {
+        attachedPokemon.clear();
+    }
+
 }

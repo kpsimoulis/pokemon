@@ -65,6 +65,10 @@ public class PokemonAttack implements KeyListener {
             return false;
         }
 
+        if (!controller.getHumanController().checkAttackEnergy(attackCaused, activePok.getEnergyOnCard())){
+            return false;
+        }
+
         int damage = attackCaused.getAbility().getDamage();
         ActivePokemonController oppPok = controller.getAIController().getActivePokemonController();
 

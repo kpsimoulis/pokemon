@@ -27,7 +27,7 @@ public class ActivePokemonViewTest {
         Attack attack = new Attack(requirements,ability);
         ArrayList<Attack> attacks = new ArrayList<Attack>();
         attacks.add(attack);
-        pokemonView = new PokemonView(energyArray,attacks,0,90,"basic");
+        pokemonView = new PokemonView(energyArray,attacks,0,90,"basic",1);
         activePokemonView = new ActivePokemonView(pokemonView);
         activePokemonView.removePokemonView();
         assertNull(activePokemonView.getPokemonView());

@@ -1,17 +1,17 @@
 package controllers.card;
 
+import ability.Dam;
 import card.Energy;
 import card.Pokemon;
-import main.Ability;
-import main.Attack;
-import main.Requirement;
-import main.Retreat;
+import main.*;
 import org.junit.Before;
 import org.junit.Test;
 import views.card.PokemonView;
 
 import java.security.PrivateKey;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -29,7 +29,9 @@ public class PokemonControllerTest {
     public void beforeEachTest(){
       ArrayList<Energy> energyArray= new ArrayList<Energy>(20);
       Retreat  retreat = new Retreat("fighting",1);
-      Ability ability = new Ability("Rain Splash","damage","put 20 damage points on opponent","opponent-active", true);
+        ArrayList<AbilityLogic> logic = new ArrayList<AbilityLogic>();
+        logic.add(new Dam(new ArrayList<String>(Arrays.asList("dam:target:choice:opponent-bench:30"))));
+      Ability ability = new Ability("Rain Splash","damage", logic);
       Requirement requirement=new Requirement("general",2);
       ArrayList<Requirement> requirements = new ArrayList<Requirement>();
       requirements.add(requirement);

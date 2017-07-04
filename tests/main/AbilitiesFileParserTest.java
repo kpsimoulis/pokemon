@@ -23,16 +23,8 @@ public class AbilitiesFileParserTest {
     }
 
     @Test
-    public void parseAction() throws Exception {
-        abilities.parseName();
-        abilities.parseAction();
-        assertEquals("deck",abilities.getAction());
-    }
-
-    @Test
     public void parseLogic() throws Exception {
         abilities.parseName();
-        abilities.parseAction();
         abilities.parseLogic();
         assertEquals("target:them:destination:deck:bottom:choice:target:1",abilities.getLogic());
     }

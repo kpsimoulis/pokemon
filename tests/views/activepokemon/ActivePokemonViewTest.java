@@ -1,13 +1,16 @@
 package views.activepokemon;
 
+import ability.Dam;
 import card.Energy;
 import main.Ability;
+import main.AbilityLogic;
 import main.Attack;
 import main.Requirement;
 import org.junit.Test;
 import views.card.PokemonView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -20,7 +23,9 @@ public class ActivePokemonViewTest {
     @Test
     public void removePokemonView() throws Exception {
         ArrayList<Energy> energyArray= new ArrayList<Energy>(20);
-        Ability ability = new Ability("Rain Splash","damage","put 20 damage points on opponent","opponent-active");
+        ArrayList<AbilityLogic> logic = new ArrayList<AbilityLogic>();
+        logic.add(new Dam(new ArrayList<String>(Arrays.asList("dam:target:choice:opponent-bench:30"))));
+        Ability ability = new Ability("Rain Splash","damage", logic);
         Requirement requirement=new Requirement("general",2);
         ArrayList<Requirement> requirements = new ArrayList<Requirement>();
         requirements.add(requirement);

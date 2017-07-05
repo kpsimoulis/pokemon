@@ -1,15 +1,14 @@
 package cardcontainer;
 
+import ability.Dam;
 import card.Card;
 import card.Energy;
 import card.Pokemon;
-import main.Ability;
-import main.Attack;
-import main.Requirement;
-import main.Retreat;
+import main.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +23,9 @@ public class DiscardPileTest {
         ArrayList<Pokemon> poks = null;
 
         Retreat retreat = new Retreat("fighting",1);
-        Ability ability = new Ability("Rain Splash","damage","put 20 damage points on opponent","opponent-active");
+        ArrayList<AbilityLogic> logic = new ArrayList<AbilityLogic>();
+        logic.add(new Dam(new ArrayList<String>(Arrays.asList("dam:target:choice:opponent-bench:30"))));
+        Ability ability = new Ability("Rain Splash","damage", logic);
         Requirement requirement=new Requirement("general",2);
        ArrayList<Requirement> requirements = new ArrayList<Requirement>();
         requirements.add(requirement);

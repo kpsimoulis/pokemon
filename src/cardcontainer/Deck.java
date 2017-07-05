@@ -139,11 +139,10 @@ public class Deck extends CardContainer {
 
                         abilitiesParser = new AbilitiesFileParser(abilityLineVariables);
                         abilitiesParser.parseName();
-                        abilitiesParser.parseAction();
-                        abilitiesParser.parseLogic();
                         abilitiesParser.parseDescription();
+                        abilitiesParser.parseLogic();
 
-                        tmpAbility = new Ability(abilitiesParser.getName(), abilitiesParser.getAction(), abilitiesParser.getDescription(), abilitiesParser.getLogic());
+                        tmpAbility = new Ability(abilitiesParser.getName(), abilitiesParser.getDescription(), abilitiesParser.getLogic());
 
                         tmpCard = new Trainer(cardsParser.getName(),
                                 idx.incrementAndGet(),

@@ -147,7 +147,7 @@ public class PokemonView extends CardView {
         StringBuilder attack;
         attack = new StringBuilder("Attacks:\n\n");
         for (Attack aAttackInfo : attacks) {
-            if (aAttackInfo.getAbility().getAction().equals("dam")) {
+            if (aAttackInfo.getAbility().getLogic().get(0).getType().equals("dam")) {
                 attack.append(aAttackInfo.getAbility().getName()).append(" (Dmg: ").append(aAttackInfo.getAbility().getDamage()).append(")\n");
             }
             else {

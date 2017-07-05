@@ -13,12 +13,12 @@ import views.cardcontainer.BenchView;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
- * Created by luckyfang0601 on 2017-06-01.
+ * Created by luckyfang0601 on 2017-06-29.
  */
-public class BenchControllerTest {
+public class BenchControllerIT {
     private Bench bench;
     private BenchView benchView;
     private BenchController benchController;
@@ -48,7 +48,7 @@ public class BenchControllerTest {
     @Test
     public void addCard() throws Exception {
         assertEquals(0,benchController.getContainer().getNoOfCards());
-       benchController.addCard(pokemon1);
+        benchController.addCard(pokemon1);
         assertEquals(1,benchController.getContainer().getNoOfCards());
 
     }

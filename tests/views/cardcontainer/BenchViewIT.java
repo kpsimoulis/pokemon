@@ -10,12 +10,12 @@ import views.card.TrainerView;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
- * Created by luckyfang0601 on 2017-06-01.
+ * Created by luckyfang0601 on 2017-06-29.
  */
-public class BenchViewTest {
+public class BenchViewIT {
     private PokemonView pokemonView;
     private TrainerView trainerView;
     private BenchView benchView;

@@ -12,12 +12,12 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
- * Created by luckyfang0601 on 2017-05-23.
+ * Created by luckyfang0601 on 2017-06-29.
  */
-public class HandTest {
+public class HandIT {
     private Hand hand;
     private Retreat retreat;
     private ArrayList<Energy> energyArray;

@@ -40,24 +40,6 @@ public class AIPlayerControllerTest {
         assertTrue(aiPlayerController.getPlayer().hasActivePokemon());
         assertNull(aiPlayerController.setActivePokemon(false));
     }
-//
-//    @Test
-//    public void chooseActivePokemon() throws Exception {
-//        player = new Player();
-//        aiPlayerController = new AIPlayerController();
-//        aiPlayerController.getPlayer().getDeck().populateDeck("res/deck/deck1.txt");
-//        aiPlayerController.buildViewController();
-//        aiPlayerController.initiateGame();
-//        pokemon=aiPlayerController.chooseActivePokemon(false);
-//        for (Card card : aiPlayerController.getHandController().getContainer().getCards()) {
-//            if (card.equals(pokemon)) {
-//                choosePokemon=true;
-//            }
-//        }
-//        assertTrue(choosePokemon);
-//
-//
-//
-//    }
+
 
 }

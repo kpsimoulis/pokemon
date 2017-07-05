@@ -70,14 +70,13 @@ public class EvolveListener implements KeyListener {
                     ((PokemonController) pairStage1.getKey()).addEnergy(eng);
                 }
                 ((Pokemon) pairBasic.getKey().getCard()).emptyEnergy();
-//                    (Pokemon)basicCard.emptyEnergy();
                 ((Pokemon) pairStage1.getKey().getCard()).attachPokemon((Pokemon) basicCard);
                 appliedContainer.addCard(pairStage1.getKey().getCard());
                 appliedContainer.returnAllCards();
 
                 // Remove all key listeners of this type and go back to menu
-                    appliedContainer.removeAllListeners(this);
-                    controller.getView().addBoardListerner(new MainMenuListener(controller));
+                appliedContainer.removeAllListeners(this);
+                controller.getView().addBoardListerner(new MainMenuListener(controller));
                 break;
 
             }

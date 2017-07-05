@@ -457,7 +457,7 @@ public class MainMenuListener implements KeyListener {
 
 
             case KeyEvent.VK_V: {
-                // make sure pressing R wont crash the game, when player cannot retreat.
+                // make sure pressing V wont crash the game, when player cannot evolve, and more instruction.
                 if (!controller.getHumanController().isEvolvable()) {
                     StringBuilder builder = new StringBuilder("You cannot evolve your any of your Pokemon now! \n");
                     builder.append("(Press Esc to exit)");

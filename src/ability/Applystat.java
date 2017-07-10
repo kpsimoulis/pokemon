@@ -1,12 +1,14 @@
 package ability;
 
 import main.AbilityLogic;
+import main.Target;
 
 import java.util.List;
 
 public class Applystat extends AbilityLogic {
 
     private String status;
+    private Target target;
 
     public String getStatus() {
         return status;
@@ -27,6 +29,7 @@ public class Applystat extends AbilityLogic {
             throw new IllegalArgumentException("Expecting word 'status'");
         }
         logic.remove(0);
+
         if (logic.get(0).equals("paralyzed") || logic.get(0).equals("asleep") || logic.get(0).equals("stuck") || logic.get(0).equals("poisoned")) {
             setStatus(logic.get(0));
             logic.remove(0);
@@ -34,7 +37,11 @@ public class Applystat extends AbilityLogic {
         else {
             throw new IllegalArgumentException("Expecting status paralyzed, asleep, stuck or poisoned");
         }
-        parsePokemonTarget();
+
+        // Parse Target
+        this.target = new Target(logic);
+        this.logic = target.getLogic();
+
     }
 
 }

@@ -1,10 +1,15 @@
 package ability;
 
 import main.AbilityLogic;
+import main.Amount;
+import main.Target;
 
 import java.util.List;
 
 public class Heal extends AbilityLogic {
+
+    private Target target;
+    private Amount amount;
 
     public Heal(List<String> logic) {
         super("heal");
@@ -18,8 +23,12 @@ public class Heal extends AbilityLogic {
         }
         logic.remove(0);
 
-        parsePokemonTarget();
-        parseAmount();
-    }
+        // Parse Target
+        this.target = new Target(logic);
+        this.logic = target.getLogic();
 
+        // Parse Amount
+        this.amount = new Amount(logic);
+        this.logic = amount.getLogic();
+    }
 }

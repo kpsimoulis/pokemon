@@ -1,12 +1,15 @@
 package ability;
 
 import main.AbilityLogic;
+import main.Amount;
+import main.Target;
 
 import java.util.List;
 
 public class Draw extends AbilityLogic {
 
-    private int amount;
+    private Amount amount;
+    private Target target;
 
     public Draw(List<String> logic) {
         super("draw");
@@ -16,14 +19,18 @@ public class Draw extends AbilityLogic {
 
     public void parse() {
 
-        if (logic.get(0).equals("opponent")) {
-            setTarget("them");
-            logic.remove(0);
+        // Add missing target for your
+        if (logic.get(0).matches("[0-9]+")) {
+            logic.add(0, "your");
         }
-        else {
-            setTarget("you");
-        }
-        parseAmount();
+
+        // Parse Target
+        this.target = new Target(logic);
+        this.logic = target.getLogic();
+
+        // Parse Amount
+        this.amount = new Amount(logic);
+        this.logic = amount.getLogic();
 
     }
 

@@ -38,8 +38,9 @@ public class Ability {
      * @return
      */
     public int getDamage() {
-        if (isParsed() && logic.get(0).isIntegerAmount()) {
-            return Integer.parseInt(logic.get(0).getAmount().get(0));
+        if (isParsed()) {
+            return 20;
+//            return logic.get(0).getAmount().getAmount();
         }
         else {
             return 15;

@@ -48,7 +48,7 @@ public class DeckTest {
                 for (Attack attack: ((Pokemon) card).getAttack()) {
                     if (!attack.getAbility().isParsed()) {
                         System.out.println(attack.getAbility().getName() + " not supported");
-//                        System.out.println(card);
+                        System.out.println(card);
                     }
                     else {
 //                        System.out.println(attack.getAbility().getName() + " supported");

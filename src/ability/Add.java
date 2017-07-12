@@ -35,7 +35,7 @@ public class Add extends AbilityLogic {
         this.target = new Target(logic);
         this.logic = target.getLogic();
 
-        // Ask professor if trigger is required
+        // TODO Ask professor if trigger is required
         if (!logic.get(0).equals("trigger")) {
             throw new IllegalArgumentException("Expecting word 'trigger'");
         }

@@ -47,10 +47,6 @@ public class Cond extends AbilityLogic {
         logic.remove(0);
 
 
-
-
-
-
         if (condition.equals("healed")) {
 
             if (!logic.get(0).equals("target")) {

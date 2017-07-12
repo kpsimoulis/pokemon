@@ -64,10 +64,6 @@ public class Deck extends AbilityLogic {
             else {
                 throw new IllegalArgumentException("choice should be followed by you or them");
             }
-            if (!logic.get(0).equals("target")) {
-                throw new IllegalArgumentException("Expecting word 'target'");
-            }
-            logic.remove(0);
         }
 
         // Parse Amount

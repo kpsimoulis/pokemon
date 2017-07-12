@@ -1,5 +1,6 @@
 package controllers.game.KeyListeners;
 
+import ability.Dam;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
 import controllers.cardpiles.PrizeCardController;
@@ -53,26 +54,48 @@ public class PokemonAttack implements KeyListener {
 
     }
 
-    private boolean attack(int attackIndex){
+    private boolean dam(Attack attackCaused) {
+        int damage = attackCaused.getAbility().getDamage();
+        ActivePokemonController oppPok = getOppActivePok();
+        ActivePokemonController activePok = getHumanActivePok();
+        return activePok.attackPokemon(oppPok, damage);
+    }
 
-        ActivePokemonController activePok = controller.getHumanController().getActivePokemonController();
+    private void search(int attackIndex) {
+
+    }
+
+    private ActivePokemonController getHumanActivePok() {
+        return controller.getHumanController().getActivePokemonController();
+    }
+
+    private ActivePokemonController getOppActivePok() {
+        return controller.getAIController().getActivePokemonController();
+    }
+
+    private void attack(int attackIndex){
+
+        ActivePokemonController activePok = getHumanActivePok();
 
         Attack attackCaused;
         try{
             attackCaused = activePok.getPokemonController().getAttacks().get(attackIndex-1);
         }
         catch (IndexOutOfBoundsException exception){
-            return false;
+            throw exception;
         }
 
         if (!controller.getHumanController().checkAttackEnergy(attackCaused, activePok.getEnergyOnCard())){
-            return false;
+            throw new NullPointerException();
         }
 
-        int damage = attackCaused.getAbility().getDamage();
-        ActivePokemonController oppPok = controller.getAIController().getActivePokemonController();
+        boolean defeatedOpp = false;
 
-        boolean defeatedOpp = activePok.attackPokemon(oppPok, damage);
+        System.out.println(attackCaused.getAbility());
+
+        if (attackCaused.getAbility().getLogic().get(0) instanceof Dam) {
+            defeatedOpp = dam(attackCaused);
+        }
 
         StringBuilder strBuilder = new StringBuilder();
 
@@ -132,7 +155,6 @@ public class PokemonAttack implements KeyListener {
         }
         controller.getView().setCommand(strBuilder.toString());
 
-        return true;
     }
 
 }

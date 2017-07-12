@@ -40,7 +40,6 @@ public class Ability {
     public int getDamage() {
         if (isParsed()) {
             return 20;
-//            return logic.get(0).getAmount().getAmount();
         }
         else {
             return 15;

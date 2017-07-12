@@ -232,6 +232,7 @@
                         </constraints>
                         <properties>
                           <background color="-11808122"/>
+                          <name value="pnlPlayerHand"/>
                         </properties>
                         <border type="none"/>
                         <children/>
@@ -242,6 +243,7 @@
                         </constraints>
                         <properties>
                           <background color="-14596437"/>
+                          <name value="pnlPlayerBench"/>
                         </properties>
                         <border type="none"/>
                         <children/>
@@ -350,6 +352,7 @@
                         </constraints>
                         <properties>
                           <background color="-13206289"/>
+                          <name value="pnlPlayerActive"/>
                         </properties>
                         <border type="line">
                           <color color="-13452397"/>
@@ -393,6 +396,7 @@
                         </constraints>
                         <properties>
                           <background color="-13206289"/>
+                          <name value="pnlOppActive"/>
                         </properties>
                         <border type="line">
                           <color color="-4521918"/>
@@ -415,6 +419,7 @@
                   <alignmentX value="0.5"/>
                   <autoscrolls value="false"/>
                   <background color="-13206289"/>
+                  <name value="commandPanel"/>
                 </properties>
                 <border type="line">
                   <title-color color="-4473925"/>
@@ -431,6 +436,7 @@
                       <foreground color="-1"/>
                       <lineWrap value="true"/>
                       <margin top="0" left="0" bottom="0" right="0"/>
+                      <name value="txtCommand"/>
                       <tabSize value="8"/>
                       <text value=""/>
                     </properties>

@@ -243,10 +243,12 @@ public class Board {
         playerHandCards = new JPanel();
         playerHandCards.setLayout(new BorderLayout(0, 0));
         playerHandCards.setBackground(new Color(-11808122));
+        playerHandCards.setName("pnlPlayerHand");
         playerMainPanel.add(playerHandCards, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         playerBenchCards = new JPanel();
         playerBenchCards.setLayout(new BorderLayout(0, 0));
         playerBenchCards.setBackground(new Color(-14596437));
+        playerBenchCards.setName("pnlPlayerBench");
         playerMainPanel.add(playerBenchCards, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         playerPokDescPanel = new JPanel();
         playerPokDescPanel.setLayout(new BorderLayout(0, 0));
@@ -285,6 +287,7 @@ public class Board {
         playerActivePanel = new JPanel();
         playerActivePanel.setLayout(new BorderLayout(0, 0));
         playerActivePanel.setBackground(new Color(-13206289));
+        playerActivePanel.setName("pnlPlayerActive");
         MiddleLeftPanel.add(playerActivePanel, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         playerActivePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(-13452397)), null));
         MiddleRightPanel = new JPanel();
@@ -301,6 +304,7 @@ public class Board {
         opponentActivePanel = new JPanel();
         opponentActivePanel.setLayout(new BorderLayout(0, 0));
         opponentActivePanel.setBackground(new Color(-13206289));
+        opponentActivePanel.setName("pnlOppActive");
         MiddleRightPanel.add(opponentActivePanel, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         opponentActivePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(-4521918)), null));
         commandPanel = new JPanel();
@@ -308,6 +312,7 @@ public class Board {
         commandPanel.setAlignmentX(0.5f);
         commandPanel.setAutoscrolls(false);
         commandPanel.setBackground(new Color(-13206289));
+        commandPanel.setName("commandPanel");
         panel2.add(commandPanel, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(250, -1), new Dimension(250, -1), new Dimension(250, -1), 0, false));
         commandPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(-4473925)), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, new Color(-4473925)));
         cmdTextArea = new JTextArea();
@@ -316,6 +321,7 @@ public class Board {
         cmdTextArea.setForeground(new Color(-1));
         cmdTextArea.setLineWrap(true);
         cmdTextArea.setMargin(new Insets(0, 0, 0, 0));
+        cmdTextArea.setName("txtCommand");
         cmdTextArea.setTabSize(8);
         cmdTextArea.setText("");
         commandPanel.add(cmdTextArea, "Card1");

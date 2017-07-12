@@ -41,9 +41,9 @@ public class GameController {
     private boolean firstTurn;
     private boolean energyAdded;
 
-    public GameController(GameView newView) {
+    public GameController() {
 
-        view = newView;
+        view = new GameView();
         player1Controller = new HumanPlayerController();
         player2Controller = new AIPlayerController();
         view.setVisible(true);

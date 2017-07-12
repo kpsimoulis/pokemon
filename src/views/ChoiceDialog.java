@@ -21,6 +21,7 @@ public class ChoiceDialog extends JFrame {
 
     public ChoiceDialog() {
 
+        setName("Choice Dialog");
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Pokemon TCG Game");

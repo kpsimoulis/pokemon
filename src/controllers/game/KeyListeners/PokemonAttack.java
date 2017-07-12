@@ -1,10 +1,13 @@
 package controllers.game.KeyListeners;
 
+import ability.Cond;
 import ability.Dam;
+import ability.Search;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
 import controllers.cardpiles.PrizeCardController;
 import controllers.game.GameController;
+import controllers.player.PlayerController;
 import javafx.util.Pair;
 import main.Attack;
 import views.card.CardView;
@@ -61,8 +64,8 @@ public class PokemonAttack implements KeyListener {
         return activePok.attackPokemon(oppPok, damage);
     }
 
-    private void search(int attackIndex) {
-
+    private boolean search(Attack attackCaused) {
+        return false;
     }
 
     private ActivePokemonController getHumanActivePok() {
@@ -91,10 +94,25 @@ public class PokemonAttack implements KeyListener {
 
         boolean defeatedOpp = false;
 
-        System.out.println(attackCaused.getAbility());
+        if (attackCaused.getAbility().getLogic().get(0) instanceof Cond) {
+            int coinResult = controller.getHumanController().getCoinController().flipCoin();
+            // Is head
+            if (coinResult == 1) {
+
+            }
+            // Is tail
+            else {
+
+            }
+
+        }
+
 
         if (attackCaused.getAbility().getLogic().get(0) instanceof Dam) {
             defeatedOpp = dam(attackCaused);
+        }
+        else if (attackCaused.getAbility().getLogic().get(0) instanceof Search) {
+            defeatedOpp = search(attackCaused);
         }
 
         StringBuilder strBuilder = new StringBuilder();

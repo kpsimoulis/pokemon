@@ -80,7 +80,7 @@ public abstract class CardView extends JLayeredPane {
         return infoTable.getModel().getValueAt(0, 1).toString();
     }
 
-    protected String getCardType() {
+    public String getCardType() {
         return infoTable.getModel().getValueAt(1, 1).toString();
     }
 

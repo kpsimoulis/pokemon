@@ -72,51 +72,55 @@ public class AbilitiesFileParser {
             String type = tmpLogic.get(0);
             tmpLogic.remove(0);
 
-            if (type.equals("dam")) {
-                logic.add(new Dam(tmpLogic));
-            }
-            else if (type.equals("heal")) {
-                logic.add(new Heal(tmpLogic));
-            }
-            else if (type.equals("deenergize")) {
-                logic.add(new Deenergize(tmpLogic));
-            }
-            else if (type.equals("reenergize")) {
-                logic.add(new Reenergize(tmpLogic));
-            }
-            else if (type.equals("redamage")) {
-                logic.add(new Redamage(tmpLogic));
-            }
-            else if (type.equals("swap")) {
-                logic.add(new Swap(tmpLogic));
-            }
-            else if (type.equals("destat")) {
-                logic.add(new Destat(tmpLogic));
-            }
-            else if (type.equals("applystat")) {
-                logic.add(new Applystat(tmpLogic));
-            }
-            else if (type.equals("draw")) {
-                logic.add(new Draw(tmpLogic));
-            }
-            else if (type.equals("search")) {
-                logic.add(new Search(tmpLogic));
-            }
-            else if (type.equals("deck")) {
-                logic.add(new Deck(tmpLogic));
-            }
-            else if (type.equals("shuffle")) {
-                logic.add(new Shuffle(tmpLogic));
-            }
-            else if (type.equals("cond")) {
-                logic.add(new Cond(tmpLogic));
-            }
-            else if (type.equals("add")) {
-                logic.add(new Add(tmpLogic));
-            }
-            else {
-                throw new IllegalArgumentException("Invalid Ability: " + type);
-            }
+            ParserHelper parser = new ParserHelper();
+
+            logic.add(parser.getAbilityByLogic(type, tmpLogic));
+
+//            if (type.equals("dam")) {
+//                logic.add(new Dam(tmpLogic));
+//            }
+//            else if (type.equals("heal")) {
+//                logic.add(new Heal(tmpLogic));
+//            }
+//            else if (type.equals("deenergize")) {
+//                logic.add(new Deenergize(tmpLogic));
+//            }
+//            else if (type.equals("reenergize")) {
+//                logic.add(new Reenergize(tmpLogic));
+//            }
+//            else if (type.equals("redamage")) {
+//                logic.add(new Redamage(tmpLogic));
+//            }
+//            else if (type.equals("swap")) {
+//                logic.add(new Swap(tmpLogic));
+//            }
+//            else if (type.equals("destat")) {
+//                logic.add(new Destat(tmpLogic));
+//            }
+//            else if (type.equals("applystat")) {
+//                logic.add(new Applystat(tmpLogic));
+//            }
+//            else if (type.equals("draw")) {
+//                logic.add(new Draw(tmpLogic));
+//            }
+//            else if (type.equals("search")) {
+//                logic.add(new Search(tmpLogic));
+//            }
+//            else if (type.equals("deck")) {
+//                logic.add(new Deck(tmpLogic));
+//            }
+//            else if (type.equals("shuffle")) {
+//                logic.add(new Shuffle(tmpLogic));
+//            }
+//            else if (type.equals("cond")) {
+//                logic.add(new Cond(tmpLogic));
+//            }
+//            else if (type.equals("add")) {
+//                logic.add(new Add(tmpLogic));
+//            }
+//            else {
+//                throw new IllegalArgumentException("Invalid Ability: " + type);
+//            }
         }
     }
 

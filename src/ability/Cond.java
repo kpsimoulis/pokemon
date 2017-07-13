@@ -1,6 +1,7 @@
 package ability;
 
 import main.AbilityLogic;
+import main.ParserHelper;
 import main.Target;
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class Cond extends AbilityLogic {
 
     public void parse() {
 
+        ParserHelper parser = new ParserHelper();
+
         this.conditionIsMet = new ArrayList<AbilityLogic>();
         this.conditionIsNotMet = new ArrayList<AbilityLogic>();
 
@@ -64,7 +67,7 @@ public class Cond extends AbilityLogic {
             logic.remove(0);
             String tmpLogic = logic.get(logic.size() - 1);
             logic.remove(logic.size() - 1);
-            this.abilityRequirement = getCond(abilityType);
+            this.abilityRequirement = parser.getAbilityByLogic(abilityType, logic);
             this.logic.add(tmpLogic);
 
         }
@@ -98,7 +101,7 @@ public class Cond extends AbilityLogic {
             String type1 = logic.get(0);
             logic.remove(0);
 
-            AbilityLogic tmp = getCond(type1);
+            AbilityLogic tmp = parser.getAbilityByLogic(type1, logic);
 
             // Check if Logic is parsed
             if (tmp.getLogic().size() == 0) {
@@ -108,37 +111,10 @@ public class Cond extends AbilityLogic {
                     setLogic(new LinkedList<String>(Arrays.asList(condItems[1].split(":(?![^\\(\\[]*[\\]\\)])", -1))));
                     String type2 = logic.get(0);
                     logic.remove(0);
-                    conditionIsNotMet.add(getCond(type2));
+                    conditionIsNotMet.add(parser.getAbilityByLogic(type2, logic));
                 }
             }
         }
     }
 
-    public AbilityLogic getCond(String type) {
-
-        if (type.equals("dam")) {
-            return new Dam(logic);
-        }
-        else if (type.equals("heal")) {
-            return new Heal(logic);
-        }
-        else if (type.equals("deenergize")) {
-            return new Deenergize(logic);
-        }
-        else if (type.equals("applystat")) {
-            return new Applystat(logic);
-        }
-        else if (type.equals("shuffle")) {
-            return new Shuffle(logic);
-        }
-        else if (type.equals("search")) {
-            return new Search(logic);
-        }
-        else if (type.equals("deck")) {
-            return new Deck(logic);
-        }
-        else {
-            throw new IllegalArgumentException("Ability: " + type + " for cond not implemented");
-        }
-    }
 }

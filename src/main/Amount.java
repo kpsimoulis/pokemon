@@ -66,6 +66,22 @@ public class Amount {
         }
     }
 
+    public boolean isCalculated() {
+        return calculated;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public int getMultiplier() {
+        return multiplier;
+    }
+
     public boolean isIntegerAmount(String str) {
         return str.matches("[0-9]+");
     }

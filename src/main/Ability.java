@@ -34,16 +34,11 @@ public class Ability {
     }
 
     /**
-     * TODO Fix damage parsing
+     * Temp until we refactor all usages
      * @return
      */
     public int getDamage() {
-        if (isParsed()) {
-            return 20;
-        }
-        else {
-            return 15;
-        }
+        return 0;
     }
 
     public boolean isParsed() {

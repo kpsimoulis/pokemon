@@ -42,18 +42,6 @@ public class Attack {
 
     /**
      * Attack is supported
-     *
-     * supported:
-     * dam
-     *
-     * TODO:
-     * applystat
-     * cond
-     * deck
-     * draw
-     * redamage
-     * search
-     *
      * @return boolean
      */
     public boolean isSupported() {

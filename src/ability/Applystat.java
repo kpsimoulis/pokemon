@@ -44,4 +44,11 @@ public class Applystat extends AbilityLogic {
 
     }
 
+    @Override
+    public String toString() {
+        return "Applystat{" +
+                "status='" + status + '\'' +
+                ", target=" + target +
+                '}';
+    }
 }

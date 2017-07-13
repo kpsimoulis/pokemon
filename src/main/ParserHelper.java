@@ -127,6 +127,13 @@ public class ParserHelper {
         }
     }
 
+    public void printAttacksByType(String type) {
+        attacks.forEach(s -> {
+            if (s.getAbility().getLogic().get(0).getType().equals(type))
+                System.out.println(s.getAbility().getLogic().get(0));
+        });
+    }
+
     /**
      * Hardest ones to parse, need to verify
      */

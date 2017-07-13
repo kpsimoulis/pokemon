@@ -9,7 +9,10 @@ public class DeckTest {
 
         // Print all the cards that have been parsed
         helper.parse();
-        helper.printAll();
+//        helper.printAll();
+
+        // Print Attacks of specific type
+        helper.printAttacksByType("dam");
 
         // Attack with Multiple Abilities are Hardest ones to implement
 //        helper.printAttacksWithMultipleAbilities();

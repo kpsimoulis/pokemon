@@ -34,4 +34,11 @@ public class Draw extends AbilityLogic {
 
     }
 
+    @Override
+    public String toString() {
+        return "Draw{" +
+                "amount=" + amount +
+                ", target=" + target +
+                '}';
+    }
 }

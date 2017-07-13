@@ -117,4 +117,14 @@ public class Cond extends AbilityLogic {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Cond{" +
+                "condition='" + condition + '\'' +
+                ", target=" + target +
+                ", abilityRequirement=" + abilityRequirement +
+                ", conditionIsMet=" + conditionIsMet +
+                ", conditionIsNotMet=" + conditionIsNotMet +
+                '}';
+    }
 }

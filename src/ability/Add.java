@@ -73,4 +73,13 @@ public class Add extends AbilityLogic {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Add{" +
+                "target=" + target +
+                ", triggerTarget=" + triggerTarget +
+                ", triggerCondition='" + triggerCondition + '\'' +
+                ", ability=" + ability +
+                '}';
+    }
 }

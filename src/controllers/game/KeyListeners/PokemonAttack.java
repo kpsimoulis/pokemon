@@ -3,6 +3,7 @@ package controllers.game.KeyListeners;
 import ability.Cond;
 import ability.Dam;
 import ability.Search;
+import card.Card;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
 import controllers.cardpiles.PrizeCardController;
@@ -58,6 +59,8 @@ public class PokemonAttack implements KeyListener {
 
     }
 
+//    private int countAmount(String )
+
     private boolean dam(Dam dam) {
         int damage = dam.getAmount().getAmount();
         this.totalDamage += damage;
@@ -96,24 +99,34 @@ public class PokemonAttack implements KeyListener {
 
         boolean defeatedOpp = false;
 
-        if (attackCaused.getAbility().getLogic().get(0) instanceof Cond) {
-            CoinController coinController = controller.getHumanController().getCoinController();
-            if (coinController.getCoin().isHead()) {
+        // Process Ability
+        for (AbilityLogic ability : attackCaused.getAbility().getLogic()) {
 
+            if (ability instanceof Cond) {
+                CoinController coinController = controller.getHumanController().getCoinController();
+                if (coinController.getCoin().isHead()) {
+
+                }
+                else {
+
+                }
+
+            }
+
+
+            if (ability instanceof Dam) {
+                defeatedOpp = dam((Dam) ability);
+            }
+            else if (ability instanceof Search) {
+                defeatedOpp = search(attackCaused);
             }
             else {
-
+                System.out.println("skipping ability" + ability);
             }
 
+
         }
 
-
-        if (attackCaused.getAbility().getLogic().get(0) instanceof Dam) {
-            defeatedOpp = dam((Dam) attackCaused.getAbility().getLogic().get(0));
-        }
-        else if (attackCaused.getAbility().getLogic().get(0) instanceof Search) {
-            defeatedOpp = search(attackCaused);
-        }
 
         StringBuilder strBuilder = new StringBuilder();
 

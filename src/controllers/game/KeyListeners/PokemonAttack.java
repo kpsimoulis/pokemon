@@ -10,6 +10,8 @@ import controllers.coin.CoinController;
 import controllers.game.GameController;
 import controllers.player.PlayerController;
 import javafx.util.Pair;
+import main.AbilityLogic;
+import main.Amount;
 import main.Attack;
 import views.card.CardView;
 
@@ -19,6 +21,7 @@ import java.awt.event.KeyListener;
 public class PokemonAttack implements KeyListener {
 
     private GameController controller;
+    private int totalDamage = 0;
 
     public PokemonAttack(GameController controller) {
         this.controller = controller;
@@ -55,8 +58,9 @@ public class PokemonAttack implements KeyListener {
 
     }
 
-    private boolean dam(Attack attackCaused) {
-        int damage = attackCaused.getAbility().getDamage();
+    private boolean dam(Dam dam) {
+        int damage = dam.getAmount().getAmount();
+        this.totalDamage += damage;
         ActivePokemonController oppPok = getOppActivePok();
         ActivePokemonController activePok = getHumanActivePok();
         return activePok.attackPokemon(oppPok, damage);
@@ -105,7 +109,7 @@ public class PokemonAttack implements KeyListener {
 
 
         if (attackCaused.getAbility().getLogic().get(0) instanceof Dam) {
-            defeatedOpp = dam(attackCaused);
+            defeatedOpp = dam((Dam) attackCaused.getAbility().getLogic().get(0));
         }
         else if (attackCaused.getAbility().getLogic().get(0) instanceof Search) {
             defeatedOpp = search(attackCaused);
@@ -115,7 +119,7 @@ public class PokemonAttack implements KeyListener {
 
         strBuilder.append("Ability used: ");
         strBuilder.append(attackCaused.getAbility().getName()).append(",\nDmg Caused: ")
-                .append(attackCaused.getAbility().getDamage()).append("\nTurn Ended.\n");
+                .append(totalDamage).append("\nTurn Ended.\n");
 
         if (defeatedOpp){
 

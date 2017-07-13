@@ -1,5 +1,6 @@
 package controllers.player;
 
+import ability.Dam;
 import card.Card;
 import card.Energy;
 import card.Pokemon;
@@ -159,7 +160,15 @@ public class AIPlayerController extends PlayerController {
         //Temporarily take a random possible attack
         Random rand = new Random();
         int randomIdx = rand.nextInt(possibleAttacks.size());
-        int dmg = possibleAttacks.get(randomIdx).getAbility().getDamage();
+        Attack randomAttack = possibleAttacks.get(randomIdx);
+        // Default damage in case attack has no amount
+        int dmg = 0;
+        // TODO Handle other attacks for AI
+        if (randomAttack.getAbility().getLogic().get(0) instanceof Dam) {
+            Dam dam = (Dam) randomAttack.getAbility().getLogic().get(0);
+            dmg = dam.getAmount().getAmount();
+        }
+
         getActivePokemonController().attackPokemon(opponentPokemon, dmg);
 
         return possibleAttacks.get(randomIdx);

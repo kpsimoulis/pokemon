@@ -1,5 +1,6 @@
 package views.card;
 
+import ability.Dam;
 import card.Energy;
 import main.Attack;
 import main.Requirement;
@@ -148,7 +149,8 @@ public class PokemonView extends CardView {
         attack = new StringBuilder("Attacks:\n\n");
         for (Attack aAttackInfo : attacks) {
             if (aAttackInfo.getAbility().getLogic().get(0).getType().equals("dam")) {
-                attack.append(aAttackInfo.getAbility().getName()).append(" (Dmg: ").append(aAttackInfo.getAbility().getDamage()).append(")\n");
+                Dam dam = (Dam) aAttackInfo.getAbility().getLogic().get(0);
+                attack.append(aAttackInfo.getAbility().getName()).append(" (Dmg: ").append(dam.getAmount().getAmount()).append(")\n");
             }
             else {
                 attack.append(aAttackInfo.getAbility().getName()).append(" (Desc: ").append(aAttackInfo.getAbility().getDescription()).append(")\n");

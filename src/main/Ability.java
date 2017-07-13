@@ -33,18 +33,6 @@ public class Ability {
         return description;
     }
 
-    /**
-     * TODO Fix damage parsing
-     * @return
-     */
-    public int getDamage() {
-        if (isParsed()) {
-            return 20;
-        }
-        else {
-            return 15;
-        }
-    }
 
     public boolean isParsed() {
         for (AbilityLogic tmpLogic : logic) {

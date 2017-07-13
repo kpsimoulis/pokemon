@@ -93,4 +93,17 @@ public class Search extends AbilityLogic {
 
     }
 
+    @Override
+    public String toString() {
+        return "Search{" +
+                "target=" + target +
+                ", targetCategory='" + targetCategory + '\'' +
+                ", source='" + source + '\'' +
+                ", filterType='" + filterType + '\'' +
+                ", filterCategory='" + filterCategory + '\'' +
+                ", filterTotal=" + filterTotal +
+                ", filterTarget='" + filterTarget + '\'' +
+                ", amount=" + amount +
+                '}';
+    }
 }

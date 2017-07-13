@@ -31,4 +31,12 @@ public class Heal extends AbilityLogic {
         this.amount = new Amount(logic);
         this.logic = amount.getLogic();
     }
+
+    @Override
+    public String toString() {
+        return "Heal{" +
+                "target=" + target +
+                ", amount=" + amount +
+                '}';
+    }
 }

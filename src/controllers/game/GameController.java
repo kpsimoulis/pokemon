@@ -1,5 +1,6 @@
 package controllers.game;
 
+import ability.Dam;
 import card.Pokemon;
 import controllers.card.CardController;
 import controllers.cardcontainer.CardContainerController;
@@ -265,8 +266,15 @@ public class GameController {
         if (attack_caused == null){
             sb.append("None").append("\nTurn Ended.\n");
         }else{
+            // Default damage amount
+            int dmg = 0;
+            if (attack_caused.getAbility().getLogic().get(0) instanceof Dam) {
+                Dam dam = (Dam) attack_caused.getAbility().getLogic().get(0);
+                dmg = dam.getAmount().getAmount();
+            }
+
             sb.append(attack_caused.getAbility().getName()).append(",\nDmg Caused: ")
-                    .append(attack_caused.getAbility().getDamage()).append("\nTurn Ended.\n");
+                    .append(dmg).append("\nTurn Ended.\n");
         }
 
         if (player1Controller.getActivePokemonCard().getHealthPoints() <= player1Controller.getActivePokemonCard().getDamagePoints()) {

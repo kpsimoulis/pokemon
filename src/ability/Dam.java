@@ -40,4 +40,11 @@ public class Dam extends AbilityLogic {
         this.logic = amount.getLogic();
     }
 
+    @Override
+    public String toString() {
+        return "Dam{" +
+                "target=" + target +
+                ", amount=" + amount +
+                '}';
+    }
 }

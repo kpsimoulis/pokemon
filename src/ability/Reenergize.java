@@ -43,4 +43,12 @@ public class Reenergize extends AbilityLogic {
 
     }
 
+    @Override
+    public String toString() {
+        return "Reenergize{" +
+                "source=" + source +
+                ", destination=" + destination +
+                ", amount=" + amount +
+                '}';
+    }
 }

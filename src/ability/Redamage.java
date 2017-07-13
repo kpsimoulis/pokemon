@@ -43,4 +43,12 @@ public class Redamage extends AbilityLogic {
 
     }
 
+    @Override
+    public String toString() {
+        return "Redamage{" +
+                "source=" + source +
+                ", destination=" + destination +
+                ", amount=" + amount +
+                '}';
+    }
 }

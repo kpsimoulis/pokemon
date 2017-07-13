@@ -31,4 +31,12 @@ public class Deenergize extends AbilityLogic {
         this.amount = new Amount(logic);
         this.logic = amount.getLogic();
     }
+
+    @Override
+    public String toString() {
+        return "Deenergize{" +
+                "target=" + target +
+                ", amount=" + amount +
+                '}';
+    }
 }

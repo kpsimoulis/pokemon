@@ -18,11 +18,11 @@ public abstract class ContainerView extends JPanel {
 
         cardViews = new ArrayList<CardView>(initialCapacity);
 
-        this.setPreferredSize(new Dimension(900, 100));
+        this.setPreferredSize(new Dimension(900, 120));
 
         scrollPane = new JScrollPane();
+        scrollPane.setPreferredSize(new Dimension(900, 120));
         scrollPane.setName("cardScrolls");
-        scrollPane.setPreferredSize(new Dimension(900, 100));
         scrollPane.setOpaque(false);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);

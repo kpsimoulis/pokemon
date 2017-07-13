@@ -6,6 +6,7 @@ import ability.Search;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
 import controllers.cardpiles.PrizeCardController;
+import controllers.coin.CoinController;
 import controllers.game.GameController;
 import controllers.player.PlayerController;
 import javafx.util.Pair;
@@ -15,9 +16,6 @@ import views.card.CardView;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-/**
- * Created by mikce_000 on 09-Jun-2017.
- */
 public class PokemonAttack implements KeyListener {
 
     private GameController controller;
@@ -95,12 +93,10 @@ public class PokemonAttack implements KeyListener {
         boolean defeatedOpp = false;
 
         if (attackCaused.getAbility().getLogic().get(0) instanceof Cond) {
-            int coinResult = controller.getHumanController().getCoinController().flipCoin();
-            // Is head
-            if (coinResult == 1) {
+            CoinController coinController = controller.getHumanController().getCoinController();
+            if (coinController.getCoin().isHead()) {
 
             }
-            // Is tail
             else {
 
             }

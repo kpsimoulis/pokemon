@@ -1,6 +1,7 @@
 package ability;
 
 import main.AbilityLogic;
+import main.ParserHelper;
 import main.Target;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class Add extends AbilityLogic {
     }
 
     public void parse() {
+        ParserHelper parser = new ParserHelper();
+
         this.ability = new ArrayList<AbilityLogic>();
 
         if (!logic.get(0).equals("target")) {
@@ -66,36 +69,7 @@ public class Add extends AbilityLogic {
             setLogic(new LinkedList<String>(Arrays.asList(logicItems[i].split(":"))));
             String type = logic.get(0);
             logic.remove(0);
-            this.ability.add(getCond(type));
-        }
-    }
-
-    // TODO Refactor this and put it in one place
-    public AbilityLogic getCond(String type) {
-
-        if (type.equals("dam")) {
-            return new Dam(logic);
-        }
-        else if (type.equals("heal")) {
-            return new Heal(logic);
-        }
-        else if (type.equals("deenergize")) {
-            return new Deenergize(logic);
-        }
-        else if (type.equals("applystat")) {
-            return new Applystat(logic);
-        }
-        else if (type.equals("shuffle")) {
-            return new Shuffle(logic);
-        }
-        else if (type.equals("search")) {
-            return new Search(logic);
-        }
-        else if (type.equals("deck")) {
-            return new Deck(logic);
-        }
-        else {
-            throw new IllegalArgumentException("Ability: " + type + " for cond not implemented");
+            this.ability.add(parser.getAbilityByLogic(type, logic));
         }
     }
 

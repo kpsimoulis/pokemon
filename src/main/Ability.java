@@ -67,4 +67,19 @@ public class Ability {
                 ", logic='" + logic + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Ability ability = (Ability) o;
+
+        return name != null ? name.equals(ability.name) : ability.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
 }

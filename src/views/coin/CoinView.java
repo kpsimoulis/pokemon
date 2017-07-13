@@ -9,9 +9,9 @@ public class CoinView extends JPanel{
 
     public CoinView(){
 
-        this.setMaximumSize(new Dimension(70, 70));
+        this.setMaximumSize(new Dimension(50, 50));
         coinImg = new JButton();
-        coinImg.setBounds(0,0,60,60);
+        coinImg.setBounds(0,0,50,50);
         ImageIcon coverImg = new ImageIcon(getClass().getResource("/images/pCoin.png"));
         coverImg.setImage(coverImg.getImage().getScaledInstance(coinImg.getWidth(), coinImg.getHeight(),  java.awt.Image.SCALE_SMOOTH));
         coinImg.setIcon(coverImg);

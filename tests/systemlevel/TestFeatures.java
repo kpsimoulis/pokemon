@@ -45,7 +45,7 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
         frame = findFrame(GameView.class).using(robot());
     }
 
-    private void setActive() {
+    private void setActive(String pokType) {
         // Get Hand and pokemons
         JScrollPaneFixture hand = frame.panel("pnlPlayerHand").panel(new GenericTypeMatcher<HandView>(HandView.class) {
             @Override
@@ -60,7 +60,7 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
 
         cardHolder = (JPanel) hand.target().getViewport().getView();
 
-        Collection<Component> pokemonCards = getAllPokemonCards();
+        Collection<Component> pokemonCards = getAllPokemonCards(pokType);
 
         // Get first pokemon
         PokemonView active = (PokemonView) pokemonCards.iterator().next();
@@ -75,7 +75,7 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
     @Test
     public void selectActiveBench() {
 
-        setActive();
+        setActive("psychic");
 
         // Select bench pokemon if remaining in hand
         boolean setBench = false;
@@ -84,12 +84,13 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
                 "2. End Turn";
         while (frame.textBox("txtCommand").text().equals(expectingText)) {
             frame.pressKey(VK_1);
-            Collection<Component> remainingCards = getAllPokemonCards();
+            Collection<Component> remainingCards = getAllPokemonCards("");
             JTableFixture nextCard = new JTableFixture(robot(), ((PokemonView) remainingCards.iterator().next()).getInfoTable());
             nextCard.click().pressKey(VK_ENTER);
             setBench = true;
         }
 
+        pause(2000);
         if (setBench) {
             JPanelFixture bench = frame.panel("pnlPlayerBench").panel(new GenericTypeMatcher<BenchView>(BenchView.class) {
                 @Override
@@ -97,6 +98,7 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
                     return bench.getCardViews().size() > 0;
                 }
             });
+            pause(2000);
             assertNotNull(bench);
         }
         assertEquals(1, frame.panel("pnlPlayerActive").target().getComponentCount());
@@ -106,7 +108,7 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
     @Test
     public void endTurn() {
 
-        setActive();
+        setActive("psychic");
 
         frame.pressKey(VK_2);
 
@@ -125,20 +127,20 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
     public void attachEnergy() {
 
         // Choose active and bench and start game
-        setActive();
+        setActive("psychic");
         String expectingText = "You can now do the following:\n" +
                 "1. Add Pokemon to your bench\n" +
                 "2. End Turn";
         while (frame.textBox("txtCommand").text().equals(expectingText)) {
             frame.pressKey(VK_1);
-            Collection<Component> remainingCards = getAllPokemonCards();
+            Collection<Component> remainingCards = getAllPokemonCards("");
             JTableFixture nextCard = new JTableFixture(robot(), ((PokemonView) remainingCards.iterator().next()).getInfoTable());
             nextCard.click().pressKey(VK_ENTER);
         }
 
         //Press Energy Option
         frame.pressKey(VK_ENTER);
-        pause(5000);
+        pause(2000);
         if (frame.textBox("txtCommand").text().contains("E. Add Energy to a pokemon")) {
 
             frame.pressKey(VK_E);
@@ -151,12 +153,7 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
             pause(1000);
 
             // Testing if clicking on other cards trigger event
-            Collection<Component> possibleCards = robot().finder().findAll(cardHolder, new ComponentMatcher() {
-                @Override
-                public boolean matches(Component card) {
-                    return card instanceof CardView && !(card instanceof EnergyView);
-                }
-            });
+            Collection<Component> possibleCards = robot().finder().findAll(cardHolder, card -> card instanceof CardView && !(card instanceof EnergyView));
 
             JTableFixture cardTest = new JTableFixture(robot(), ((CardView) possibleCards.iterator().next()).getInfoTable());
             cardTest.click().pressKey(VK_ENTER);
@@ -165,19 +162,14 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
             assertEquals(0, ((PokemonView) component).getNoEnergies());
 
             // Testing adding correct energy
-            Collection<Component> energiesInHand = robot().finder().findAll(cardHolder, new ComponentMatcher() {
-                @Override
-                public boolean matches(Component energy) {
-                    return energy instanceof EnergyView;
-                }
-            });
+            Collection<Component> energiesInHand = robot().finder().findAll(cardHolder, energy -> energy instanceof EnergyView);
 
             JTableFixture energyChosen = new JTableFixture(robot(), ((EnergyView) energiesInHand.iterator().next()).getInfoTable());
             energyChosen.click().pressKey(VK_ENTER);
 
             activePok.click();
 
-            pause(5000);
+            pause(2000);
 
             assertEquals(1, ((PokemonView) component).getNoEnergies());
 
@@ -188,14 +180,15 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
     @Test
     public void pokAttack() {
 
-        setActive();
+        setActive("fight");
         frame.pressKey(VK_2);
 
         frame.pressKey(VK_ENTER);
 
         JTextComponentFixture cmdPanel = frame.textBox("txtCommand");
 
-        assertTrue(cmdPanel.text().contains("E. Add Energy to a pokemon"));
+        pause(2000);
+        assertTrue(cmdPanel.text().contains("Add Energy to a pokemon"));
 
         frame.pressKey(VK_E);
 
@@ -205,12 +198,7 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
         // Pick active pokemon
         activePok.click().pressKey(VK_ENTER);
 
-        Collection<Component> energiesInHand = robot().finder().findAll(cardHolder, new ComponentMatcher() {
-            @Override
-            public boolean matches(Component energy) {
-                return energy instanceof EnergyView && Objects.equals(((EnergyView) energy).getCardType(), ((PokemonView) component).getCardType());
-            }
-        });
+        Collection<Component> energiesInHand = robot().finder().findAll(cardHolder, energy -> energy instanceof EnergyView && Objects.equals(((EnergyView) energy).getCardType(), ((PokemonView) component).getCardType()));
         pause(1000);
         // Choose Energy
         JTableFixture energyChosen = new JTableFixture(robot(), ((EnergyView) energiesInHand.iterator().next()).getInfoTable());
@@ -227,18 +215,24 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
                 frame.pressKey(0x30 + attackIdx);
             }
 
+            pause(2000);
             Component oppActivePok = robot().finder().findByType(frame.panel("pnlOppActive").target(), PokemonView.class);
 
             assertTrue(((PokemonView) oppActivePok).getDmgPts() > 0);
         }
 
+        //assertTrue(true);
+
     }
 
-    private Collection<Component> getAllPokemonCards() {
+    private Collection<Component> getAllPokemonCards(String pokType) {
         return robot().finder().findAll(cardHolder, new ComponentMatcher() {
             @Override
             public boolean matches(Component pokemon) {
-                return pokemon instanceof PokemonView;
+                if (pokType.equals(""))
+                    return pokemon instanceof PokemonView;
+                else
+                    return pokemon instanceof PokemonView && ((PokemonView) pokemon).getCardType().equals(pokType);
             }
         });
     }

@@ -77,18 +77,64 @@ public class ParserHelper {
     /**
      * Print everything that has been parsed
      */
-    public void print() {
+    public void printAll() {
+        printPokemon();
+        System.out.println();
+        printTrainer();
+        System.out.println();
+        printEnergy();
+        System.out.println();
+        printAttack();
+    }
+
+    public void printPokemon() {
+        printObj("pokemon");
+    }
+
+    public void printTrainer() {
+        printObj("trainer");
+    }
+
+    public void printEnergy() {
+        printObj("energy");
+    }
+
+    public void printAttack() {
+        printObj("attack");
+    }
+
+    private void printObj(String type) {
         if (parsed) {
-            System.out.println("Pokemon:");
-            pokemons.forEach(s -> System.out.println(s));
-            System.out.println("Trainer:");
-            trainers.forEach(s -> System.out.println(s));
-            System.out.println("Energy:");
-            energies.forEach(s -> System.out.println(s));
+            if (type.equals("pokemon")) {
+                System.out.println("Pokemon:");
+                pokemons.forEach(s -> System.out.println(s));
+            }
+            else if (type.equals("trainer")) {
+                System.out.println("Trainer:");
+                trainers.forEach(s -> System.out.println(s));
+            }
+            else if (type.equals("energy")) {
+                System.out.println("Energy:");
+                energies.forEach(s -> System.out.println(s));
+            }
+            else if (type.equals("attack")) {
+                System.out.println("Attack:");
+                attacks.forEach(s -> System.out.println(s));
+            }
         }
         else {
             System.out.println("Please run parse() first");
         }
+    }
+
+    /**
+     * Hardest ones to parse, need to verify
+     */
+    public void printAttacksWithMultipleAbilities() {
+        attacks.forEach(s -> {
+            if (s.getAbility().getLogic().size() > 1)
+            System.out.println(s);
+        });
     }
 
     public Pokemon getPokemonByName(String name) {

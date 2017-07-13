@@ -59,4 +59,22 @@ public class Requirement {
                 ", energyAmount=" + energyAmount +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Requirement that = (Requirement) o;
+
+        if (energyAmount != that.energyAmount) return false;
+        return category != null ? category.equals(that.category) : that.category == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = category != null ? category.hashCode() : 0;
+        result = 31 * result + energyAmount;
+        return result;
+    }
 }

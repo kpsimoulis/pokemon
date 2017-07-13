@@ -9,7 +9,10 @@ public class DeckTest {
 
         // Print all the cards that have been parsed
         helper.parse();
-        helper.print();
+        helper.printAll();
+
+        // Attack with Multiple Abilities are Hardest ones to implement
+//        helper.printAttacksWithMultipleAbilities();
 
         // Getting a Specific Pokemon
         Pokemon p1 = helper.getPokemonByName("Doduo");

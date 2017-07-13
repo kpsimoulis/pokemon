@@ -13,8 +13,8 @@ public abstract class PileView extends JPanel {
         this.noOfCards = 0;
 
         this.setOpaque(false);
-        this.setMaximumSize(new Dimension(140, 150));
-        this.setPreferredSize(new Dimension(140, 150));
+        this.setMaximumSize(new Dimension(140, 180));
+        this.setPreferredSize(new Dimension(140, 180));
 
         backSideBtn = new JButton(Integer.toString(noOfCards), new ImageIcon(getClass().getResource("/images/deck_img.png")));
         backSideBtn.setVerticalTextPosition(SwingConstants.CENTER);
@@ -23,7 +23,7 @@ public abstract class PileView extends JPanel {
         backSideBtn.setOpaque(false);
         backSideBtn.setContentAreaFilled(false);
         backSideBtn.setBorderPainted(false);
-        backSideBtn.setBounds(0,0,135,145);
+        backSideBtn.setBounds(0,0,135,180);
         backSideBtn.setBorder(BorderFactory.createEmptyBorder());
         backSideBtn.setFont(new Font("Sans-Serif", Font.BOLD,30));
         backSideBtn.setForeground(Color.black);

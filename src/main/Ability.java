@@ -33,13 +33,6 @@ public class Ability {
         return description;
     }
 
-    /**
-     * Temp until we refactor all usages
-     * @return
-     */
-    public int getDamage() {
-        return 0;
-    }
 
     public boolean isParsed() {
         for (AbilityLogic tmpLogic : logic) {

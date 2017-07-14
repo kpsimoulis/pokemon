@@ -6,7 +6,10 @@ public class Target {
 
     private String area;
     private String name;
-    private Boolean choice;
+    private String cardType;
+    private String cardCategory;
+    private Boolean choice = false;
+    private Boolean special = false;
     private List<String> logic;
 
     public List<String> getLogic() {
@@ -28,15 +31,30 @@ public class Target {
         if (targetItems[0].equals("your") || targetItems[0].equals("opponent")) {
             this.name = targetItems[0];
         }
+        else if (targetItems[0].equals("self") || targetItems[0].equals("last")) {
+            this.special = true;
+            this.name = targetItems[0];
+        }
         else {
             throw new IllegalArgumentException("Invalid target " + targetItems[0] + " it must be opponent or your");
         }
         if (targetItems.length == 2) {
             if (targetItems[1].equals("pokemon") || targetItems[1].equals("active") || targetItems[1].equals("bench") || targetItems[1].equals("hand") || targetItems[1].equals("deck") || targetItems[1].equals("discard")) {
-                this.area = targetItems[1];
             }
             else {
                 throw new IllegalArgumentException("Invalid target " + targetItems[1] + " it must be your-active, opponent-active or choice");
+            }
+        }
+        if (logic.size() > 0) {
+            if (logic.get(0).equals("energy") || logic.get(0).equals("damage") ) {
+                this.cardType = logic.get(0);
+                logic.remove(0);
+            }
+        }
+        if (logic.size() > 0) {
+            if (logic.get(0).equals("fight") || logic.get(0).equals("water") || logic.get(0).equals("colorless") || logic.get(0).equals("psychic")) {
+                this.cardCategory = logic.get(0);
+                logic.remove(0);
             }
         }
     }

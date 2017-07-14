@@ -10,7 +10,8 @@ public class Reenergize extends AbilityLogic {
 
     private Target source;
     private Target destination;
-    private Amount amount;
+    private int destAmount; // TODO: @kosta Convert those two amount objects
+    private int srcAmount;
 
     public Reenergize(List<String> logic) {
         super("reenergize");
@@ -28,6 +29,15 @@ public class Reenergize extends AbilityLogic {
         this.source = new Target(logic);
         this.logic = source.getLogic();
 
+        // Parse Source Amount
+        if (logic.get(0).matches("[0-9]+")) {
+            this.srcAmount = Integer.parseInt(logic.get(0));
+            logic.remove(0);
+        }
+        else {
+            throw new IllegalArgumentException("Unsupported Amount for reenergize");
+        }
+
         if (!logic.get(0).equals("target")) {
             throw new IllegalArgumentException("Expecting word 'target'");
         }
@@ -38,8 +48,13 @@ public class Reenergize extends AbilityLogic {
         this.logic = destination.getLogic();
 
         // Parse Amount
-        this.amount = new Amount(logic);
-        this.logic = amount.getLogic();
+        if (logic.get(0).matches("[0-9]+")) {
+            this.destAmount = Integer.parseInt(logic.get(0));
+            logic.remove(0);
+        }
+        else {
+            throw new IllegalArgumentException("Unsupported Amount for reenergize");
+        }
 
     }
 
@@ -48,7 +63,7 @@ public class Reenergize extends AbilityLogic {
         return "Reenergize{" +
                 "source=" + source +
                 ", destination=" + destination +
-                ", amount=" + amount +
+                ", destAmount=" + destAmount +
                 '}';
     }
 }

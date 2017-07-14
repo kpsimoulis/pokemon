@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,7 +10,7 @@ public class Amount {
 
     private int amount;
     private boolean calculated;
-    private String target;
+    private Target target;
     private String source;
     private int multiplier = 1;
     private List<String> logic;
@@ -32,16 +34,49 @@ public class Amount {
                 } else {
                     Matcher matcher = Pattern.compile("^count\\((.*)\\)$").matcher(tmpAmount2);
                     if (matcher.matches()) {
+//                        System.out.println("before" + String.join(":", logic));
 
-                        String[] tmpAmount3 = matcher.group(1).split(":");
-                        if (!tmpAmount3[0].equals("target")) {
-                            throw new IllegalArgumentException("Expecting word 'target'");
+                        List<String> tmpLogic = new LinkedList<String>(Arrays.asList(matcher.group(1).split(":")));
+
+
+//                        System.out.println("after" + String.join(":", tmpLogic));
+
+                        if (tmpLogic.get(0).equals("target")) {
+                            tmpLogic.remove(0);
                         }
-                        this.calculated = true;
-                        this.target = tmpAmount3[1];
-                        if (tmpAmount3.length == 3) {
-                            this.source = tmpAmount3[2];
+
+                        // Parse Target
+                        this.target = new Target(tmpLogic);
+                        tmpLogic = target.getLogic();
+
+
+                        if (tmpLogic.size() > 0) {
+                            if (tmpLogic.get(0).equals("source")) {
+                                tmpLogic.remove(0);
+                                this.source = tmpLogic.get(0);
+                                tmpLogic.remove(0);
+                            }
                         }
+                        if (tmpLogic.size() > 0) {
+                            System.out.println("more left to do" + String.join(":", tmpLogic));
+                            System.exit(0);
+                        }
+
+
+
+
+//                        int i = 0;
+//
+//                        String[] tmpAmount3 = matcher.group(1).split(":");
+//                        if (tmpAmount3[i].equals("target")) {
+//                            i++;
+////                            throw new IllegalArgumentException("Expecting word 'target'");
+//                        }
+//                        this.calculated = true;
+//                        this.target = tmpAmount3[i];
+//                        if (tmpAmount3.length == (i+2)) {
+//                            this.source = tmpAmount3[i+1];
+//                        }
                     } else {
                         throw new IllegalArgumentException("Invalid amount " + tmpAmount);
                     }
@@ -70,7 +105,7 @@ public class Amount {
         return calculated;
     }
 
-    public String getTarget() {
+    public Target getTarget() {
         return target;
     }
 

@@ -12,7 +12,7 @@ public class DeckTest {
 //        helper.printAll();
 
         // Print Attacks of specific type
-        helper.printAttacksByType("dam");
+//        helper.printAttacksByType("dam");
 
         // Attack with Multiple Abilities are Hardest ones to implement
 //        helper.printAttacksWithMultipleAbilities();

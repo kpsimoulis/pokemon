@@ -34,12 +34,8 @@ public class Amount {
                 } else {
                     Matcher matcher = Pattern.compile("^count\\((.*)\\)$").matcher(tmpAmount2);
                     if (matcher.matches()) {
-//                        System.out.println("before" + String.join(":", logic));
-
+                        this.calculated = true;
                         List<String> tmpLogic = new LinkedList<String>(Arrays.asList(matcher.group(1).split(":")));
-
-
-//                        System.out.println("after" + String.join(":", tmpLogic));
 
                         if (tmpLogic.get(0).equals("target")) {
                             tmpLogic.remove(0);
@@ -58,25 +54,8 @@ public class Amount {
                             }
                         }
                         if (tmpLogic.size() > 0) {
-                            System.out.println("more left to do" + String.join(":", tmpLogic));
-                            System.exit(0);
+                            throw new IllegalArgumentException("More left to do in Amount parser " + String.join(":", tmpLogic));
                         }
-
-
-
-
-//                        int i = 0;
-//
-//                        String[] tmpAmount3 = matcher.group(1).split(":");
-//                        if (tmpAmount3[i].equals("target")) {
-//                            i++;
-////                            throw new IllegalArgumentException("Expecting word 'target'");
-//                        }
-//                        this.calculated = true;
-//                        this.target = tmpAmount3[i];
-//                        if (tmpAmount3.length == (i+2)) {
-//                            this.source = tmpAmount3[i+1];
-//                        }
                     } else {
                         throw new IllegalArgumentException("Invalid amount " + tmpAmount);
                     }
@@ -92,13 +71,17 @@ public class Amount {
     }
 
     public int getAmount() {
-        if (calculated) {
-            // TODO change this to logic
-            return 5;
+        if (isCalculated()) {
+            throw new IllegalArgumentException("This method is only for integer amount");
         }
-        else {
-            return amount;
+        return amount;
+    }
+
+    public int getAmount(int amt) {
+        if (!isCalculated()) {
+            throw new IllegalArgumentException("This method is only for calculated amount");
         }
+        return amt*multiplier;
     }
 
     public boolean isCalculated() {
@@ -126,9 +109,10 @@ public class Amount {
         return "Amount{" +
                 "amount=" + amount +
                 ", calculated=" + calculated +
-                ", target='" + target + '\'' +
+                ", target=" + target +
                 ", source='" + source + '\'' +
                 ", multiplier=" + multiplier +
+                ", logic=" + logic +
                 '}';
     }
 }

@@ -4,6 +4,7 @@ import ability.Cond;
 import ability.Dam;
 import ability.Search;
 import card.Card;
+import card.Energy;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
 import controllers.cardpiles.PrizeCardController;
@@ -14,10 +15,12 @@ import javafx.util.Pair;
 import main.AbilityLogic;
 import main.Amount;
 import main.Attack;
+import main.Target;
 import views.card.CardView;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class PokemonAttack implements KeyListener {
 
@@ -59,10 +62,49 @@ public class PokemonAttack implements KeyListener {
 
     }
 
-//    private int countAmount(String )
+    // TODO process calculated amount for Pokemon
+    private int countAmount(Amount amount) {
+        int count = 0;
+        Target target = amount.getTarget();
+        PlayerController pok;
+        if (target.getName().equals("your")) {
+            pok = controller.getHumanController();
+        }
+        else {
+            pok = controller.getAIController();
+        }
+        if (target.getArea().equals("bench")) {
+            count = pok.getBenchController().getContainer().getNoOfCards();
+        }
+        else if (target.getCardType().equals("damage")) {
+            count = pok.getActivePokemonCard().getDamagePoints();
+        }
+        else if (target.getCardType().equals("energy")) {
+
+            ArrayList<Energy> energyArrayList = pok.getActivePokemonCard().getEnergy();
+
+            for (Energy card : energyArrayList) {
+                if (target.getCardCategory() == null || target.getCardCategory().isEmpty()) {
+                    count++;
+                }
+                else if (target.getCardCategory().equals(card.getCategory())) {
+                    count++;
+                }
+            }
+
+        }
+        return amount.getAmount(count);
+    }
 
     private boolean dam(Dam dam) {
-        int damage = dam.getAmount().getAmount();
+        Amount amount = dam.getAmount();
+        int damage = 0;
+        if (amount.isCalculated()) {
+            damage = countAmount(amount);
+        }
+        else {
+            damage = amount.getAmount();
+        }
         this.totalDamage += damage;
         ActivePokemonController oppPok = getOppActivePok();
         ActivePokemonController activePok = getHumanActivePok();

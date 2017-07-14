@@ -9,6 +9,7 @@ import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
 import controllers.card.PokemonController;
 import javafx.util.Pair;
+import main.Amount;
 import main.Attack;
 import main.Requirement;
 import views.activepokemon.ActivePokemonView;
@@ -163,10 +164,15 @@ public class AIPlayerController extends PlayerController {
         Attack randomAttack = possibleAttacks.get(randomIdx);
         // Default damage in case attack has no amount
         int dmg = 0;
-        // TODO Handle other attacks for AI
+        // TODO Handle other attacks for AI with a loop
         if (randomAttack.getAbility().getLogic().get(0) instanceof Dam) {
-            Dam dam = (Dam) randomAttack.getAbility().getLogic().get(0);
-            dmg = dam.getAmount().getAmount();
+            Amount amount = ((Dam) randomAttack.getAbility().getLogic().get(0)).getAmount();
+            if (amount.isCalculated()) {
+                dmg = 5;
+            }
+            else {
+                dmg = amount.getAmount();
+            }
         }
 
         getActivePokemonController().attackPokemon(opponentPokemon, dmg);

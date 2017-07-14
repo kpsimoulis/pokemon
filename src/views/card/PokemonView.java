@@ -2,6 +2,7 @@ package views.card;
 
 import ability.Dam;
 import card.Energy;
+import main.Amount;
 import main.Attack;
 import main.Requirement;
 
@@ -149,8 +150,16 @@ public class PokemonView extends CardView {
         attack = new StringBuilder("Attacks:\n\n");
         for (Attack aAttackInfo : attacks) {
             if (aAttackInfo.getAbility().getLogic().get(0).getType().equals("dam")) {
-                Dam dam = (Dam) aAttackInfo.getAbility().getLogic().get(0);
-                attack.append(aAttackInfo.getAbility().getName()).append(" (Dmg: ").append(dam.getAmount().getAmount()).append(")\n");
+                // TODO talk to mickel how to pass to the view the damage properly and handle multiple abilities
+                int dmg = 0;
+                Amount amount = ((Dam) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+                if (amount.isCalculated()) {
+                    dmg = 5;
+                }
+                else {
+                    dmg = amount.getAmount();
+                }
+                attack.append(aAttackInfo.getAbility().getName()).append(" (Dmg: ").append(dmg).append(")\n");
             }
             else {
                 attack.append(aAttackInfo.getAbility().getName()).append(" (Desc: ").append(aAttackInfo.getAbility().getDescription()).append(")\n");

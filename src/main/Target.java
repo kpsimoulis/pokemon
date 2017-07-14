@@ -40,6 +40,7 @@ public class Target {
         }
         if (targetItems.length == 2) {
             if (targetItems[1].equals("pokemon") || targetItems[1].equals("active") || targetItems[1].equals("bench") || targetItems[1].equals("hand") || targetItems[1].equals("deck") || targetItems[1].equals("discard")) {
+                this.area = targetItems[1];
             }
             else {
                 throw new IllegalArgumentException("Invalid target " + targetItems[1] + " it must be your-active, opponent-active or choice");
@@ -59,13 +60,40 @@ public class Target {
         }
     }
 
+    public String getArea() {
+        return area;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCardType() {
+        return cardType;
+    }
+
+    public String getCardCategory() {
+        return cardCategory;
+    }
+
+    public Boolean getChoice() {
+        return choice;
+    }
+
+    public Boolean getSpecial() {
+        return special;
+    }
+
     @Override
     public String toString() {
         return "Target{" +
                 "area='" + area + '\'' +
                 ", name='" + name + '\'' +
+                ", cardType='" + cardType + '\'' +
+                ", cardCategory='" + cardCategory + '\'' +
                 ", choice=" + choice +
+                ", special=" + special +
+                ", logic=" + logic +
                 '}';
     }
-
 }

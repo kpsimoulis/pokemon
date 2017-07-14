@@ -9,6 +9,7 @@ import controllers.game.KeyListeners.MainMenuListener;
 import controllers.player.AIPlayerController;
 import controllers.player.HumanPlayerController;
 import controllers.player.PlayerController;
+import main.Amount;
 import main.Attack;
 import views.ChoiceDialog;
 import views.card.CardView;
@@ -269,8 +270,14 @@ public class GameController {
             // Default damage amount
             int dmg = 0;
             if (attack_caused.getAbility().getLogic().get(0) instanceof Dam) {
-                Dam dam = (Dam) attack_caused.getAbility().getLogic().get(0);
-                dmg = dam.getAmount().getAmount();
+                Amount amount = ((Dam) attack_caused.getAbility().getLogic().get(0)).getAmount();
+                if (amount.isCalculated()) {
+                    // TODO process calculated amount for AI
+                    dmg = 5;
+                }
+                else {
+                    dmg = amount.getAmount();
+                }
             }
 
             sb.append(attack_caused.getAbility().getName()).append(",\nDmg Caused: ")

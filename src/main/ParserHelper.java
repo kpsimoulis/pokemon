@@ -130,7 +130,7 @@ public class ParserHelper {
     public void printAttacksByType(String type) {
         attacks.forEach(s -> {
             if (s.getAbility().getLogic().get(0).getType().equals(type))
-                System.out.println(s.getAbility().getLogic().get(0));
+                System.out.println(s.getAbility().getName() + ": " + s.getAbility().getLogic().get(0));
         });
     }
 

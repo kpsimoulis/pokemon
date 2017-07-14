@@ -5,6 +5,7 @@ import ability.Dam;
 import ability.Search;
 import card.Card;
 import card.Energy;
+import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
 import controllers.cardpiles.PrizeCardController;
@@ -14,6 +15,7 @@ import controllers.player.PlayerController;
 import javafx.util.Pair;
 import main.*;
 import views.card.CardView;
+import views.card.PokemonView;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -96,16 +98,33 @@ public class PokemonAttack implements KeyListener {
     private boolean dam(Dam dam) {
         Amount amount = dam.getAmount();
         int damage = 0;
+        Target target = dam.getTarget();
+        ActivePokemonController targetPok = getOppActivePok();
+        ActivePokemonController srcPok = getHumanActivePok();
+
         if (amount.isCalculated()) {
             damage = countAmount(amount);
         }
         else {
             damage = amount.getAmount();
         }
+
+        if (target.getName().equals("your") && target.getArea().equals("bench")) {
+            ArrayList<CardController> cardControllers = controller.getHumanController().getBenchController().getCardControllers();
+            for(CardController controller: cardControllers){
+                int curDmg = ((Pokemon) controller.getCard()).getDamagePoints();
+                ((Pokemon) controller.getCard()).setDamagePoints(curDmg+damage);
+                ((PokemonView) controller.getView()).setDmgPts(curDmg+damage);
+            }
+            damage = 0;
+        }
+        else if (target.getName().equals("your") && target.getArea().equals("active")) {
+            targetPok = getHumanActivePok();
+        }
+
+
         this.totalDamage += damage;
-        ActivePokemonController oppPok = getOppActivePok();
-        ActivePokemonController activePok = getHumanActivePok();
-        return activePok.attackPokemon(oppPok, damage);
+        return srcPok.attackPokemon(targetPok, damage);
     }
 
     private boolean search(Attack attackCaused) {

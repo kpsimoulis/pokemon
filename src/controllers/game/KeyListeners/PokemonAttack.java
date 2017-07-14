@@ -12,10 +12,7 @@ import controllers.coin.CoinController;
 import controllers.game.GameController;
 import controllers.player.PlayerController;
 import javafx.util.Pair;
-import main.AbilityLogic;
-import main.Amount;
-import main.Attack;
-import main.Target;
+import main.*;
 import views.card.CardView;
 
 import java.awt.event.KeyEvent;
@@ -125,6 +122,8 @@ public class PokemonAttack implements KeyListener {
 
     private void attack(int attackIndex){
 
+        ParserHelper helper = new ParserHelper();
+
         ActivePokemonController activePok = getHumanActivePok();
 
         Attack attackCaused;
@@ -146,13 +145,20 @@ public class PokemonAttack implements KeyListener {
 
             if (ability instanceof Cond) {
                 CoinController coinController = controller.getHumanController().getCoinController();
-                if (coinController.getCoin().isHead()) {
-
+                int coin = coinController.flipCoin();
+                // Coin is head
+                if (coin == 1) {
+                    // TODO process multiple conditions for coin
+                    System.out.println("coin is head");
+                    ability = ((Cond) ability).getConditionIsMet().get(0);
                 }
+                // Coin is tails
                 else {
-
+                    System.out.println("coin is tails");
+                    if (((Cond) ability).getConditionIsNotMet().size() > 0) {
+                        ability = ((Cond) ability).getConditionIsNotMet().get(0);
+                    }
                 }
-
             }
 
 
@@ -163,7 +169,7 @@ public class PokemonAttack implements KeyListener {
                 defeatedOpp = search(attackCaused);
             }
             else {
-                System.out.println("skipping ability" + ability);
+                System.out.println("Skipping ability: " + ability);
             }
 
 

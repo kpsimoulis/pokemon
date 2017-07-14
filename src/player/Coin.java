@@ -54,6 +54,7 @@ public class Coin {
      */
     public void flip() {
         faceUp = CoinFace.values()[(int) (Math.random() * 2)];
+        System.out.println("faceup" + faceUp);
     }
 
 }

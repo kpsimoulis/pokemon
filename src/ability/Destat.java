@@ -25,6 +25,10 @@ public class Destat extends AbilityLogic {
         logic.remove(0);
     }
 
+    public String getTarget() {
+        return target;
+    }
+
     @Override
     public String toString() {
         return "Destat{" +

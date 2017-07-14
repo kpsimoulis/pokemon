@@ -38,6 +38,14 @@ public class Swap extends AbilityLogic {
 
     }
 
+    public Target getSource() {
+        return source;
+    }
+
+    public Target getDestination() {
+        return destination;
+    }
+
     @Override
     public String toString() {
         return "Swap{" +

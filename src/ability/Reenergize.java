@@ -58,6 +58,22 @@ public class Reenergize extends AbilityLogic {
 
     }
 
+    public Target getSource() {
+        return source;
+    }
+
+    public Target getDestination() {
+        return destination;
+    }
+
+    public int getDestAmount() {
+        return destAmount;
+    }
+
+    public int getSrcAmount() {
+        return srcAmount;
+    }
+
     @Override
     public String toString() {
         return "Reenergize{" +

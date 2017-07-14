@@ -15,6 +15,10 @@ public class Amount {
     private int multiplier = 1;
     private List<String> logic;
 
+    public Amount() {
+
+    }
+
     public Amount(List<String> logic) {
         this.logic = logic;
         parse();

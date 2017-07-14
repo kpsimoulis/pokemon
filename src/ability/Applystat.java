@@ -44,6 +44,10 @@ public class Applystat extends AbilityLogic {
 
     }
 
+    public Target getTarget() {
+        return target;
+    }
+
     @Override
     public String toString() {
         return "Applystat{" +

@@ -73,6 +73,22 @@ public class Add extends AbilityLogic {
         }
     }
 
+    public Target getTarget() {
+        return target;
+    }
+
+    public Target getTriggerTarget() {
+        return triggerTarget;
+    }
+
+    public String getTriggerCondition() {
+        return triggerCondition;
+    }
+
+    public ArrayList<AbilityLogic> getAbility() {
+        return ability;
+    }
+
     @Override
     public String toString() {
         return "Add{" +

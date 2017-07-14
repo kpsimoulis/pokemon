@@ -93,6 +93,38 @@ public class Search extends AbilityLogic {
 
     }
 
+    public Target getTarget() {
+        return target;
+    }
+
+    public String getTargetCategory() {
+        return targetCategory;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public String getFilterType() {
+        return filterType;
+    }
+
+    public String getFilterCategory() {
+        return filterCategory;
+    }
+
+    public int getFilterTotal() {
+        return filterTotal;
+    }
+
+    public String getFilterTarget() {
+        return filterTarget;
+    }
+
+    public Amount getAmount() {
+        return amount;
+    }
+
     @Override
     public String toString() {
         return "Search{" +

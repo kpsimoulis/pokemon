@@ -27,6 +27,10 @@ public class Shuffle extends AbilityLogic {
 
     }
 
+    public Target getTarget() {
+        return target;
+    }
+
     @Override
     public String toString() {
         return "Shuffle{" +

@@ -34,6 +34,14 @@ public class Draw extends AbilityLogic {
 
     }
 
+    public Amount getAmount() {
+        return amount;
+    }
+
+    public Target getTarget() {
+        return target;
+    }
+
     @Override
     public String toString() {
         return "Draw{" +

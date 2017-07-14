@@ -72,6 +72,26 @@ public class Deck extends AbilityLogic {
 
     }
 
+    public Target getTarget() {
+        return target;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public String getChoice() {
+        return choice;
+    }
+
+    public Amount getAmount() {
+        return amount;
+    }
+
     @Override
     public String toString() {
         return "Deck{" +

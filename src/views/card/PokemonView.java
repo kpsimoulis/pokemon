@@ -1,6 +1,6 @@
 package views.card;
 
-import ability.Dam;
+import ability.*;
 import card.Energy;
 import main.Amount;
 import main.Attack;
@@ -149,17 +149,53 @@ public class PokemonView extends CardView {
         StringBuilder attack;
         attack = new StringBuilder("Attacks:\n\n");
         for (Attack aAttackInfo : attacks) {
-            if (aAttackInfo.getAbility().getLogic().get(0).getType().equals("dam")) {
-                // TODO talk to mickel how to pass to the view the damage properly and handle multiple abilities
-                int dmg = 0;
-                Amount amount = ((Dam) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            boolean attackHasAmount = false;
+            String  dmg = "";
+            Amount amount = new Amount();
+
+            if (aAttackInfo.getAbility().getLogic().size() > 1) {
+                dmg = "Multi Calc";
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Dam) {
+                attackHasAmount = true;
+                amount = ((Dam) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Deck) {
+                attackHasAmount = true;
+                amount = ((Deck) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Draw) {
+                attackHasAmount = true;
+                amount = ((Draw) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Heal) {
+                attackHasAmount = true;
+                amount = ((Heal) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Deenergize) {
+                attackHasAmount = true;
+                amount = ((Deenergize) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Search) {
+                attackHasAmount = true;
+                amount = ((Search) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Redamage) {
+                attackHasAmount = true;
+                amount = ((Redamage) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            if (attackHasAmount) {
                 if (amount.isCalculated()) {
-                    dmg = 5;
+                    dmg = "Calculated";
                 }
                 else {
-                    dmg = amount.getAmount();
+                    dmg = Integer.toString(amount.getAmount());
                 }
-                attack.append(aAttackInfo.getAbility().getName()).append(" (Dmg: ").append(dmg).append(")\n");
+                attack.append(aAttackInfo.getAbility().getName()).append(" (" + aAttackInfo.getAbility().getLogic().get(0).getType()+ ": ").append(dmg).append(")\n");
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Reenergize) {
+                dmg =  Integer.toString(((Reenergize) aAttackInfo.getAbility().getLogic().get(0)).getSrcAmount()) + " -> " + Integer.toString(((Reenergize) aAttackInfo.getAbility().getLogic().get(0)).getDestAmount());
+                attack.append(aAttackInfo.getAbility().getName()).append(" (Energize: ").append(dmg).append(")\n");
             }
             else {
                 attack.append(aAttackInfo.getAbility().getName()).append(" (Desc: ").append(aAttackInfo.getAbility().getDescription()).append(")\n");

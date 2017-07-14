@@ -117,6 +117,22 @@ public class Cond extends AbilityLogic {
         }
     }
 
+    public Target getTarget() {
+        return target;
+    }
+
+    public AbilityLogic getAbilityRequirement() {
+        return abilityRequirement;
+    }
+
+    public ArrayList<AbilityLogic> getConditionIsMet() {
+        return conditionIsMet;
+    }
+
+    public ArrayList<AbilityLogic> getConditionIsNotMet() {
+        return conditionIsNotMet;
+    }
+
     @Override
     public String toString() {
         return "Cond{" +

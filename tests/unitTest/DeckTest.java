@@ -1,7 +1,7 @@
-package cardcontainer;
+package unitTest;
 
 import card.Card;
-import card.Energy;
+import cardcontainer.Deck;
 import org.junit.Before;
 import org.junit.Test;
 

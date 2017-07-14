@@ -1,11 +1,12 @@
-package main;
+package unitTest;
 
+import main.Attack;
+import main.CardsFileParser;
+import main.Retreat;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by luckyfang0601 on 2017-05-30.

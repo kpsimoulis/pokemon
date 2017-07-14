@@ -1,8 +1,9 @@
-package controllers.cardpiles;
+package intergrationTest;
 
 import card.Energy;
 import card.Pokemon;
 import cardcontainer.DiscardPile;
+import controllers.cardpiles.DiscardPileController;
 import main.Ability;
 import main.Attack;
 import main.Requirement;

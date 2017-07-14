@@ -1,5 +1,6 @@
-package main;
+package intergrationTest;
 
+import main.*;
 import org.junit.Before;
 import org.junit.Test;
 

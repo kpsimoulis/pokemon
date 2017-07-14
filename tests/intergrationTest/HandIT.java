@@ -1,8 +1,9 @@
-package cardcontainer;
+package intergrationTest;
 
 import card.Card;
 import card.Energy;
 import card.Pokemon;
+import cardcontainer.Hand;
 import main.Ability;
 import main.Attack;
 import main.Requirement;

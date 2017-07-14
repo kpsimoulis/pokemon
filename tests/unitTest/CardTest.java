@@ -1,9 +1,10 @@
-package card;
+package unitTest;
 
+import card.Card;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by luckyfang0601 on 2017-06-29.

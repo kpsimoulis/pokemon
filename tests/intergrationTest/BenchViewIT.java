@@ -1,13 +1,13 @@
-package cardcontainer;
+package intergrationTest;
 
-import card.Card;
 import card.Energy;
-import card.Pokemon;
 import main.Ability;
 import main.Attack;
 import main.Requirement;
-import main.Retreat;
 import org.junit.Test;
+import views.card.PokemonView;
+import views.card.TrainerView;
+import views.cardcontainer.BenchView;
 
 import java.util.ArrayList;
 
@@ -16,14 +16,13 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by luckyfang0601 on 2017-06-29.
  */
-public class DiscardPileIT {
+public class BenchViewIT {
+    private PokemonView pokemonView;
+    private TrainerView trainerView;
+    private BenchView benchView;
     @Test
-    public void addCard() throws Exception {
-        DiscardPile cards = new DiscardPile();
+    public void addCardView() throws Exception {
         ArrayList<Energy> energyArray= new ArrayList<Energy>(20);
-        ArrayList<Pokemon> poks = null;
-
-        Retreat retreat = new Retreat("fighting",1);
         Ability ability = new Ability("Rain Splash","damage","put 20 damage points on opponent","opponent-active");
         Requirement requirement=new Requirement("general",2);
         ArrayList<Requirement> requirements = new ArrayList<Requirement>();
@@ -31,9 +30,14 @@ public class DiscardPileIT {
         Attack attack = new Attack(requirements,ability);
         ArrayList<Attack> attacks = new ArrayList<Attack>();
         attacks.add(attack);
-        Card card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "basic","",retreat,attacks,poks);
-        cards.addCard(card1);
-        assertEquals(1,cards.getNoOfCards());
+        pokemonView= new PokemonView(energyArray,attacks,0,60,"basic",1);
+        trainerView = new TrainerView();
+        benchView = new BenchView();
+        benchView.addCardView(trainerView);
+        assertEquals(0,benchView.getCardViews().size());
+        benchView.addCardView(pokemonView);
+        assertEquals(1,benchView.getCardViews().size());
+
     }
 
 }

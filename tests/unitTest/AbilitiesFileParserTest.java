@@ -1,9 +1,10 @@
-package main;
+package unitTest;
 
+import main.AbilitiesFileParser;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by luckyfang0601 on 2017-05-30.

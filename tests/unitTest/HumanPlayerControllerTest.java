@@ -1,9 +1,10 @@
-package controllers.player;
+package unitTest;
 
+import controllers.player.HumanPlayerController;
 import org.junit.Test;
 import player.Player;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by luckyfang0601 on 2017-06-02.

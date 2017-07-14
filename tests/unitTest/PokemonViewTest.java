@@ -1,13 +1,14 @@
-package views.card;
+package unitTest;
 
 import card.Energy;
 import main.Attack;
 import org.junit.Before;
 import org.junit.Test;
+import views.card.PokemonView;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by luckyfang0601 on 2017-06-29.

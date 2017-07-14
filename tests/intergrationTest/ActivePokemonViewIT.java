@@ -1,10 +1,11 @@
-package views.activepokemon;
+package intergrationTest;
 
 import card.Energy;
 import main.Ability;
 import main.Attack;
 import main.Requirement;
 import org.junit.Test;
+import views.activepokemon.ActivePokemonView;
 import views.card.PokemonView;
 
 import java.util.ArrayList;

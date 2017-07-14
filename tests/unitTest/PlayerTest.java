@@ -1,4 +1,4 @@
-package player;
+package unitTest;
 
 import card.Energy;
 import card.Pokemon;
@@ -10,19 +10,19 @@ import main.Requirement;
 import main.Retreat;
 import org.junit.Before;
 import org.junit.Test;
+import player.Coin;
+import player.Player;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
- * Created by luckyfang0601 on 2017-06-29.
+ * Created by luckyfang0601 on 2017-05-23.
  */
-public class PlayerIT {
+public class PlayerTest {
 
-    private static final int PRIZE_CARD_LIMIT = 6;
+   private static final int PRIZE_CARD_LIMIT = 6;
     private Player player;
     private ArrayList<Energy> energyArray;
     private Coin playerCoin;
@@ -50,16 +50,38 @@ public class PlayerIT {
         ArrayList<Attack> attacks = new ArrayList<Attack>();
         attacks.add(attack);
     }
-
     @Test
-    public void putPokOnBench() throws Exception {
+    public void flipCoin() throws Exception {
+        playerCoin = new Coin();
+        playerCoin.flip();
+        if(playerCoin.isHead()==true)
+            assertTrue(playerCoin.isHead());
+        else
+            assertFalse(playerCoin.isHead());
 
-
-        Pokemon card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "stage-one","pikachu",retreat,attacks,poks);
-        player.putPokOnBench(card1);
-        assertEquals(1,player.getBench().getNoOfCards());
     }
 
+    @Test
+    public void shuffleDeck() throws Exception {
+        newDeck = new Deck();
+        newDeck.populateDeck("res/deck/deck1.txt");
+        player.setDeck(newDeck);
+        player.shuffleDeck();
+        assertEquals(60,player.getDeck().getNoOfCards());
+
+
+    }
+
+    @Test
+    public void drawCard() throws Exception {
+        newDeck = new Deck();
+        newDeck.populateDeck("res/deck/deck1.txt");
+        player.setDeck(newDeck);
+        player.drawCard();
+        assertEquals(59,player.getDeck().getNoOfCards());
+        assertEquals(1,player.getHand().getNoOfCards());
+
+    }
 
 
     @Test
@@ -70,6 +92,16 @@ public class PlayerIT {
         assertTrue(player.hasActivePokemon());
     }
 
+    @Test
+    public void getNoCardsDeck() throws Exception {
+        newDeck = new Deck();
+        newDeck.populateDeck("res/deck/deck1.txt");
+        player.setDeck(newDeck);
+        assertEquals(60,player.getNoCardsDeck());
+        player.drawCard();
+        assertEquals(59,player.getNoCardsDeck());
+
+    }
 
 
 

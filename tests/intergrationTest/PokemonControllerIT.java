@@ -1,7 +1,8 @@
-package controllers.card;
+package intergrationTest;
 
 import card.Energy;
 import card.Pokemon;
+import controllers.card.PokemonController;
 import main.Ability;
 import main.Attack;
 import main.Requirement;

@@ -1,7 +1,8 @@
-package controllers.game;
+package intergrationTest;
 
 import card.Energy;
 import card.Pokemon;
+import controllers.game.GameController;
 import main.Ability;
 import main.Attack;
 import main.Requirement;
@@ -15,7 +16,6 @@ import views.game.GameView;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by luckyfang0601 on 2017-07-05.

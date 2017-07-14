@@ -1,8 +1,8 @@
-package cardcontainer;
-import card.Card;
+package unitTest;
 
 import card.Energy;
 import card.Pokemon;
+import cardcontainer.Bench;
 import main.Ability;
 import main.Attack;
 import main.Requirement;
@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Created by luckyfang0601 on 2017-05-23.

@@ -7,6 +7,7 @@ import controllers.card.ControllerViewBuilder;
 import javafx.util.Pair;
 import views.card.CardView;
 import views.card.PokemonView;
+import views.card.TrainerView;
 import views.cardcontainer.ContainerView;
 
 import java.awt.event.KeyListener;
@@ -97,6 +98,16 @@ public abstract class CardContainerController {
 
         for (CardController cardController : getCardControllers()) {
             if (cardController.getView() instanceof PokemonView) {
+                cardController.getView().setListeners(activeListener);
+            }
+        }
+
+    }
+
+    public void setTrainerListener(KeyListener activeListener) {
+
+        for (CardController cardController : getCardControllers()) {
+            if (cardController.getView() instanceof TrainerView) {
                 cardController.getView().setListeners(activeListener);
             }
         }

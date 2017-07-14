@@ -51,6 +51,10 @@ public class MainMenuListener implements KeyListener {
             builder.append("R. Retreat your Active Pokemon.\n");
         }
 
+        if (controller.getHumanController().isTrainerCardAvailable()) {
+            builder.append("T. Use your trainer card.\n");
+
+        }
         if (controller.getHumanController().isEvolvable()) {
             builder.append("V. Evolve your pokemon.\n");
         }
@@ -614,6 +618,69 @@ public class MainMenuListener implements KeyListener {
 
                 break;
 
+
+            }
+
+            case KeyEvent.VK_T: {
+                if (!controller.getHumanController().isTrainerCardAvailable()) {
+                    StringBuilder builder = new StringBuilder("You donot have any trainer card in your hand now! \n");
+                    builder.append("(Press Esc to exit)");
+                    controller.getView().setCommand(builder.toString());
+
+                    controller.getView().addBoardListerner(new KeyListener() {
+                        @Override
+                        public void keyTyped(KeyEvent e) {
+
+                        }
+
+                        @Override
+                        public void keyPressed(KeyEvent e) {
+                            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                                controller.getView().addBoardListerner(new MainMenuListener(controller));
+                            }
+                        }
+
+                        @Override
+                        public void keyReleased(KeyEvent e) {
+
+                        }
+                    });
+
+                    break;
+                }
+                //build menu
+                StringBuilder builder = new StringBuilder("Now you can use your trainer card \n\n");
+                builder.append("Choose one of the your trainer card and press Enter\n\n"
+                );
+                controller.getView().setCommand(builder.toString() + "\n"
+                        + "(Press Esc to exit)");
+
+                //add listener
+                UseTrainerCard useTrainerCard = new UseTrainerCard(controller);
+                controller.getHumanController().getHandController().setTrainerListener(useTrainerCard);
+
+                controller.getView().addBoardListerner(new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                            controller.getHumanController().getHandController().removeAllListeners(useTrainerCard);
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        }
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                    }
+                });
+
+
+                break;
 
             }
 

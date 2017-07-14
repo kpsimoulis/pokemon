@@ -48,7 +48,7 @@ public class AbilityDescriptionMap {
         consts.put("Pokémon Fan Club", "(Trainer card) Search your deck for up to 2 Basic Pokémon, reveal them, and put them into your hand. Shuffle your deck afterward.");
         consts.put("Potion", "(Trainer card) Heal 30 damage from 1 of your Pokémon.");
         consts.put("Pound", "/deal damage");
-        consts.put("Psychic", "This attack does 20 more damage for each Energy attached to your opponent's Active Pokémon.");
+        consts.put("Psychic", "This attack does 10 times more damage for each Energy attached to your opponent's Active Pokémon.");
         consts.put("Quick Attack", "Flip a coin. If heads, this attack does 10 more damage.");
         consts.put("Rain Splash", "/deal damage");
         consts.put("Random Spark", "This attack does 30 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)");

@@ -6,24 +6,38 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public abstract class ContainerView extends JScrollPane {
+public abstract class ContainerView extends JPanel {
 
+    private JScrollPane scrollPane;
     private JPanel panel;
+    private JLabel countLbl;
     private ArrayList<CardView> cardViews;
 
     public ContainerView(int initialCapacity){
-        setOpaque(false);
+        this.setOpaque(false);
 
         cardViews = new ArrayList<CardView>(initialCapacity);
 
-        setPreferredSize(new Dimension(900, 100));
-        setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        this.setPreferredSize(new Dimension(900, 120));
+
+        scrollPane = new JScrollPane();
+        scrollPane.setPreferredSize(new Dimension(900, 120));
+        scrollPane.setName("cardScrolls");
+        scrollPane.setOpaque(false);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         panel = new JPanel();
         panel.setOpaque(false);
-        setViewportView(panel);
-        getViewport().setOpaque(false);
+        scrollPane.setViewportView(panel);
+        scrollPane.getViewport().setOpaque(false);
+
+        countLbl = new JLabel("0");
+        countLbl.setFont(new Font("Arial", Font.BOLD, 24));
+        countLbl.setForeground(Color.black);
+        this.add(countLbl);
+        this.add(scrollPane);
+
     }
 
     public JPanel getPanel() {
@@ -38,6 +52,7 @@ public abstract class ContainerView extends JScrollPane {
 
         cardViews.add(newView);
         panel.add(newView).revalidate();
+        countLbl.setText(Integer.toString(Integer.parseInt(countLbl.getText()) + 1));
 
     }
 
@@ -52,6 +67,7 @@ public abstract class ContainerView extends JScrollPane {
                 break;
             }
         }
+        countLbl.setText(Integer.toString(Integer.parseInt(countLbl.getText()) - 1));
         return returnedView;
 
     }

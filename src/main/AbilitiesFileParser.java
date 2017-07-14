@@ -3,24 +3,18 @@ package main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import ability.*;
 
 public class AbilitiesFileParser {
 
     private List<String> itemList;
-
     private String name;
-    private String action;
     private String description;
-    private String logic;
-    private String target;
-    private int amount;
-    private int times;
-    private String statusEffect;
+    private ArrayList<AbilityLogic> logic;
     private AbilityDescriptionMap descriptionMap;
-
+    private boolean parsed = false;
 
     /**
-     *
      * @param items
      */
     public AbilitiesFileParser(String[] items) {
@@ -29,39 +23,6 @@ public class AbilitiesFileParser {
     }
 
     /**
-     *
-     * @return
-     */
-    public String getTarget() {
-        return target;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getAmount() {
-        return amount;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getTimes() {
-        return times;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getStatusEffect() {
-        return statusEffect;
-    }
-
-    /**
-     *
      * @return
      */
     public String getName() {
@@ -69,27 +30,22 @@ public class AbilitiesFileParser {
     }
 
     /**
-     *
-     * @return
-     */
-    public String getAction() {
-        return action;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getLogic() {
-        return logic;
-    }
-
-    /**
-     *
      * @return
      */
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * Ability is parsed
+     * @return
+     */
+    public boolean isParsed() {
+        return parsed;
+    }
+
+    public ArrayList<AbilityLogic> getLogic() {
+        return logic;
     }
 
     /**
@@ -103,17 +59,24 @@ public class AbilitiesFileParser {
     /**
      *
      */
-    public void parseAction() {
-        this.action = itemList.get(0);
-        itemList.remove(0);
-    }
-
-    /**
-     *
-     */
     public void parseLogic() {
 
-        this.logic = String.join(":", itemList);
+        String logicLine = String.join(":", itemList);
+        String[] logicItems = logicLine.split(",(?![^\\(\\[]*[\\]\\)])", -1);
+        this.logic = new ArrayList<AbilityLogic>();
+
+        for (int i = 0; i < logicItems.length; i++) {
+            String[] logicVariables = logicItems[i].split(":(?![^\\(\\[]*[\\]\\)])", -1);
+
+            List<String> tmpLogic = new ArrayList<String>(Arrays.asList(logicVariables));
+            String type = tmpLogic.get(0);
+            tmpLogic.remove(0);
+
+            ParserHelper parser = new ParserHelper();
+
+            logic.add(parser.getAbilityByLogic(type, tmpLogic));
+
+        }
     }
 
     /**
@@ -126,7 +89,7 @@ public class AbilitiesFileParser {
     /**
      *
      */
-    public void print(){
+    public void print() {
         System.out.println(String.join(":", itemList));
     }
 

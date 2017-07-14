@@ -1,6 +1,8 @@
 package views.card;
 
+import ability.*;
 import card.Energy;
+import main.Amount;
 import main.Attack;
 import main.Requirement;
 
@@ -10,15 +12,16 @@ import java.util.ArrayList;
 
 public class PokemonView extends CardView {
 
-    private JTextArea energyTxt;
-    private JTextArea attackTxt;
+    private String energyTxt;
+    private String attackTxt;
     private JTextArea retreatTxt;
 
-    public PokemonView(ArrayList<Energy> energies, ArrayList<Attack> attacks, int dmgPts, int hp, String stage){
+    public PokemonView(ArrayList<Energy> energies, ArrayList<Attack> attacks, int dmgPts, int hp, String stage, int retreatRequirement){
 
         super();
         String[][] cardInfo = new String[][]{
                 {"Dmg Pts:", ""},{"# Energ.: ", "0"},{"HP: ", ""}, {"Stage: ", "Basic"}
+                ,{"Retreat Req: ", ""}
         };
         DefaultTableModel infoModel = (DefaultTableModel) this.getInfoTable().getModel();
         for (String[] aCardInfo : cardInfo) {
@@ -26,12 +29,39 @@ public class PokemonView extends CardView {
         }
         this.getInfoTable().setModel(infoModel);
 
-        energyTxt = new JTextArea(genEnergyStr(energies));
-        attackTxt = new JTextArea(genAttackStr(attacks));
+        energyTxt = genEnergyStr(energies);
+        attackTxt = genAttackStr(attacks);
         setDmgPts(dmgPts);
         setNoEnergies(energies.size());
         setHP(hp);
         setStage(stage);
+        setRetreatRequirement(retreatRequirement);
+
+    }
+
+
+
+    public PokemonView(PokemonView view) {
+
+        super();
+        String[][] cardInfo = new String[][]{
+                {"Dmg Pts:", ""},{"# Energ.: ", "0"},{"HP: ", ""}, {"Stage: ", "Basic"}
+                ,{"Retreat Req:", ""}
+        };
+        DefaultTableModel infoModel = (DefaultTableModel) this.getInfoTable().getModel();
+        for (String[] aCardInfo : cardInfo) {
+            infoModel.addRow(aCardInfo);
+        }
+        this.getInfoTable().setModel(infoModel);
+
+        energyTxt = view.getEnergyTxt();
+        attackTxt = view.getAttackTxt();
+        setDmgPts(view.getDmgPts());
+        setNoEnergies(view.getNoEnergies());
+        setHP(view.getHP());
+        setStage(view.getStage());
+        setRetreatRequirement(view.getRetreatRequirement());
+
 
     }
 
@@ -43,10 +73,11 @@ public class PokemonView extends CardView {
                 "Type: " + getCardType() + "\n" +
                 "Damage Pts.: " + getDmgPts() + "\n" +
                 "# Energies: " + getNoEnergies() + "\n" +
-                getEnergyTxt() + "\n" +
+                "Energies Desc:\n" + getEnergyTxt() + "\n\n" +
                 "HP: " + getHP() + "\n" +
-                "Stage: " + getStage() + "\n\n" +
+                "Stage: " + getStage() + "\n" +
                 //TODO: "Retreat: " + this.retreat.getCategoryShort()+ " (x" +this.retreat.getEnergyAmount()+ ")\n\n" +
+                "Retreat: Colorless "+ getRetreatRequirement() + "\n\n" +
                 getAttackTxt();
     }
 
@@ -66,10 +97,13 @@ public class PokemonView extends CardView {
         this.getInfoTable().getModel().setValueAt(pokStage, 5, 1);
     }
 
-    public void setEnergyTxt(ArrayList<Energy> energies){ this.energyTxt.setText(genEnergyStr(energies)); }
+    public void setEnergyTxt(ArrayList<Energy> energies){ this.energyTxt = genEnergyStr(energies); }
 
-    public void setAttackTxt(ArrayList<Attack> attacks){ this.attackTxt.setText(genAttackStr(attacks)); }
+    public void setAttackTxt(ArrayList<Attack> attacks){ this.attackTxt = genAttackStr(attacks); }
 
+    private void setRetreatRequirement(int retreatRequirment) {this.getInfoTable().getModel().setValueAt(String.valueOf(retreatRequirment), 6, 1);
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public int getDmgPts(){
         return Integer.valueOf( this.getInfoTable().getModel().getValueAt(2, 1).toString());
     }
@@ -88,11 +122,14 @@ public class PokemonView extends CardView {
     }
 
     public String getEnergyTxt() {
-        return energyTxt.getText();
+        return energyTxt;
     }
 
     public String getAttackTxt() {
-        return attackTxt.getText();
+        return attackTxt;
+    }
+
+    private int getRetreatRequirement() {return  Integer.valueOf( this.getInfoTable().getModel().getValueAt(6, 1).toString());
     }
 
     private String genEnergyStr(ArrayList<Energy> energies){
@@ -100,7 +137,7 @@ public class PokemonView extends CardView {
         if (energies.size() > 0) {
             for(Energy item: energies){
                 if(energySb.length() > 0){
-                    energySb.append(',');
+                    energySb.append(", ");
                 }
                 energySb.append(item.getCategory());
             }
@@ -112,8 +149,53 @@ public class PokemonView extends CardView {
         StringBuilder attack;
         attack = new StringBuilder("Attacks:\n\n");
         for (Attack aAttackInfo : attacks) {
-            if (aAttackInfo.getAbility().getAction().equals("dam")) {
-                attack.append(aAttackInfo.getAbility().getName()).append(" (Dmg: ").append(aAttackInfo.getAbility().getDamage()).append(")\n");
+            boolean attackHasAmount = false;
+            String  dmg = "";
+            Amount amount = new Amount();
+
+            if (aAttackInfo.getAbility().getLogic().size() > 1) {
+                dmg = "Multi Calc";
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Dam) {
+                attackHasAmount = true;
+                amount = ((Dam) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Deck) {
+                attackHasAmount = true;
+                amount = ((Deck) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Draw) {
+                attackHasAmount = true;
+                amount = ((Draw) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Heal) {
+                attackHasAmount = true;
+                amount = ((Heal) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Deenergize) {
+                attackHasAmount = true;
+                amount = ((Deenergize) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Search) {
+                attackHasAmount = true;
+                amount = ((Search) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Redamage) {
+                attackHasAmount = true;
+                amount = ((Redamage) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
+            }
+            if (attackHasAmount) {
+                if (amount.isCalculated()) {
+                    dmg = "Calculated";
+                }
+                else {
+                    dmg = Integer.toString(amount.getAmount());
+                }
+                attack.append(aAttackInfo.getAbility().getName()).append(" (" + aAttackInfo.getAbility().getLogic().get(0).getType()+ ": ").append(dmg).append(")\n");
+            }
+            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Reenergize) {
+                dmg =  Integer.toString(((Reenergize) aAttackInfo.getAbility().getLogic().get(0)).getSrcAmount()) + " -> " + Integer.toString(((Reenergize) aAttackInfo.getAbility().getLogic().get(0)).getDestAmount());
+                attack.append(aAttackInfo.getAbility().getName()).append(" (Energize: ").append(dmg).append(")\n");
             }
             else {
                 attack.append(aAttackInfo.getAbility().getName()).append(" (Desc: ").append(aAttackInfo.getAbility().getDescription()).append(")\n");

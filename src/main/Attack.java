@@ -40,6 +40,17 @@ public class Attack {
         return ability;
     }
 
+    /**
+     * Attack is supported
+     * @return boolean
+     */
+    public boolean isSupported() {
+        if (getAbility().isParsed()) {
+            return true;
+        }
+        else return false;
+    }
+
 
     /**
      *
@@ -51,5 +62,23 @@ public class Attack {
                 "requirement=" + requirement +
                 ", ability=" + ability +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Attack attack = (Attack) o;
+
+        if (requirement != null ? !requirement.equals(attack.requirement) : attack.requirement != null) return false;
+        return ability != null ? ability.equals(attack.ability) : attack.ability == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = requirement != null ? requirement.hashCode() : 0;
+        result = 31 * result + (ability != null ? ability.hashCode() : 0);
+        return result;
     }
 }

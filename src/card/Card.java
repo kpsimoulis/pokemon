@@ -14,6 +14,12 @@ public class Card {
         this.category = category;
     }
 
+    public Card(Card card) {
+        this.name = card.name;
+        this.index = card.index;
+        this.category = card.category;
+    }
+
 
     public String getName() {
         return name;
@@ -40,10 +46,21 @@ public class Card {
         this.category = category;
     }
 
-    public boolean equals(Card anotherCard) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        return this.name.equals(anotherCard.name) && this.index == anotherCard.index && this.category.equals(anotherCard.category);
+        Card card = (Card) o;
 
+        if (name != null ? !name.equals(card.name) : card.name != null) return false;
+        return category != null ? category.equals(card.category) : card.category == null;
     }
 
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        return result;
+    }
 }

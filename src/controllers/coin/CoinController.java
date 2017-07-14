@@ -23,12 +23,18 @@ public class CoinController {
         return view;
     }
 
-    public void flipCoin(){
+    /**
+     * Head = 1, Tails = 2
+     * @return
+     */
+    public int flipCoin(){
         coin.flip();
         if (coin.isHead()){
             view.showHead();
+            return 1;
         }else{
             view.showTail();
+            return 2;
         }
     }
 

@@ -16,8 +16,9 @@ public abstract class CardView extends JLayeredPane {
 
     public CardView() {
 
-        this.setMaximumSize(new Dimension(140, 85));
-        this.setPreferredSize(new Dimension(140, 85));
+        this.setMaximumSize(new Dimension(100, 110));
+        this.setPreferredSize(new Dimension(100, 110));
+        this.setMinimumSize(new Dimension(100, 110));
 
         MouseListener descListeners = getMouseListener();
         String[][] cardInfo = new String[][]{{"Name: ", "Pikachu"},
@@ -37,7 +38,7 @@ public abstract class CardView extends JLayeredPane {
         infoTable.addMouseListener(descListeners);
         infoTable.setCellSelectionEnabled(false);
         JScrollPane tblContainer = new JScrollPane(infoTable);
-        tblContainer.setBounds(0, 0, 135, 80);
+        tblContainer.setBounds(0, 0, 100, 110);
         tblContainer.addMouseListener(descListeners);
         this.add(tblContainer, JLayeredPane.DEFAULT_LAYER);
 
@@ -47,8 +48,7 @@ public abstract class CardView extends JLayeredPane {
         backSideBtn.setAlignmentY(24f);
         backSideBtn.setBorderPainted(false);
         backSideBtn.setOpaque(true);
-        backSideBtn.setBounds(0, 0, 135, 80);
-        backSideBtn.setBorder(BorderFactory.createEmptyBorder());
+        backSideBtn.setBounds(0, 0, 100, 110);
 
         ImageIcon coverImg = new ImageIcon(getClass().getResource("/images/icon.png"));
         coverImg.setImage(coverImg.getImage().getScaledInstance(backSideBtn.getWidth(), backSideBtn.getHeight(), java.awt.Image.SCALE_SMOOTH));
@@ -81,7 +81,7 @@ public abstract class CardView extends JLayeredPane {
         return infoTable.getModel().getValueAt(0, 1).toString();
     }
 
-    protected String getCardType() {
+    public String getCardType() {
         return infoTable.getModel().getValueAt(1, 1).toString();
     }
 

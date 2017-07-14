@@ -11,9 +11,12 @@ public class PokemonController extends CardController {
 
     public PokemonController(Pokemon card){
 
-        super(card, new PokemonView(card.getEnergy(), card.getAttack(), card.getDamagePoints(), card.getHealthPoints(), card.getStage()));
-        PokemonView pokemonView = (PokemonView) getView();
+        super(card, new PokemonView(card.getEnergy(), card.getAttack(), card.getDamagePoints(), card.getHealthPoints(), card.getStage(), card.getRetreat().getEnergyAmount()));
 
+    }
+
+    public PokemonController(PokemonController pokemonController) {
+        super(pokemonController.getCard(), new PokemonView( (PokemonView) pokemonController.getView()));
     }
 
     public void addEnergy(Energy energyCard){
@@ -40,6 +43,24 @@ public class PokemonController extends CardController {
         }
 
     }
+    public void attachPokemon(Pokemon pokemonCard){
+
+        Pokemon card = (Pokemon) this.getCard();
+        ((Pokemon) this.getCard()).attachPokemon(pokemonCard);
+    }
+
+    public Pokemon removeAttatchedPokemon(){
+
+        Pokemon pokemonCard = (Pokemon) this.getCard();
+        try{
+            Pokemon returnCard = pokemonCard.removeAttachedBasicPokemon();
+            return returnCard;
+        }
+        catch (NullPointerException e){
+            return null;
+        }
+
+    }
 
     public ArrayList<Attack> getAttacks() {
         return ((Pokemon) getCard()).getAttack();
@@ -50,6 +71,14 @@ public class PokemonController extends CardController {
 
         Pokemon card = (Pokemon) getCard();
         card.setDamagePoints(card.getDamagePoints() + damage);
+        ((PokemonView) getView()).setDmgPts(card.getDamagePoints());
+
+    }
+
+    public void heal(int healPoints) {
+
+        Pokemon card = (Pokemon) getCard();
+        card.setDamagePoints(Math.max(0,card.getDamagePoints() - healPoints));
         ((PokemonView) getView()).setDmgPts(card.getDamagePoints());
 
     }

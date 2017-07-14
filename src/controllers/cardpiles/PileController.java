@@ -1,6 +1,7 @@
 package controllers.cardpiles;
 
 import card.Card;
+import card.Pokemon;
 import cardcontainer.CardContainer;
 import cardcontainer.Deck;
 import views.cardpiles.DeckView;
@@ -35,9 +36,20 @@ public abstract class PileController {
         this.cardContainer = cardContainer;
     }
 
-    public void addCard(Card newCard){
+    public void addCard(Card newCard) {
         cardContainer.addCard(newCard);
         view.incrementNoOfCards();
+        if( (newCard.getClass().getSimpleName().equals("Pokemon"))&&(cardContainer.getClass().getSimpleName().equals("DiscardPile"))) {
+            Pokemon tmpPok = (Pokemon) newCard;
+            if (!tmpPok.getStage().equals("basic")) {
+                for (Pokemon pok : tmpPok.getAttachedPokemon()) {
+                    cardContainer.addCard((Card) pok);
+                    view.incrementNoOfCards();
+
+                }
+            }
+
+        }
     }
 
 }

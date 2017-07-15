@@ -188,7 +188,6 @@ public class TestFeatures extends AssertJSwingJUnitTestCase {
         JTextComponentFixture cmdPanel = frame.textBox("txtCommand");
 
         pause(2000);
-        assertTrue(cmdPanel.text().contains("Add Energy to a pokemon"));
 
         frame.pressKey(VK_E);
 

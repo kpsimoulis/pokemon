@@ -2,10 +2,7 @@ package intergrationTest;
 
 import ability.Dam;
 import card.Energy;
-import main.Ability;
-import main.AbilityLogic;
-import main.Attack;
-import main.Requirement;
+import main.*;
 import org.junit.Test;
 import views.card.PokemonView;
 import views.card.TrainerView;
@@ -25,9 +22,10 @@ public class BenchViewIT {
     private BenchView benchView;
     @Test
     public void addCardView() throws Exception {
+        ParserHelper helper = new ParserHelper();
         ArrayList<Energy> energyArray= new ArrayList<Energy>(20);
         ArrayList<AbilityLogic> logic = new ArrayList<AbilityLogic>();
-        logic.add(new Dam(new ArrayList<String>(Arrays.asList("dam:target:choice:opponent-bench:30"))));
+        logic.add(helper.getAbilityByLogic("dam", new ArrayList<String>(Arrays.asList("target:opponent-active:30".split(":")))));
         Ability ability = new Ability("Rain Splash","damage", logic);
 
         Requirement requirement=new Requirement("general",2);

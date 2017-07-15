@@ -9,6 +9,7 @@ import org.junit.Test;
 import views.card.PokemonView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,10 +27,11 @@ public class PokemonControllerIT {
 
     @Before
     public void beforeEachTest(){
+        ParserHelper helper = new ParserHelper();
         ArrayList<Energy> energyArray= new ArrayList<Energy>(20);
         Retreat retreat = new Retreat("fighting",1);
         ArrayList<AbilityLogic> logic = new ArrayList<AbilityLogic>();
-        //logic.add(new Dam(new ArrayList<String>(Arrays.asList("dam:target:choice:opponent-bench:30"))));
+        logic.add(helper.getAbilityByLogic("dam", new ArrayList<String>(Arrays.asList("target:opponent-active:30".split(":")))));
         Ability ability = new Ability("Rain Splash","damage", logic);
         Requirement requirement=new Requirement("general",2);
         ArrayList<Requirement> requirements = new ArrayList<Requirement>();

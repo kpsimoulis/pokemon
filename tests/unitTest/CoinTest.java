@@ -1,9 +1,11 @@
-package player;
+package unitTest;
 
 import org.junit.Before;
 import org.junit.Test;
+import player.Coin;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by luckyfang0601 on 2017-05-24.

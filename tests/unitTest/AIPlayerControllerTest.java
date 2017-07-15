@@ -1,12 +1,9 @@
-package controllers.player;
+package unitTest;
 
-import card.Card;
 import card.Pokemon;
-import org.junit.Before;
+import controllers.player.AIPlayerController;
 import org.junit.Test;
 import player.Player;
-
-import javax.print.attribute.standard.PDLOverrideSupported;
 
 import static org.junit.Assert.*;
 

@@ -1,16 +1,15 @@
-package player;
+package unitTest;
 
 import ability.Dam;
-import card.Card;
 import card.Energy;
 import card.Pokemon;
-import cardcontainer.Bench;
 import cardcontainer.Deck;
-import cardcontainer.DiscardPile;
 import cardcontainer.Hand;
 import main.*;
 import org.junit.Before;
 import org.junit.Test;
+import player.Coin;
+import player.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +41,7 @@ public class PlayerTest {
         energyArray= new ArrayList<Energy>(20);
         retreat = new Retreat("fighting",1);
         ArrayList<AbilityLogic> logic = new ArrayList<AbilityLogic>();
-        logic.add(new Dam(new ArrayList<String>(Arrays.asList("dam:target:choice:opponent-bench:30"))));
+        //logic.add(new Dam(new ArrayList<String>(Arrays.asList("dam:target:choice:opponent-bench:30"))));
         Ability ability = new Ability("Rain Splash","damage", logic);
         Requirement requirement=new Requirement("general",2);
         ArrayList<Requirement> requirements = new ArrayList<Requirement>();
@@ -62,14 +61,7 @@ public class PlayerTest {
             assertFalse(playerCoin.isHead());
 
     }
-    @Test
-    public void putPokOnBench() throws Exception {
 
-
-        Pokemon card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "stage-one","pikachu",retreat,attacks,poks);
-        player.putPokOnBench(card1);
-        assertEquals(1,player.getBench().getNoOfCards());
-    }
     @Test
     public void shuffleDeck() throws Exception {
         newDeck = new Deck();
@@ -91,30 +83,8 @@ public class PlayerTest {
         assertEquals(1,player.getHand().getNoOfCards());
 
     }
-//    @Test
-//    public void discardCard() throws Exception {
-//        newDeck = new Deck();
-//        newDeck.populateDeck("C:\\Users\\luckyfang0601\\Documents\\SCHOOL\\comp354\\project\\pokemon\\res\\deck\\deck1.txt");
-//        player.setDeck(newDeck);
-//        player.drawCard();
-//        assertEquals(1,player.getHand().getNoOfCards());
-//        String testString ="Jirachi:pokemon:cat:basic:cat:psychic:70:retreat:cat:colorless:1:attacks:cat:psychic:1:39,cat:colorless:2,cat:psychic:1:40";
-//        String[] item = new String[1];
-//        item[0]=testString;
-//        CardsFileParser cardsFile = new CardsFileParser(item);
-//
-//       assertEquals(0,player.getHand().getNoOfCards());
-//
-//
-//    }
 
-    @Test
-    public void hasActivePokemon() throws Exception {
-        assertFalse((player.hasActivePokemon()));
-        Pokemon card1 = new Pokemon("Raichu", 27, "pokemon", 90,energyArray, "stage-one","pikachu",retreat,attacks,poks);
-        player.setActivePokemon(card1);
-        assertTrue(player.hasActivePokemon());
-    }
+
 
     @Test
     public void getNoCardsDeck() throws Exception {

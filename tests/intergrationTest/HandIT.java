@@ -1,22 +1,21 @@
-package cardcontainer;
+package intergrationTest;
 
-import ability.Dam;
 import card.Card;
 import card.Energy;
 import card.Pokemon;
+import cardcontainer.Hand;
 import main.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
- * Created by luckyfang0601 on 2017-05-23.
+ * Created by luckyfang0601 on 2017-07-14.
  */
-public class HandTest {
+public class HandIT {
     private Hand hand;
     private Retreat retreat;
     private ArrayList<Energy> energyArray;
@@ -29,7 +28,7 @@ public class HandTest {
         energyArray= new ArrayList<Energy>(20);
         retreat = new Retreat("fighting",1);
         ArrayList<AbilityLogic> logic = new ArrayList<AbilityLogic>();
-        logic.add(new Dam(new ArrayList<String>(Arrays.asList("dam:target:choice:opponent-bench:30"))));
+        //logic.add(new Dam(new ArrayList<String>(Arrays.asList("dam:target:choice:opponent-bench:30"))));
         Ability ability = new Ability("Rain Splash","damage", logic);
         Requirement requirement=new Requirement("general",2);
         ArrayList<Requirement> requirements = new ArrayList<Requirement>();

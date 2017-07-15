@@ -1,9 +1,10 @@
-package main;
+package unitTest;
 
+import main.AbilitiesFileParser;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by luckyfang0601 on 2017-05-30.
@@ -22,12 +23,12 @@ public class AbilitiesFileParserTest {
         assertEquals("Act Cute",abilities.getName());
     }
 
-    @Test
-    public void parseLogic() throws Exception {
-        abilities.parseName();
-        abilities.parseLogic();
-        assertEquals("target:them:destination:deck:bottom:choice:target:1",abilities.getLogic());
-    }
+//    @Test
+//    public void parseLogic() throws Exception {
+//        abilities.parseName();
+//        abilities.parseLogic();
+//        assertEquals("target:them:destination:deck:bottom:choice:target:1",abilities.getLogic());
+//    }
 
 
 

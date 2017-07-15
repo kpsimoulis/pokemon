@@ -1,10 +1,12 @@
-package controllers.cardpiles;
+package unitTest;
 
 import cardcontainer.Deck;
+import controllers.cardpiles.DeckController;
 import org.junit.Test;
 import views.cardpiles.DeckView;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by luckyfang0601 on 2017-06-01.

@@ -1,22 +1,23 @@
-package cardcontainer;
-import ability.Dam;
-import card.Card;
+package intergrationTest;
 
+import card.Card;
 import card.Energy;
 import card.Pokemon;
+import cardcontainer.Bench;
 import main.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Created by luckyfang0601 on 2017-05-23.
+ * Created by luckyfang0601 on 2017-07-14.
  */
-public class BenchTest {
+public class BenchIT {
 
     private Bench bench;
     private Retreat retreat;
@@ -33,9 +34,9 @@ public class BenchTest {
         energyArray= new ArrayList<Energy>(20);
         retreat = new Retreat("fighting",1);
         ArrayList<AbilityLogic> logic = new ArrayList<AbilityLogic>();
-        logic.add(new Dam(new ArrayList<String>(Arrays.asList("dam:target:choice:opponent-bench:30"))));
+        //logic.add(new Dam(new ArrayList<String>(Arrays.asList("dam:target:choice:opponent-bench:30"))));
         Ability ability = new Ability("Rain Splash","damage", logic);
-       Requirement requirement=new Requirement("general",2);
+        Requirement requirement=new Requirement("general",2);
         ArrayList<Requirement>  requirements = new ArrayList<Requirement>();
         requirements.add(requirement);
         Attack attack = new Attack(requirements,ability);
@@ -60,14 +61,6 @@ public class BenchTest {
 
     }
 
-    @Test
-    public void validate() throws Exception {
-
-        if(bench.getNoOfCards()!=5) {
-            assertFalse(bench.validate());
-        }
-
-    }
 
 
     @Test

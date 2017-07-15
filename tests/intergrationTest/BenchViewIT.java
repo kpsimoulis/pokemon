@@ -1,4 +1,4 @@
-package views.cardcontainer;
+package intergrationTest;
 
 import ability.Dam;
 import card.Energy;
@@ -9,16 +9,17 @@ import main.Requirement;
 import org.junit.Test;
 import views.card.PokemonView;
 import views.card.TrainerView;
+import views.cardcontainer.BenchView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
- * Created by luckyfang0601 on 2017-06-01.
+ * Created by luckyfang0601 on 2017-07-14.
  */
-public class BenchViewTest {
+public class BenchViewIT {
     private PokemonView pokemonView;
     private TrainerView trainerView;
     private BenchView benchView;
@@ -28,6 +29,7 @@ public class BenchViewTest {
         ArrayList<AbilityLogic> logic = new ArrayList<AbilityLogic>();
         logic.add(new Dam(new ArrayList<String>(Arrays.asList("dam:target:choice:opponent-bench:30"))));
         Ability ability = new Ability("Rain Splash","damage", logic);
+
         Requirement requirement=new Requirement("general",2);
         ArrayList<Requirement> requirements = new ArrayList<Requirement>();
         requirements.add(requirement);

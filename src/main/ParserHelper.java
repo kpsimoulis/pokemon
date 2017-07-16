@@ -156,6 +156,17 @@ public class ParserHelper {
         return pokemon;
     }
 
+    public void printPokemonWithoutRetreat() {
+        Pokemon pokemon = null;
+        if (parsed) {
+            for (Pokemon card : pokemons) {
+                if (card.getRetreat() == null) {
+                    System.out.println(card);
+                }
+            }
+        }
+    }
+
     public Trainer getTrainerByName(String name) {
         Trainer trainer = null;
         if (parsed) {

@@ -43,3 +43,7 @@ fabric.properties
 # Gradle:
 .idea/**/gradle.xml
 .idea/**/libraries
+
+# Maven
+log/
+target/

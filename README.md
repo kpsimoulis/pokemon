@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/kpsimoulis/pokemon.svg?branch=master)](https://travis-ci.org/kpsimoulis/pokemon)
+
 # pokemon
 COMP354 Pokemon Project
 

@@ -7,6 +7,7 @@ import controllers.card.ControllerViewBuilder;
 import javafx.util.Pair;
 import views.card.CardView;
 import views.card.PokemonView;
+import views.card.TrainerView;
 import views.cardcontainer.ContainerView;
 
 import java.awt.event.KeyListener;
@@ -18,7 +19,7 @@ public abstract class CardContainerController {
     private ContainerView view;
     private ArrayList<CardController> cardControllers;
 
-    public CardContainerController(CardContainer newContainer, ContainerView newView, int initialCapacity){
+    public CardContainerController(CardContainer newContainer, ContainerView newView, int initialCapacity) {
 
         container = newContainer;
         view = newView;
@@ -31,11 +32,11 @@ public abstract class CardContainerController {
 
     }
 
-    public ArrayList<CardController> getCardControllers(){
+    public ArrayList<CardController> getCardControllers() {
         return cardControllers;
     }
 
-    public void addCard(Pair<CardController, CardView> pair){
+    public void addCard(Pair<CardController, CardView> pair) {
 
         container.addCard(pair.getKey().getCard());
         view.addCardView(pair.getValue());
@@ -43,7 +44,7 @@ public abstract class CardContainerController {
 
     }
 
-    public Pair<CardController, CardView> addCard(Card newCard){
+    public Pair<CardController, CardView> addCard(Card newCard) {
 
         Pair<CardController, CardView> pairControllerView = ControllerViewBuilder.buildControllerView(newCard);
         container.addCard(newCard);
@@ -52,12 +53,12 @@ public abstract class CardContainerController {
         return pairControllerView;
     }
 
-    public Pair<CardController, CardView> removeCard(Card cardToRemove){
+    public Pair<CardController, CardView> removeCard(Card cardToRemove) {
 
         container.removeCard(cardToRemove);
         CardController removedController = null;
-        for(CardController controller: cardControllers){
-            if (controller.getCard() == cardToRemove){
+        for (CardController controller : cardControllers) {
+            if (controller.getCard() == cardToRemove) {
                 removedController = controller;
                 cardControllers.remove(controller);
                 break;
@@ -71,9 +72,9 @@ public abstract class CardContainerController {
 
     }
 
-    public void returnAllCards(){
+    public void returnAllCards() {
 
-        for(CardController controller: cardControllers){
+        for (CardController controller : cardControllers) {
             controller.returnBackCover();
         }
 
@@ -90,7 +91,6 @@ public abstract class CardContainerController {
     public void setContainer(CardContainer container) {
         this.container = container;
     }
-
 
 
     public void setPokemonListener(KeyListener activeListener) {
@@ -110,4 +110,16 @@ public abstract class CardContainerController {
         }
 
     }
+
+
+    public void setTrainerListener(KeyListener activeListener) {
+
+        for (CardController cardController : getCardControllers()) {
+            if (cardController.getView() instanceof TrainerView) {
+                cardController.getView().setListeners(activeListener);
+            }
+        }
+
+    }
+
 }

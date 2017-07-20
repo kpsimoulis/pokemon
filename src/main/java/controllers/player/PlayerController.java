@@ -364,4 +364,14 @@ public abstract class PlayerController {
         return result;
     }
 
+    public boolean isTrainerCardAvailable() {
+        boolean result = false;
+        for (Card card : getHandController().getContainer().getCards()) {
+            if (card.getClass().getSimpleName().equals("Trainer")) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
 }

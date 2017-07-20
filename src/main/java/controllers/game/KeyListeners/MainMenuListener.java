@@ -1,8 +1,11 @@
 package controllers.game.KeyListeners;
 
+import ability.Draw;
+import ability.Heal;
 import card.Card;
 import card.Energy;
 import card.Pokemon;
+import card.Trainer;
 import controllers.card.CardController;
 import controllers.card.PokemonController;
 import controllers.game.GameController;
@@ -11,6 +14,8 @@ import parser.Attack;
 import views.activepokemon.ActivePokemonView;
 import views.card.CardView;
 import views.card.PokemonView;
+import views.card.TrainerView;
+import parser.Amount;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,6 +54,11 @@ public class MainMenuListener implements KeyListener {
         if (controller.getHumanController().getActivePokemonCard().getEnergy().size() >=
                 controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount() && controller.getHumanController().benchHasPokemon()) {
             builder.append("R. Retreat your Active Pokemon.\n");
+        }
+
+        if (controller.getHumanController().isTrainerCardAvailable()) {
+            builder.append("T. Use your trainer card.\n");
+
         }
 
         if (controller.getHumanController().isEvolvable()) {
@@ -324,7 +334,11 @@ public class MainMenuListener implements KeyListener {
                         + "1. Add 4 energies to your pokemon \n"
                         + "2. Heal your active Pokemon 15 points\n"
                         + "3. Add 4 energies to AI's pokemon\n"
-                        + "4. Heal AI's active Pokemon 15 points\n");
+                        + "4. Heal AI's active Pokemon 15 points\n"
+                        + "5. Damage your Pokemon 15 points\n"
+                        + "6. Damage AI's Pokemon 15 points"
+
+                );
                 controller.getView().setCommand(builder.toString() + "\n"
                         + "(Press Esc to exit)");
                 //add listener
@@ -356,6 +370,14 @@ public class MainMenuListener implements KeyListener {
                             controller.getView().addBoardListerner(new MainMenuListener(controller));
                         } else if (e.getKeyCode() == KeyEvent.VK_4) {
                             controller.getAIController().getActivePokemonController().getPokemonController().heal(15);
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        }
+                        else if (e.getKeyCode() == KeyEvent.VK_5) {
+                            controller.getHumanController().getActivePokemonController().getPokemonController().causeDamage(15);
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        }
+                        else if (e.getKeyCode() == KeyEvent.VK_6) {
+                            controller.getAIController().getActivePokemonController().getPokemonController().causeDamage(15);
                             controller.getView().addBoardListerner(new MainMenuListener(controller));
                         }
                     }
@@ -614,6 +636,161 @@ public class MainMenuListener implements KeyListener {
 
                 break;
 
+
+            }
+
+            case KeyEvent.VK_T: {
+                if (!controller.getHumanController().isTrainerCardAvailable()) {
+                    StringBuilder builder = new StringBuilder("You donot have any trainer card in your hand now! \n");
+                    builder.append("(Press Esc to exit)");
+                    controller.getView().setCommand(builder.toString());
+
+                    controller.getView().addBoardListerner(new KeyListener() {
+                        @Override
+                        public void keyTyped(KeyEvent e) {
+
+                        }
+
+                        @Override
+                        public void keyPressed(KeyEvent e) {
+                            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                                controller.getView().addBoardListerner(new MainMenuListener(controller));
+                            }
+                        }
+
+                        @Override
+                        public void keyReleased(KeyEvent e) {
+
+                        }
+                    });
+
+                    break;
+                }
+
+                KeyListener trainerListener = new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        switch (e.getKeyCode()) {
+                            case KeyEvent.VK_ENTER: {
+
+                                TrainerView chosenCard = (TrainerView) SwingUtilities.getAncestorOfClass(TrainerView.class, (Component) e.getSource());
+
+                                Card trainCard = controller.findCardInContainer(chosenCard, controller.getHumanController().getHandController()).getCard();
+                                Trainer tc = (Trainer) trainCard;
+                                String type = tc.getAbility().getLogic().get(0).getClass().getSimpleName();
+
+                                switch (type) {
+                                    case ("Draw"): {
+                                        Pair<CardController, CardView> pair = controller.getHumanController().getHandController().removeCard(trainCard);
+                                        controller.getHumanController().getDiscardPileController().addCard((Trainer) pair.getKey().getCard());
+                                        Amount amount = ((Draw) tc.getAbility().getLogic().get(0)).getAmount();
+                                        int number = amount.getAmount();
+                                        for (int i = 0; i < number; i++) {
+                                            controller.getHumanController().dealDeckHand();
+                                        }
+                                        controller.getHumanController().getHandController().returnAllCards();
+
+                                        //remove listener combo
+                                        controller.getHumanController().getActivePokemonController().removeKeyListener(this);
+                                        controller.getHumanController().getBenchController().removeAllListeners(this);
+                                        controller.getHumanController().getHandController().removeAllListeners(this);
+                                        controller.getView().addBoardListerner(new MainMenuListener(controller));
+                                        break;
+                                    }//draw
+
+                                    case ("Heal"): {
+                                        Amount amount = ((Heal) tc.getAbility().getLogic().get(0)).getAmount();
+                                        int healAmount = amount.getAmount();
+                                        controller.getView().setCommand("Select Pokemon and press Enter to heal " + healAmount + ".\n(Press Esc to exit)");
+                                        controller.getView().addBoardListerner(new KeyListener() {
+                                            @Override
+                                            public void keyTyped(KeyEvent e) {
+
+                                            }
+
+                                            @Override
+                                            public void keyPressed(KeyEvent e) {
+                                                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                                                    controller.getHumanController().getActivePokemonController().removeKeyListener(this);
+                                                    controller.getHumanController().getBenchController().removeAllListeners(this);
+                                                    controller.getHumanController().getHandController().removeAllListeners(this);
+                                                    controller.getView().addBoardListerner(new MainMenuListener(controller));
+                                                }
+                                            }
+
+                                            @Override
+                                            public void keyReleased(KeyEvent e) {
+
+                                            }
+                                        });
+                                        controller.getHumanController().getActivePokemonController().removeKeyListener(this);
+                                        controller.getHumanController().getBenchController().removeAllListeners(this);
+                                        HealListener healListener = new HealListener(controller, trainCard, healAmount);
+                                        controller.getHumanController().getBenchController().setPokemonListener(healListener);
+                                        controller.getHumanController().getActivePokemonController().setKeyListener(healListener);
+                                        controller.getHumanController().getHandController().removeAllListeners(this);
+
+                                        break;
+                                    }//heal
+
+
+                                    default:
+                                        controller.getView().setCommand("Haven't implement yet. default from Trainer card in MainMenu.\nPress ESC to go back");
+
+                                        break;
+                                }//switch2
+
+                                break;
+                            }//key
+
+
+                            default: {
+                                System.out.println("Enter the correct Key.(from MainMenulistener)");
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                    }
+                };//trainerListener
+                controller.getHumanController().getHandController().setTrainerListener(trainerListener);
+                //build menu
+                StringBuilder builder = new StringBuilder("Now you can use your trainer card \n\n");
+                builder.append("Choose one of the your trainer card and press Enter\n\n"
+                );
+                controller.getView().setCommand(builder.toString() + "\n"
+                        + "(Press Esc to exit)");
+
+
+                controller.getView().addBoardListerner(new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                            controller.getHumanController().getHandController().removeAllListeners(trainerListener);
+                            controller.getView().addBoardListerner(new MainMenuListener(controller));
+                        }
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                    }
+                });
+
+                break;
 
             }
 

@@ -1,6 +1,6 @@
 package systemlevel;
 
-import parser.Main;
+import comp354.Main;
 import org.assertj.swing.core.ComponentMatcher;
 import org.assertj.swing.core.GenericTypeMatcher;
 import org.assertj.swing.fixture.*;
@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
  * Created by mikce_000 on 02-Jul-2017.
  */
 @FixMethodOrder(MethodSorters.JVM)
-public class TestFeatures extends AssertJSwingJUnitTestCase {
+public class TestFeaturesTest extends AssertJSwingJUnitTestCase {
 
     private FrameFixture frame;
     private JPanel cardHolder;

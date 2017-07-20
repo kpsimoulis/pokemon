@@ -143,25 +143,25 @@ public class GameControllerIT {
 
     }
 
-    @Test
-    public void endFirstTurn() throws Exception {
-        gameControllerTest.getAIController().getPlayer().getDeck().populateDeck("src/main/resources/deck/deck1.txt");
-        gameControllerTest.getHumanController().getPlayer().getDeck().populateDeck("src/main/resources/deck/deck1.txt");
-        gameControllerTest.getAIController().getPlayer().setName("1");
-        gameControllerTest.getHumanController().getPlayer().setName("2");
-        gameControllerTest.getHumanController().buildViewController();
-        gameControllerTest.getHumanController().getHandController().addCard(pokemon);
-        gameControllerTest.getAIController().buildViewController();
-        //    gameControllerTest.getAIController().getHandController().addCard(pokemon);
-        gameControllerTest.getAIController().initiateGame();
-        gameControllerTest.playerChooseActive();
-
-        assertTrue(gameControllerTest.isFirstTurn());
-        gameControllerTest.endFirstTurn();
-        assertFalse(gameControllerTest.isFirstTurn());
-
-
-    }
+//    @Test
+//    public void endFirstTurn() throws Exception {
+//        gameControllerTest.getAIController().getPlayer().getDeck().populateDeck("src/main/resources/deck/deck1.txt");
+//        gameControllerTest.getHumanController().getPlayer().getDeck().populateDeck("src/main/resources/deck/deck1.txt");
+//        gameControllerTest.getAIController().getPlayer().setName("1");
+//        gameControllerTest.getHumanController().getPlayer().setName("2");
+//        gameControllerTest.getHumanController().buildViewController();
+//        gameControllerTest.getHumanController().getHandController().addCard(pokemon);
+//        gameControllerTest.getAIController().buildViewController();
+//        gameControllerTest.getAIController().getHandController().addCard(pokemon);
+//        gameControllerTest.getAIController().initiateGame();
+//        gameControllerTest.playerChooseActive();
+//
+//        assertTrue(gameControllerTest.isFirstTurn());
+//        gameControllerTest.endFirstTurn();
+//        assertFalse(gameControllerTest.isFirstTurn());
+//
+//
+//    }
 
     @Test
     public void playerDealDeck() throws Exception {

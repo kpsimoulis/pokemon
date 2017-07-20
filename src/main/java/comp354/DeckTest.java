@@ -1,4 +1,4 @@
-package parser;
+package comp354;
 
 import card.*;
 import parser.ParserHelper;

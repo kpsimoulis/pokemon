@@ -1,4 +1,4 @@
-package parser;
+package comp354;
 
 import controllers.game.GameController;
 

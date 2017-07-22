@@ -108,6 +108,8 @@ public class CardsFileParser {
 
     public void parseRetreat() {
         if (this.itemList.get(0).equals("attacks")) {
+            this.retreat = new Retreat("colorless",0);
+
             return;
         }
         else if (this.itemList.get(0).equals("retreat") && this.itemList.get(1).equals("cat")) {

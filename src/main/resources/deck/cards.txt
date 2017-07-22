@@ -1,15 +1,15 @@
 Glameow:pokemon:cat:basic:cat:colorless:60:retreat:cat:colorless:2:attacks:cat:colorless:1:1,cat:colorless:2:2
 Pikachu Libre:pokemon:cat:basic:cat:lightning:80:retreat:cat:colorless:1:attacks:cat:colorless:2:3,cat:colorless:2,cat:lightning:1:4
 Pikachu:pokemon:cat:basic:cat:lightning:60:retreat:cat:colorless:1:attacks:cat:colorless:1:5,cat:colorless:2:6
-Raichu:pokemon:cat:stage-one:Pikachu:cat:lightning:90:retreat:cat:colorless:1:attacks:cat:colorless:2:7,cat:colorless:1,cat:lightning:2:8
+Raichu:pokemon:cat:stage-one:Pikachu:cat:lightning:90:attacks:cat:colorless:2:7,cat:colorless:1,cat:lightning:2:8
 Shellder:pokemon:cat:basic:cat:water:60:retreat:cat:colorless:1:attacks:cat:colorless:1,cat:water:1:9
-Seaking:pokemon:cat:stage-one:Goldeen:cat:water:90:retreat:cat:colorless:1:attacks:cat:water:1:10,cat:colorless:1:11
+Seaking:pokemon:cat:stage-one:Goldeen:cat:water:90:attacks:cat:water:1:10,cat:colorless:1:11
 Goldeen:pokemon:cat:basic:cat:water:60:retreat:cat:colorless:1:attacks:cat:colorless:1:12
-Frogadier:pokemon:cat:stage-one:Froakie:cat:water:70:retreat:cat:colorless:1:attacks:cat:colorless:2:13
+Frogadier:pokemon:cat:stage-one:Froakie:cat:water:70:attacks:cat:colorless:2:13
 Froakie:pokemon:cat:basic:cat:water:50:retreat:cat:colorless:1:attacks:cat:colorless:1:14
 Cloyster:pokemon:cat:stage-one:Shellder:cat:water:100:retreat:cat:colorless:3:attacks:cat:colorless:1,cat:water:1:15,cat:colorless:1,cat:water:2:16
 Suicune:pokemon:cat:basic:cat:water:100:retreat:cat:colorless:1:attacks:cat:colorless:1,cat:water:1:17,cat:colorless:1,cat:water:2:18
-Swanna:pokemon:cat:stage-one:Ducklett:cat:water:80:retreat:cat:colorless:1:attacks:cat:colorless:1:19,cat:colorless:3:20
+Swanna:pokemon:cat:stage-one:Ducklett:cat:water:80:attacks:cat:colorless:1:19,cat:colorless:3:20
 Ducklett:pokemon:cat:basic:cat:water:60:retreat:cat:colorless:1:attacks:cat:colorless:1:21
 Purugly:pokemon:cat:stage-one:Glameow:cat:colorless:100:retreat:cat:colorless:2:attacks:cat:colorless:2:22,cat:colorless:3:23
 Manectric:pokemon:cat:stage-one:Electrike:cat:lightning:90:retreat:cat:colorless:1:attacks:cat:lightning:1:24,cat:colorless:2:25

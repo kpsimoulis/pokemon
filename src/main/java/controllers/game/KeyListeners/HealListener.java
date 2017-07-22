@@ -61,7 +61,7 @@ public class HealListener implements KeyListener {
 
 
             default: {
-                System.out.println("Enter the correct Key.(from UseTrainerCard)");
+                System.out.println("Enter the correct Key.(from HealListener)");
                 break;
             }
         }

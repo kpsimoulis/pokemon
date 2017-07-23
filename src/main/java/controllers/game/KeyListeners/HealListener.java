@@ -36,7 +36,7 @@ public class HealListener implements KeyListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_ENTER: {
 
-                controller.getView().setCommand("S\n(Press Esc to exit)");
+                controller.getView().setCommand("HealListener\n(Press Esc to exit)");
 
                 PokemonView chosenCard = (PokemonView) SwingUtilities.getAncestorOfClass(PokemonView.class, (Component) e.getSource());
                 PokemonController chosenController;
@@ -50,9 +50,12 @@ public class HealListener implements KeyListener {
                 }
 
                 chosenController.heal(amount);
+                amount = 0;
                 controller.getHumanController().getHandController().removeCard(this.card);
 
                 // Remove listener
+                controller.getHumanController().setChosingCard(false);
+
                 controller.getHumanController().getActivePokemonController().removeKeyListener(this);
                 controller.getHumanController().getBenchController().removeAllListeners(this);
                 controller.getView().addBoardListerner(new MainMenuListener(controller));

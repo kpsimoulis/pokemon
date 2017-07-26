@@ -681,6 +681,7 @@ public class MainMenuListener implements KeyListener {
                                 Ability ability = tc.getAbility();
                                 String type = tc.getAbility().getLogic().get(0).getClass().getSimpleName();
                                 controller.getHumanController().setChosingCard(true);
+//                                controller.getView().setCommand(type);
 
                                 switch (type) {
                                     case ("Draw"): {
@@ -731,9 +732,33 @@ public class MainMenuListener implements KeyListener {
                                         break;
                                     }//heal
 
+                                    case ("Reenergize"): {
+
+                                        int destAmount = ((Reenergize) tc.getAbility().getLogic().get(0)).getDestAmount();
+                                        int sourceAmount = ((Reenergize) tc.getAbility().getLogic().get(0)).getSrcAmount();
+                                        controller.getView().setCommand("Select Pokemon and press D\nto detach "
+                                                + sourceAmount + " energy to another Pokemon\n"
+                                        );
+                                        if (sourceAmount <= 0 || destAmount < 0 || destAmount != sourceAmount) {
+                                            controller.getHumanController().setChosingCard(false);
+                                            controller.getView().setCommand("Incorrent amount for reenergize, nothing will happen.\nPress ESC to go back");
+                                            break;
+                                        }
+
+                                        ReenergizeListener reenergizeListener = new ReenergizeListener(controller, card, sourceAmount, destAmount);
+                                        controller.getHumanController().getActivePokemonController().removeKeyListener(this);
+                                        controller.getHumanController().getBenchController().removeAllListeners(this);
+                                        controller.getHumanController().getBenchController().setPokemonListener(reenergizeListener);
+                                        controller.getHumanController().getActivePokemonController().setKeyListener(reenergizeListener);
+                                        destAmount = 0;
+                                        sourceAmount = 0;
+                                        controller.getHumanController().getHandController().removeAllListeners(this);
+                                        break;
+                                    }//reenergize
 
                                     default:
                                         controller.getView().setCommand("Haven't implement yet. default from Trainer card in MainMenu.\nPress ESC to go back");
+                                        controller.getHumanController().setChosingCard(false);
 
                                         break;
                                 }//switch type

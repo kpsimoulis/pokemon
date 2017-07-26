@@ -5,6 +5,7 @@ import card.Energy;
 import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
+import controllers.card.PokemonController;
 import controllers.cardcontainer.BenchController;
 import controllers.cardcontainer.HandController;
 import controllers.cardpiles.DeckController;
@@ -372,6 +373,25 @@ public abstract class PlayerController {
             }
         }
         return result;
+    }
+
+    private PokemonController sourceController;
+    private PokemonController destController;
+
+    public PokemonController getSourceController() {
+        return sourceController;
+    }
+
+    public PokemonController getDestController() {
+        return destController;
+    }
+
+    public void setSourceController(PokemonController sourceController) {
+        this.sourceController = sourceController;
+    }
+
+    public void setDestController(PokemonController destController) {
+        this.destController = destController;
     }
 
 }

@@ -1,15 +1,20 @@
 package controllers.game;
 
-import ability.Dam;
+import ability.*;
+import controllers.game.*;
 import controllers.card.CardController;
 import controllers.cardcontainer.CardContainerController;
+import controllers.game.KeyListeners.HealListener;
 import controllers.game.KeyListeners.ListenerActivePok;
 import controllers.game.KeyListeners.MainMenuListener;
 import controllers.player.AIPlayerController;
 import controllers.player.HumanPlayerController;
 import controllers.player.PlayerController;
+import javafx.util.Pair;
+import parser.Ability;
 import parser.Amount;
 import parser.Attack;
+import parser.Target;
 import views.ChoiceDialog;
 import views.card.CardView;
 import views.cardcontainer.BenchView;
@@ -18,6 +23,7 @@ import views.cardpiles.DeckView;
 import views.cardpiles.DiscardPileView;
 import views.cardpiles.PrizeCardView;
 import views.game.GameView;
+import card.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -263,9 +269,9 @@ public class GameController {
         playerDealDeck(player2Controller);
         Attack attack_caused = player2Controller.play(player1Controller);
         sb.append("Ability used: ");
-        if (attack_caused == null){
+        if (attack_caused == null) {
             sb.append("None").append("\nTurn Ended.\n");
-        }else{
+        } else {
             // Default damage amount
             int dmg = 0;
             if (attack_caused.getAbility().getLogic().get(0) instanceof Dam) {
@@ -273,8 +279,7 @@ public class GameController {
                 if (amount.isCalculated()) {
                     // TODO process calculated amount for AI
                     dmg = 5;
-                }
-                else {
+                } else {
                     dmg = amount.getAmount();
                 }
             }
@@ -365,4 +370,63 @@ public class GameController {
         }
 
     }
+
+//    public void applyTrainerAbility(HumanPlayerController humanPlayerController, AIPlayerController aiPlayerController, Ability ability, Card card) {
+//        String type1 = ability.getLogic().get(0).getClass().getSimpleName();
+//        Trainer trainCard = (Trainer) card;
+////        String type2 = ability.getLogic().get(1).getClass().getSimpleName();
+//        if (ability.getLogic().size() < 2) {
+//            switch (type1) {
+//                case ("Draw"): {
+//                    Pair<CardController, CardView> pair = humanPlayerController.getHandController().removeCard(trainCard);
+//                    humanPlayerController.getDiscardPileController().addCard((Trainer) pair.getKey().getCard());
+//                    Amount amount = ((Draw) ability.getLogic().get(0)).getAmount();
+//                    Target target = ((Draw) ability.getLogic().get(0)).getTarget();
+//                    int number = amount.getAmount();
+//                    for (int i = 0; i < number; i++) {
+//                        if (target.getName().equals("your"))
+//                            humanPlayerController.dealDeckHand();
+//                        else
+//                            aiPlayerController.dealDeckHand();
+//                    }
+//                    humanPlayerController.getHandController().returnAllCards();
+//                    humanPlayerController.setChosingCard(false);
+//
+//                    this.getView().addBoardListerner(new MainMenuListener(this));
+//                    break;
+//                }//draw
+//                case ("Heal"): {
+//                    Amount amount = ((Heal) ability.getLogic().get(0)).getAmount();
+//                    int healAmount = amount.getAmount();
+//                    this.getView().setCommand("Select Pokemon and press Enter to heal " + healAmount +  " HP points.");
+//                    HealListener healListener = new HealListener(this, trainCard, healAmount);
+//                    humanPlayerController.getBenchController().setPokemonListener(healListener);
+//                    humanPlayerController.getActivePokemonController().setKeyListener(healListener);
+//                    while(humanPlayerController.getIsChosingCard() == false){
+//                        try {
+//                            Thread.sleep(10000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                        humanPlayerController.getBenchController().removeAllListeners(healListener);
+//                        humanPlayerController.getActivePokemonController().removeKeyListener(healListener);
+//
+//                    this.getView().addBoardListerner(new MainMenuListener(this));
+//
+//
+//                    break;
+//                }//heal
+//
+//
+//                default:
+//                    this.getView().setCommand("Haven't implement yet. default from Trainer card in MainMenu.\nPress ESC to go back");
+//
+//                    break;
+//            }//switch type1
+//        }
+//
+//    }
+
 }

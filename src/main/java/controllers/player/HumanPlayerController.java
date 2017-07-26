@@ -11,17 +11,17 @@ import views.card.PokemonView;
  */
 public class HumanPlayerController extends PlayerController {
 
-    public HumanPlayerController(){
+    public HumanPlayerController() {
         super();
     }
 
-    public ActivePokemonView setActivePokemon(boolean firstTime, PokemonController controller, PokemonView pokemonView){
+    public ActivePokemonView setActivePokemon(boolean firstTime, PokemonController controller, PokemonView pokemonView) {
 
-        if (!getPlayer().hasActivePokemon() && firstTime){
+        if (!getPlayer().hasActivePokemon() && firstTime) {
 
             ActivePokemonView view = new ActivePokemonView(pokemonView);
             getPlayer().setActivePokemon((Pokemon) controller.getCard());
-            setActivePokemonController(new ActivePokemonController(controller,view ));
+            setActivePokemonController(new ActivePokemonController(controller, view));
             return view;
 
         }
@@ -29,5 +29,16 @@ public class HumanPlayerController extends PlayerController {
         return null;
 
     }
+
+    public void setChosingCard(boolean chosingCard) {
+        isChosingCard = chosingCard;
+    }
+
+    public boolean getIsChosingCard() {
+        return isChosingCard;
+    }
+
+    private boolean isChosingCard = false;
+
 
 }

@@ -108,7 +108,7 @@ public class CardsFileParser {
 
     public void parseRetreat() {
         if (this.itemList.get(0).equals("attacks")) {
-            return;
+            this.retreat = new Retreat("colorless",0);
         }
         else if (this.itemList.get(0).equals("retreat") && this.itemList.get(1).equals("cat")) {
             itemList.remove(0);
@@ -138,6 +138,7 @@ public class CardsFileParser {
                 String[] attackVariables = attackItems[i].split(":");
                 if (attackVariables.length == 4) {
                     requirement.add(new Requirement(attackVariables[1], Integer.parseInt(attackVariables[2])));
+                    System.out.println(this.getName()+attackVariables[2]+attackVariables[1]+attackVariables[3]);
                     try {
                         abilityLine = Files.readAllLines(Paths.get("src/main/resources/deck/abilities.txt")).get(Integer.parseInt(attackVariables[3]) - 1);
                         String[] abilityLineVariables = abilityLine.split(":");
@@ -161,6 +162,8 @@ public class CardsFileParser {
                 }
                 else if (attackVariables.length == 3) {
                     requirement.add(new Requirement(attackVariables[1], Integer.parseInt(attackVariables[2])));
+                    System.out.println(this.getName()+attackVariables[2]+attackVariables[1]);
+
                 }
                 else {
                     throw new IllegalArgumentException("Attack should contain 3 or 4 items");

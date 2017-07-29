@@ -371,62 +371,86 @@ public class GameController {
 
     }
 
-//    public void applyTrainerAbility(HumanPlayerController humanPlayerController, AIPlayerController aiPlayerController, Ability ability, Card card) {
-//        String type1 = ability.getLogic().get(0).getClass().getSimpleName();
-//        Trainer trainCard = (Trainer) card;
-////        String type2 = ability.getLogic().get(1).getClass().getSimpleName();
-//        if (ability.getLogic().size() < 2) {
-//            switch (type1) {
-//                case ("Draw"): {
-//                    Pair<CardController, CardView> pair = humanPlayerController.getHandController().removeCard(trainCard);
-//                    humanPlayerController.getDiscardPileController().addCard((Trainer) pair.getKey().getCard());
-//                    Amount amount = ((Draw) ability.getLogic().get(0)).getAmount();
-//                    Target target = ((Draw) ability.getLogic().get(0)).getTarget();
-//                    int number = amount.getAmount();
-//                    for (int i = 0; i < number; i++) {
-//                        if (target.getName().equals("your"))
-//                            humanPlayerController.dealDeckHand();
-//                        else
-//                            aiPlayerController.dealDeckHand();
-//                    }
-//                    humanPlayerController.getHandController().returnAllCards();
-//                    humanPlayerController.setChosingCard(false);
-//
-//                    this.getView().addBoardListerner(new MainMenuListener(this));
-//                    break;
-//                }//draw
-//                case ("Heal"): {
-//                    Amount amount = ((Heal) ability.getLogic().get(0)).getAmount();
-//                    int healAmount = amount.getAmount();
-//                    this.getView().setCommand("Select Pokemon and press Enter to heal " + healAmount +  " HP points.");
-//                    HealListener healListener = new HealListener(this, trainCard, healAmount);
-//                    humanPlayerController.getBenchController().setPokemonListener(healListener);
-//                    humanPlayerController.getActivePokemonController().setKeyListener(healListener);
-//                    while(humanPlayerController.getIsChosingCard() == false){
-//                        try {
-//                            Thread.sleep(10000);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                        humanPlayerController.getBenchController().removeAllListeners(healListener);
-//                        humanPlayerController.getActivePokemonController().removeKeyListener(healListener);
-//
-//                    this.getView().addBoardListerner(new MainMenuListener(this));
-//
-//
+    public void applyAbility(HumanPlayerController humanPlayerController, AIPlayerController aiPlayerController, Ability ability, Pokemon pokemon) {
+        StringBuilder strBuilder = new StringBuilder();
+
+        String type1 = ability.getLogic().get(0).getClass().getSimpleName();
+        System.out.print("applied: " + type1 +"\n");
+//        String type2 = ability.getLogic().get(1).getClass().getSimpleName();
+        if (ability.getLogic().size() < 2) {
+            switch (type1) {
+//                case ("Dam"): {
+//                    Amount amount = ((Dam) ability.getLogic().get(0)).getAmount();
+//                    Target target = ((Dam) ability.getLogic().get(0)).getTarget();
+//                    int damAmount = amount.getAmount();
+//                    humanPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
 //                    break;
 //                }//heal
-//
-//
-//                default:
-//                    this.getView().setCommand("Haven't implement yet. default from Trainer card in MainMenu.\nPress ESC to go back");
-//
-//                    break;
-//            }//switch type1
-//        }
-//
-//    }
+                case ("Draw"): {
+                    Amount amount = ((Draw) ability.getLogic().get(0)).getAmount();
+                    Target target = ((Draw) ability.getLogic().get(0)).getTarget();
+                    int number = amount.getAmount();
+                    for (int i = 0; i < number; i++) {
+                        if (target.getName().equals("your"))
+                            humanPlayerController.dealDeckHand();
+                        else
+                            aiPlayerController.dealDeckHand();
+                    }
+                    humanPlayerController.getHandController().returnAllCards();
+                    strBuilder.append("You have draw " + number + " card(s)\n");
+
+                    break;
+                }//draw
+                case ("Heal"): {
+                    Amount amount = ((Heal) ability.getLogic().get(0)).getAmount();
+                    Target target = ((Heal) ability.getLogic().get(0)).getTarget();
+
+                    int healAmount = amount.getAmount();
+                    humanPlayerController.getActivePokemonController().getPokemonController().heal(healAmount);
+                    break;
+                }//heal
+
+
+                default:
+                    this.getView().setCommand("Havnt implement this ability(from applyAbility)\n"
+                    +"Press ESC to go back");
+
+                    break;
+            }//switch type1
+        }//if
+
+        strBuilder.append("Press Enter to continue.");
+        getView().addBoardListerner(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_ENTER: {
+                        getView().disableKeyListener();
+                        setEnergyAdded(false);
+
+                        if (aiPlayerController.getDeckController().getCardContainer().isEmpty()) {
+                            String stringBuilder = "AI has no more cards in Deck" + "\nYOU WON THE GAME :)\n" +
+                                    "CONGRATULATIONS!!!";
+                            getView().setCommand(stringBuilder);
+                            endGame();
+                        } else {
+                            gameAITurn();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+
+        getView().setCommand(strBuilder.toString());
+
+    }
 
 }

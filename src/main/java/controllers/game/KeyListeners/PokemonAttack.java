@@ -36,19 +36,32 @@ public class PokemonAttack implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        String type1 = controller.getHumanController().getActivePokemonController().getPokemonController().getAttacks().get(0).getAbility().getLogic().get(0).getClass().getSimpleName();
+        String type2 = controller.getHumanController().getActivePokemonController().getPokemonController().getAttacks().get(1).getAbility().getLogic().get(0).getClass().getSimpleName();
         switch (e.getKeyCode()) {
             case KeyEvent.VK_1:
             case KeyEvent.VK_NUMPAD1: {
-                attack(1);
+                if (type1.equals("Dam") ||type1.equals("Cond") ) {
+                    attack(1);
+                }
+                else controller.applyAbility(controller.getHumanController(), controller.getAIController(),
+                        controller.getHumanController().getActivePokemonController().getPokemonController().getAttacks().get(0).getAbility(),
+                        controller.getHumanController().getActivePokemonCard());
                 break;
             }
             case KeyEvent.VK_2:
             case KeyEvent.VK_NUMPAD2: {
-                attack(2);
+//                System.out.println(controller.getHumanController().getActivePokemonController().getPokemonController().getAttacks().get(1).getAbility().getLogic().get(0).getClass().getSimpleName());
+
+                if (type2.equals("Dam")||type2.equals("Cond")) {
+                    attack(2);
+                }
+                else controller.applyAbility(controller.getHumanController(), controller.getAIController(),
+                        controller.getHumanController().getActivePokemonController().getPokemonController().getAttacks().get(1).getAbility(),
+                        controller.getHumanController().getActivePokemonCard());
                 break;
             }
-            case KeyEvent.VK_ESCAPE:{
+            case KeyEvent.VK_ESCAPE: {
                 controller.getView().addBoardListerner(new MainMenuListener(controller));
                 break;
             }
@@ -67,25 +80,21 @@ public class PokemonAttack implements KeyListener {
         PlayerController pok;
         if (target.getName().equals("your")) {
             pok = controller.getHumanController();
-        }
-        else {
+        } else {
             pok = controller.getAIController();
         }
         if (target.getArea().equals("bench")) {
             count = pok.getBenchController().getContainer().getNoOfCards();
-        }
-        else if (target.getCardType().equals("damage")) {
+        } else if (target.getCardType().equals("damage")) {
             count = pok.getActivePokemonCard().getDamagePoints();
-        }
-        else if (target.getCardType().equals("energy")) {
+        } else if (target.getCardType().equals("energy")) {
 
             ArrayList<Energy> energyArrayList = pok.getActivePokemonCard().getEnergy();
 
             for (Energy card : energyArrayList) {
                 if (target.getCardCategory() == null || target.getCardCategory().isEmpty()) {
                     count++;
-                }
-                else if (target.getCardCategory().equals(card.getCategory())) {
+                } else if (target.getCardCategory().equals(card.getCategory())) {
                     count++;
                 }
             }
@@ -103,21 +112,19 @@ public class PokemonAttack implements KeyListener {
 
         if (amount.isCalculated()) {
             damage = countAmount(amount);
-        }
-        else {
+        } else {
             damage = amount.getAmount();
         }
 
         if (target.getName().equals("your") && target.getArea().equals("bench")) {
             ArrayList<CardController> cardControllers = controller.getHumanController().getBenchController().getCardControllers();
-            for(CardController controller: cardControllers){
+            for (CardController controller : cardControllers) {
                 int curDmg = ((Pokemon) controller.getCard()).getDamagePoints();
-                ((Pokemon) controller.getCard()).setDamagePoints(curDmg+damage);
-                ((PokemonView) controller.getView()).setDmgPts(curDmg+damage);
+                ((Pokemon) controller.getCard()).setDamagePoints(curDmg + damage);
+                ((PokemonView) controller.getView()).setDmgPts(curDmg + damage);
             }
             damage = 0;
-        }
-        else if (target.getName().equals("your") && target.getArea().equals("active")) {
+        } else if (target.getName().equals("your") && target.getArea().equals("active")) {
             targetPok = getHumanActivePok();
         }
 
@@ -138,21 +145,20 @@ public class PokemonAttack implements KeyListener {
         return controller.getAIController().getActivePokemonController();
     }
 
-    private void attack(int attackIndex){
+    private void attack(int attackIndex) {
 
         ParserHelper helper = new ParserHelper();
 
         ActivePokemonController activePok = getHumanActivePok();
 
         Attack attackCaused;
-        try{
-            attackCaused = activePok.getPokemonController().getAttacks().get(attackIndex-1);
-        }
-        catch (IndexOutOfBoundsException exception){
+        try {
+            attackCaused = activePok.getPokemonController().getAttacks().get(attackIndex - 1);
+        } catch (IndexOutOfBoundsException exception) {
             throw exception;
         }
 
-        if (!controller.getHumanController().checkAttackEnergy(attackCaused, activePok.getEnergyOnCard())){
+        if (!controller.getHumanController().checkAttackEnergy(attackCaused, activePok.getEnergyOnCard())) {
             throw new NullPointerException();
         }
 
@@ -182,11 +188,9 @@ public class PokemonAttack implements KeyListener {
 
             if (ability instanceof Dam) {
                 defeatedOpp = dam((Dam) ability);
-            }
-            else if (ability instanceof Search) {
+            } else if (ability instanceof Search) {
                 defeatedOpp = search(attackCaused);
-            }
-            else {
+            } else {
                 System.out.println("Skipping ability: " + ability);
             }
 
@@ -200,15 +204,15 @@ public class PokemonAttack implements KeyListener {
         strBuilder.append(attackCaused.getAbility().getName()).append(",\nDmg Caused: ")
                 .append(totalDamage).append("\nTurn Ended.\n");
 
-        if (defeatedOpp){
+        if (defeatedOpp) {
 
             PrizeCardController humanPrizeCard = controller.getHumanController().getPrizeCardController();
-            if (humanPrizeCard.getCardContainer().getNoOfCards() > 1){
+            if (humanPrizeCard.getCardContainer().getNoOfCards() > 1) {
                 strBuilder.append("You defeated opponent's pokemon.\n").append("Collect a prize card:\n");
                 strBuilder.append(humanPrizeCard.getPrizeCardsNo());
                 strBuilder.append("\n").append("Press the correct no.");
                 controller.getView().addBoardListerner(new CollectPrizeCard(controller));
-            }else{
+            } else {
                 Pair<CardController, CardView> pair = controller.getHumanController().getPrizeCardController().chooseCard(0);
                 if (pair != null) {
                     controller.getHumanController().getHandController().addCard(pair);
@@ -221,11 +225,12 @@ public class PokemonAttack implements KeyListener {
                 controller.endGame();
             }
 
-        }else{
+        } else {
             strBuilder.append("Press Enter to continue.");
             controller.getView().addBoardListerner(new KeyListener() {
                 @Override
-                public void keyTyped(KeyEvent e) {}
+                public void keyTyped(KeyEvent e) {
+                }
 
                 @Override
                 public void keyPressed(KeyEvent e) {
@@ -234,12 +239,12 @@ public class PokemonAttack implements KeyListener {
                             controller.getView().disableKeyListener();
                             controller.setEnergyAdded(false);
 
-                            if (controller.getAIController().getDeckController().getCardContainer().isEmpty()){
+                            if (controller.getAIController().getDeckController().getCardContainer().isEmpty()) {
                                 String stringBuilder = "AI has no more cards in Deck" + "\nYOU WON THE GAME :)\n" +
                                         "CONGRATULATIONS!!!";
                                 controller.getView().setCommand(stringBuilder);
                                 controller.endGame();
-                            }else {
+                            } else {
                                 controller.gameAITurn();
                             }
                         }
@@ -247,7 +252,8 @@ public class PokemonAttack implements KeyListener {
                 }
 
                 @Override
-                public void keyReleased(KeyEvent e) {}
+                public void keyReleased(KeyEvent e) {
+                }
             });
         }
         controller.getView().setCommand(strBuilder.toString());

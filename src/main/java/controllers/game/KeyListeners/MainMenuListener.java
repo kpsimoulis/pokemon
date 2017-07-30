@@ -756,6 +756,21 @@ public class MainMenuListener implements KeyListener {
                                         break;
                                     }//reenergize
 
+                                    case ("Swap"): {
+                                        Pair<CardController, CardView> pair = controller.getHumanController().getHandController().removeCard(card);
+                                        SwapListener swapListener = new SwapListener(controller, controller.getHumanController().getBenchController());
+                                        controller.getView().setCommand("Select Pokemon and press Enter\nto swap.");
+
+                                        controller.getHumanController().getActivePokemonController().removeKeyListener(this);
+                                        controller.getHumanController().getBenchController().removeAllListeners(this);
+                                        controller.getHumanController().getBenchController().setPokemonListener(swapListener);
+                                        controller.getHumanController().getActivePokemonController().setKeyListener(swapListener);
+
+                                        controller.getHumanController().getHandController().removeAllListeners(this);
+
+                                        break;
+                                    }//swap
+
                                     default:
                                         controller.getView().setCommand("Haven't implement yet. default from Trainer card in MainMenu.\nPress ESC to go back");
                                         controller.getHumanController().setChosingCard(false);

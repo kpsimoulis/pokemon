@@ -1,9 +1,11 @@
 package controllers.game;
 
 import ability.*;
+import controllers.cardpiles.PrizeCardController;
 import controllers.game.*;
 import controllers.card.CardController;
 import controllers.cardcontainer.CardContainerController;
+import controllers.game.KeyListeners.CollectPrizeCard;
 import controllers.game.KeyListeners.HealListener;
 import controllers.game.KeyListeners.ListenerActivePok;
 import controllers.game.KeyListeners.MainMenuListener;
@@ -47,6 +49,7 @@ public class GameController {
     private AIPlayerController player2Controller;
     private boolean firstTurn;
     private boolean energyAdded;
+    private boolean hasRetreated;
 
     public GameController() {
 
@@ -55,6 +58,15 @@ public class GameController {
         player2Controller = new AIPlayerController();
         view.setVisible(true);
         displayChoiceDialog();
+        this.hasRetreated = false;
+    }
+
+    public boolean getHasRetreated() {
+        return hasRetreated;
+    }
+
+    public void setHasRetreated(boolean hasRetreated) {
+        this.hasRetreated = hasRetreated;
     }
 
     public boolean isFirstTurn() {
@@ -264,28 +276,37 @@ public class GameController {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("AI is playing...\n");
+        sb.append("AI is playing...\n" +
+                "AI's status is \n" +
+                getAIController().getStatus() + "!\n");
+        if (getAIController().isPoisoned) {
+            sb.append("AI is poisoned and will lost 10 HP. \n");
+        }
 
         playerDealDeck(player2Controller);
-        Attack attack_caused = player2Controller.play(player1Controller);
-        sb.append("Ability used: ");
-        if (attack_caused == null) {
-            sb.append("None").append("\nTurn Ended.\n");
+        if (getAIController().getStatus().equals("asleep") || getAIController().getStatus().equals("paralyzed")) {
+            sb.append("AI cannot use any ability due to his status").append("\nTurn Ended.\n");
         } else {
-            // Default damage amount
-            int dmg = 0;
-            if (attack_caused.getAbility().getLogic().get(0) instanceof Dam) {
-                Amount amount = ((Dam) attack_caused.getAbility().getLogic().get(0)).getAmount();
-                if (amount.isCalculated()) {
-                    // TODO process calculated amount for AI
-                    dmg = 5;
-                } else {
-                    dmg = amount.getAmount();
+            Attack attack_caused = player2Controller.play(player1Controller);
+            sb.append("Ability used: ");
+            if (attack_caused == null) {
+                sb.append("None").append("\nTurn Ended.\n");
+            } else {
+                // Default damage amount
+                int dmg = 0;
+                if (attack_caused.getAbility().getLogic().get(0) instanceof Dam) {
+                    Amount amount = ((Dam) attack_caused.getAbility().getLogic().get(0)).getAmount();
+                    if (amount.isCalculated()) {
+                        // TODO process calculated amount for AI
+                        dmg = 5;
+                    } else {
+                        dmg = amount.getAmount();
+                    }
                 }
-            }
 
-            sb.append(attack_caused.getAbility().getName()).append(",\nDmg Caused: ")
-                    .append(dmg).append("\nTurn Ended.\n");
+                sb.append(attack_caused.getAbility().getName()).append(",\nDmg Caused: ")
+                        .append(dmg).append("\nTurn Ended.\n");
+            }
         }
 
         if (player1Controller.getActivePokemonCard().getHealthPoints() <= player1Controller.getActivePokemonCard().getDamagePoints()) {
@@ -323,8 +344,20 @@ public class GameController {
             endGame();
 
         } else {
+            if (getAIController().getStatus().equals("stuck")
+                    || getAIController().getStatus().equals("paralyzed")) {
+                getAIController().setStatus("normal");
+                sb.append("\nAI's status are normal now!");
+            } else if (getAIController().getStatus().equals("asleep")) {
+                if (getAIController().getCoinController().flipCoin() == 1) {
+                    getAIController().setStatus("normal");
+                    sb.append("\nAI flip a coin and got a HEAD!\nAI's status are normal now!");
+                } else {
+                    sb.append("\nAI flip a coin and got a TAIL!\nAI's status are asleep now!");
+                }
 
-            sb.append("Press Enter to continue.");
+            }
+            sb.append("\n\nPress Enter to continue.");
             view.setCommand(sb.toString());
 
             view.addBoardListerner(new KeyListener() {
@@ -346,6 +379,38 @@ public class GameController {
                 public void keyReleased(KeyEvent e) {
                 }
             });
+
+            if (getAIController().isPoisoned()) {
+                StringBuilder sb1 = new StringBuilder();
+                getAIController().getActivePokemonController().getPokemonController().causeDamage(10);
+                Pokemon aipok = (Pokemon) getAIController().getActivePokemonController().getPokemonController().getCard();
+
+                if (aipok.getDamagePoints()>=aipok.getHealthPoints()){
+                    getAIController().setIsPoisoned(false);
+                    PrizeCardController humanPrizeCard = getHumanController().getPrizeCardController();
+                    if (humanPrizeCard.getCardContainer().getNoOfCards() > 1) {
+                        sb1.append("Opponent's pokemon is knoched out due to poison.\n").append("Collect a prize card:\n");
+                        sb1.append(humanPrizeCard.getPrizeCardsNo());
+                        sb1.append("\n").append("Press the correct no.");
+                        view.setCommand(sb1.toString());
+                        view.addBoardListerner(new CollectPrizeCard(this));
+                    } else {
+                        Pair<CardController, CardView> pair = getHumanController().getPrizeCardController().chooseCard(0);
+                        if (pair != null) {
+                            getHumanController().getHandController().addCard(pair);
+                            pair.getKey().returnBackCover();
+                            getView().disableKeyListener();
+                        }
+                        sb1.append("You defeated opponent's pokemon.\n").append("You have no prize card left\n");
+                        sb1.append("YOU WON THE GAME");
+                        view.setCommand(sb1.toString());
+                        endGame();
+                    }
+                }
+            }
+
+
+
 
         }
 
@@ -375,7 +440,7 @@ public class GameController {
         StringBuilder strBuilder = new StringBuilder();
 
         String type1 = ability.getLogic().get(0).getClass().getSimpleName();
-        System.out.print("applied: " + type1 +"\n");
+        System.out.print("applied: " + type1 + "\n");
 //        String type2 = ability.getLogic().get(1).getClass().getSimpleName();
         if (ability.getLogic().size() < 2) {
             switch (type1) {
@@ -409,11 +474,23 @@ public class GameController {
                     humanPlayerController.getActivePokemonController().getPokemonController().heal(healAmount);
                     break;
                 }//heal
+                case ("Applystat"): {
+                    String status = ((Applystat) ability.getLogic().get(0)).getStatus();
+                    if (!status.equals("poisoned")) {
+                        aiPlayerController.setStatus(status);
+                        strBuilder.append("AI's status now is " + status + "!\n");
+                    } else {
+                        aiPlayerController.setIsPoisoned(true);
+                        strBuilder.append("AI' now is " + status + "!\n");
+
+                    }
+                    break;
+                }//heal
 
 
                 default:
                     this.getView().setCommand("Havnt implement this ability(from applyAbility)\n"
-                    +"Press ESC to go back");
+                            + "Press ESC to go back");
 
                     break;
             }//switch type1
@@ -431,6 +508,7 @@ public class GameController {
                     case KeyEvent.VK_ENTER: {
                         getView().disableKeyListener();
                         setEnergyAdded(false);
+                        setHasRetreated(false);
 
                         if (aiPlayerController.getDeckController().getCardContainer().isEmpty()) {
                             String stringBuilder = "AI has no more cards in Deck" + "\nYOU WON THE GAME :)\n" +

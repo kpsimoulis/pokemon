@@ -51,7 +51,8 @@ public class MainMenuListener implements KeyListener {
 
 
         if (controller.getHumanController().getActivePokemonCard().getEnergy().size() >=
-                controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount() && controller.getHumanController().benchHasPokemon()) {
+                controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount() && controller.getHumanController().benchHasPokemon()
+                && controller.getHasRetreated() == false) {
             builder.append("R. Retreat your Active Pokemon.\n");
         }
 
@@ -69,7 +70,15 @@ public class MainMenuListener implements KeyListener {
 
         builder.append("\n");
         builder.append("C. Cheating List for Test.\n");
-        builder.append("D. Look at deck and pile.\n");
+        builder.append("D. Look at deck and pile.");
+        if(controller.getAIController().isPoisoned()){
+            builder.append("\nAI is poisoned and will lose 10 HP.");
+        }
+        builder.append("\nAI's status is "+controller.getAIController().getStatus()+"!");
+        if(controller.getHumanController().isPoisoned()){
+            builder.append("\nYou are poisoned and will lose 10 HP.");
+        }
+        builder.append("\nYou status is "+controller.getHumanController().getStatus()+"!");
         controller.getView().setCommand(builder.toString());
 
     }
@@ -242,6 +251,13 @@ public class MainMenuListener implements KeyListener {
             }
             case KeyEvent.VK_X: {
                 controller.setEnergyAdded(false);
+                controller.setHasRetreated(false);
+                if(controller.getAIController().isPoisoned()){
+                    controller.getAIController().getActivePokemonController().getPokemonController().causeDamage(10);
+                }
+                if(controller.getHumanController().isPoisoned()){
+                    controller.getHumanController().getActivePokemonController().getPokemonController().causeDamage(10);
+                }
                 controller.gameAITurn();
                 break;
             }
@@ -251,11 +267,13 @@ public class MainMenuListener implements KeyListener {
                 if (!controller.getHumanController().benchHasPokemon()
                         || (controller.getHumanController().getActivePokemonCard().getEnergy().size()
                         < controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount())
+            || controller.getHasRetreated() == true
                         ) {
                     StringBuilder builder = new StringBuilder("You cannot retreat now! \n");
                     builder.append("To retreat you need:\n"
                             + "1. Your bench has at least 1 Pokemon, and\n"
                             + "2. Your active Pokemon has attached at least " + energyNeed + " energy card(s).\n"
+                            + "3. You havenot retreated in this turn.\n"
                             + "(Press Esc to exit)");
                     controller.getView().setCommand(builder.toString());
 
@@ -287,6 +305,7 @@ public class MainMenuListener implements KeyListener {
                         + "1. Discard "
                         + energyNeed + " energy card(s), and\n"
                         + "2. Remove all of the stat.\n"
+                        + "3. You cannot retreat anymore in this turn.\n"
                         + "Now damage point is " +
                         controller.getHumanController().getActivePokemonCard().getDamagePoints());
                 controller.getView().setCommand(builder.toString() + "\n"

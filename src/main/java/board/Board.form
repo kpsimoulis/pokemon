@@ -435,14 +435,17 @@
                       <card name="Card1"/>
                     </constraints>
                     <properties>
-                      <background color="-13206289"/>
+                      <background color="-1445908"/>
                       <editable value="false"/>
-                      <foreground color="-1"/>
+                      <foreground color="-16382458"/>
                       <lineWrap value="true"/>
                       <margin top="0" left="0" bottom="0" right="0"/>
                       <name value="txtCommand"/>
+                      <opaque value="true"/>
+                      <selectedTextColor color="-16711423"/>
                       <tabSize value="8"/>
                       <text value=""/>
+                      <wrapStyleWord value="false"/>
                     </properties>
                   </component>
                 </children>

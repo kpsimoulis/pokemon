@@ -36,10 +36,15 @@ public abstract class PlayerController {
     private CoinController coinController;
     private PrizeCardController prizeCardController;
 
+    public String status;
+    public boolean isPoisoned;
+
     public PlayerController() {
 
         this.player = new Player();
         activePokemonController = null;
+        this.status = "normal";
+        this.isPoisoned= false;
 
     }
 
@@ -393,5 +398,23 @@ public abstract class PlayerController {
     public void setDestController(PokemonController destController) {
         this.destController = destController;
     }
+
+    public void setStatus(String string){
+        this.status = string;
+    }
+
+    public void setIsPoisoned(boolean bool){
+        this.isPoisoned = bool;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public boolean isPoisoned() {
+        return isPoisoned;
+    }
+
+
 
 }

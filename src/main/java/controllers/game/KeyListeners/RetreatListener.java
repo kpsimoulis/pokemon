@@ -75,7 +75,7 @@ public class RetreatListener implements KeyListener {
                 exActive.setDamagePoints(exDamage);
                 controller.getHumanController().getBenchController().addCard(exActive);
                 controller.getHumanController().getBenchController().returnAllCards();
-
+                controller.setHasRetreated(true);
 
                 // Remove all key listeners of this type and go back to menu
                 appliedContainer.removeAllListeners(this);

@@ -38,6 +38,9 @@ public class Target {
         else {
             throw new IllegalArgumentException("Invalid target " + targetItems[0] + " it must be opponent or your");
         }
+        if (targetItems.length == 1) {
+            this.area = "";
+        }
         if (targetItems.length == 2) {
             if (targetItems[1].equals("pokemon") || targetItems[1].equals("active") || targetItems[1].equals("bench") || targetItems[1].equals("hand") || targetItems[1].equals("deck") || targetItems[1].equals("discard")) {
                 this.area = targetItems[1];

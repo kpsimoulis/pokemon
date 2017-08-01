@@ -52,8 +52,8 @@ public class RetreatListener implements KeyListener {
                 }
                 //TODO: Detach items and clear the stat
                 //DiscardPileController().addCard(Items);
-                //exActive.removeStat;
-                //exActive.removeItems;
+               controller.getHumanController().setIsPoisoned(false);
+                controller.getHumanController().setStatus("normal");
 
                 //clear active panel
                 controller.getView().getBoard().getPlayerActivePanel().removeAll();

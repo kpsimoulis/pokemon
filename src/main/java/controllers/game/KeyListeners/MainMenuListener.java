@@ -572,8 +572,9 @@ public class MainMenuListener implements KeyListener {
                                     break;
                                 }
                             }
-                            //TODO: Detach items and clear the stat
-
+                            //TODO: Detach items
+                            controller.getHumanController().setIsPoisoned(false);
+                            controller.getHumanController().setStatus("normal");
                             //clear active panel
                             controller.getHumanController().setActivePokemonController(null);
                             controller.getHumanController().getPlayer().removeActivePokemon();
@@ -776,18 +777,26 @@ public class MainMenuListener implements KeyListener {
                                     }//reenergize
 
                                     case ("Swap"): {
-                                        Pair<CardController, CardView> pair = controller.getHumanController().getHandController().removeCard(card);
-                                        SwapListener swapListener = new SwapListener(controller, controller.getHumanController().getBenchController());
-                                        controller.getView().setCommand("Select Pokemon and press Enter\nto swap.");
+                                        if(controller.getHumanController().getBenchController().getContainer().getNoOfCards() == 0){
+                                            controller.getView().setCommand("You dont have any bench Pokemon\nPress ESC to go back.");
+                                            controller.getHumanController().setChosingCard(false);
 
-                                        controller.getHumanController().getActivePokemonController().removeKeyListener(this);
-                                        controller.getHumanController().getBenchController().removeAllListeners(this);
-                                        controller.getHumanController().getBenchController().setPokemonListener(swapListener);
-                                        controller.getHumanController().getActivePokemonController().setKeyListener(swapListener);
+                                            break;
+                                        }
+                                        else {
+                                            Pair<CardController, CardView> pair = controller.getHumanController().getHandController().removeCard(card);
+                                            SwapListener swapListener = new SwapListener(controller, controller.getHumanController().getBenchController());
+                                            controller.getView().setCommand("Select Pokemon and press Enter\nto swap.");
 
-                                        controller.getHumanController().getHandController().removeAllListeners(this);
+                                            controller.getHumanController().getActivePokemonController().removeKeyListener(this);
+                                            controller.getHumanController().getBenchController().removeAllListeners(this);
+                                            controller.getHumanController().getBenchController().setPokemonListener(swapListener);
+                                            controller.getHumanController().getActivePokemonController().setKeyListener(swapListener);
 
-                                        break;
+                                            controller.getHumanController().getHandController().removeAllListeners(this);
+
+                                            break;
+                                        }
                                     }//swap
 
                                     default:

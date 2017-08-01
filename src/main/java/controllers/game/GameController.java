@@ -1,6 +1,7 @@
 package controllers.game;
 
 import ability.*;
+import controllers.card.PokemonController;
 import controllers.cardpiles.PrizeCardController;
 import controllers.game.*;
 import controllers.card.CardController;
@@ -29,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * The Game Controller Class
@@ -382,7 +384,7 @@ public class GameController {
                 getAIController().getActivePokemonController().getPokemonController().causeDamage(10);
                 Pokemon aipok = (Pokemon) getAIController().getActivePokemonController().getPokemonController().getCard();
 
-                if (aipok.getDamagePoints()>=aipok.getHealthPoints()){
+                if (aipok.getDamagePoints() >= aipok.getHealthPoints()) {
                     getAIController().setIsPoisoned(false);
                     PrizeCardController humanPrizeCard = getHumanController().getPrizeCardController();
                     if (humanPrizeCard.getCardContainer().getNoOfCards() > 1) {
@@ -405,8 +407,6 @@ public class GameController {
                     }
                 }
             }
-
-
 
 
         }
@@ -433,75 +433,136 @@ public class GameController {
 
     }
 
-    public void applyAbility(HumanPlayerController humanPlayerController, AIPlayerController aiPlayerController, AbilityLogic abilityLogic, Pokemon pokemon) {
-        StringBuilder strBuilder = new StringBuilder();
+    public void applyAbility(HumanPlayerController humanPlayerController, AIPlayerController aiPlayerController, AbilityLogic abilityLogic, Pokemon pokemon, StringBuilder sb) {
+//        StringBuilder strBuilder = new StringBuilder();
 
         String type1 = abilityLogic.getClass().getSimpleName();
         System.out.print("applied: " + type1 + "\n");
-//        String type2 = ability.getLogic().get(1).getClass().getSimpleName();
 //        if (ability.getLogic().size() < 2) {
-            switch (type1) {
-//                case ("Dam"): {
-//                    Amount amount = ((Dam) ability.getLogic().get(0)).getAmount();
-//                    Target target = ((Dam) ability.getLogic().get(0)).getTarget();
-//                    int damAmount = amount.getAmount();
-//                    humanPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
-//                    break;
-//                }//heal
-                case ("Draw"): {
-                    Amount amount = ((Draw) abilityLogic).getAmount();
-                    Target target = ((Draw) abilityLogic).getTarget();
-                    int number = amount.getAmount();
-                    for (int i = 0; i < number; i++) {
-                        if (target.getName().equals("your"))
-                            humanPlayerController.dealDeckHand();
-                        else
-                            aiPlayerController.dealDeckHand();
-                    }
-                    humanPlayerController.getHandController().returnAllCards();
-                    strBuilder.append("You have draw " + number + " card(s)\n");
-
-                    break;
-                }//draw
-                case ("Heal"): {
-                    Amount amount = ((Heal) abilityLogic).getAmount();
-                    Target target = ((Heal) abilityLogic).getTarget();
-
-                    int healAmount = amount.getAmount();
-                    humanPlayerController.getActivePokemonController().getPokemonController().heal(healAmount);
-                    break;
-                }//heal
-                case ("Applystat"): {
-                    String status = ((Applystat) abilityLogic).getStatus();
-                    if (!status.equals("poisoned")) {
-                        aiPlayerController.setStatus(status);
-                        strBuilder.append("AI's status now is " + status + "!\n");
-                    } else {
-                        aiPlayerController.setIsPoisoned(true);
-                        strBuilder.append("AI' now is " + status + " and will lost 10HP between each turn!\n");
+        switch (type1) {
+            case ("Dam"): {
+                Amount amount = ((Dam) abilityLogic).getAmount();
+                Target target = ((Dam) abilityLogic).getTarget();
+                int damAmount = amount.getAmount();
+                if (amount.getAmount() == 0) {
+                    String area = amount.getTarget().getArea();
+                    String name = amount.getTarget().getName();
+                    if (name.equals("opponent") && area.equals("active")
+//                            && amount.getTarget().getCardType().equals("energy")
+                            ) {
+                        damAmount = aiPlayerController.getActivePokemonCard().getEnergy().size()
+                                * amount.getMultiplier();
 
                     }
-                    break;
-                }//applys
-                case ("Destat"): {
-                 humanPlayerController.setStatus("normal");
-                 humanPlayerController.setIsPoisoned(false);
-                    strBuilder.append("Removed all the status!\n");
+                    else if(name.equals("your") && area.equals("active")){
+                        damAmount = humanPlayerController.getActivePokemonCard().getDamagePoints();
+                    }
+                    else if(name.equals("your") && area.equals("bench")){
+                        damAmount = humanPlayerController.getBenchController().getCardControllers().size()
+                                * amount.getMultiplier();
+                    }
+                    else damAmount = 6;
+//                        count[target:your-bench]
+//                        count(target:opponent-active:energy)
+//                        count(target:your-active:damage)
 
-                    break;
-                }//applys
+                }//if amount
+
+                if(!target.getChoice()){
+                    String area = target.getArea();
+                    String name = target.getName();
+                    if (name.equals("opponent") && area.equals("active")){
+                        aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
+                    }
+                    else if(name.equals("your") && area.equals("active")){
+                        humanPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
+                    }
+                    else if(name.equals("your") && area.equals("bench")){
+                       ArrayList<CardController> benches = humanPlayerController.getBenchController().getCardControllers();
+                       for(CardController cardController : benches){
+                           PokemonController pokemonController = (PokemonController)cardController;
+                           pokemonController.causeDamage(damAmount);
+                       }
+                    }
+                    else if(name.equals("opponent") && area.equals("")){
+                        aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
+                    }
+                    else aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(7);
+                }//if target
+                else {
+                    aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
+                }
+                sb.append("Damege caused: " + damAmount + " .\n");
+                break;
+            }//Dam
+            case ("Draw"): {
+                Amount amount = ((Draw) abilityLogic).getAmount();
+                Target target = ((Draw) abilityLogic).getTarget();
+                int number = amount.getAmount();
+                for (int i = 0; i < number; i++) {
+                    if (target.getName().equals("your"))
+                        humanPlayerController.dealDeckHand();
+                    else
+                        aiPlayerController.dealDeckHand();
+                }
+                humanPlayerController.getHandController().returnAllCards();
+                sb.append("You have draw " + number + " card(s)\n");
+
+                break;
+            }//draw
+            case ("Heal"): {
+                Amount amount = ((Heal) abilityLogic).getAmount();
+                Target target = ((Heal) abilityLogic).getTarget();
+
+                int healAmount = amount.getAmount();
+                humanPlayerController.getActivePokemonController().getPokemonController().heal(healAmount);
+                break;
+            }//heal
+            case ("Applystat"): {
+                String status = ((Applystat) abilityLogic).getStatus();
+                if (!status.equals("poisoned")) {
+                    aiPlayerController.setStatus(status);
+                    sb.append("AI's status now is " + status + "!\n");
+                } else {
+                    aiPlayerController.setIsPoisoned(true);
+                    sb.append("AI' now is " + status + " and will lost 10HP between each turn!\n");
+
+                }
+                break;
+            }//applys
+            case ("Destat"): {
+                humanPlayerController.setStatus("normal");
+                humanPlayerController.setIsPoisoned(false);
+                sb.append("Removed all the status!\n");
+
+                break;
+            }//destat
+            case ("Deenergize"): {
+                ArrayList<Energy> ens = humanPlayerController.getActivePokemonCard().getEnergy();
+                int size = ens.size();
+                for (Energy energy : ens) {
+                    System.out.println(energy.toString());
+                    humanPlayerController.getDiscardPileController().addCard(energy);
+                }
+                for(int i=0;i<size;i++){
+                    humanPlayerController.getActivePokemonController().getPokemonController().removeEnergy();
+                }
+
+                sb.append("Removed all the energies!\n");
+
+                break;
+            }//destat
 
 
+            default:
+                this.getView().setCommand("Havnt implement this ability(from applyAbility)\n"
+                        + "Press ESC to go back");
 
-                default:
-                    this.getView().setCommand("Havnt implement this ability(from applyAbility)\n"
-                            + "Press ESC to go back");
-
-                    break;
-            }//switch type1
+                break;
+        }//switch type1
 //        }//if
 
-        strBuilder.append("Press Enter to continue.");
+//        sb.append("Press Enter to continue.");
         getView().addBoardListerner(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -532,7 +593,7 @@ public class GameController {
             }
         });
 
-        getView().setCommand(strBuilder.toString());
+        getView().setCommand(sb.toString());
 
     }
 

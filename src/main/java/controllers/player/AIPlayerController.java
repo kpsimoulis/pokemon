@@ -79,8 +79,10 @@ public class AIPlayerController extends PlayerController {
         }
 
         for (Pokemon pokemon : pokemonInHand) {
-            getHandController().removeCard(pokemon);
-            getBenchController().addCard(pokemon);
+            if (getBenchController().getContainer().getNoOfCards()<5) {
+                getHandController().removeCard(pokemon);
+                getBenchController().addCard(pokemon);
+            }
         }
 
     }

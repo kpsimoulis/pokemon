@@ -79,7 +79,7 @@ public class Bench extends CardContainer {
      * @return True if full, False otherwise
      */
     public boolean isFull() {
-        return getNoOfCards() == BENCH_LIMIT;
+        return getNoOfCards() >= BENCH_LIMIT;
     }
 
     /**

@@ -43,7 +43,7 @@ public class PokemonAttack implements KeyListener {
                 if (type1.equals("Dam") || type1.equals("Cond")) {
                     attack(1);
                 } else controller.applyAbility(controller.getHumanController(), controller.getAIController(),
-                        controller.getHumanController().getActivePokemonController().getPokemonController().getAttacks().get(0).getAbility(),
+                        controller.getHumanController().getActivePokemonController().getPokemonController().getAttacks().get(0).getAbility().getLogic().get(0),
                         controller.getHumanController().getActivePokemonCard());
                 break;
             }
@@ -56,7 +56,7 @@ public class PokemonAttack implements KeyListener {
                     if (type2.equals("Dam") || type2.equals("Cond")) {
                         attack(2);
                     } else controller.applyAbility(controller.getHumanController(), controller.getAIController(),
-                            controller.getHumanController().getActivePokemonController().getPokemonController().getAttacks().get(1).getAbility(),
+                            controller.getHumanController().getActivePokemonController().getPokemonController().getAttacks().get(1).getAbility().getLogic().get(0),
                             controller.getHumanController().getActivePokemonCard());
                     break;
                 }

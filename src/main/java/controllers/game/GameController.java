@@ -13,10 +13,7 @@ import controllers.player.AIPlayerController;
 import controllers.player.HumanPlayerController;
 import controllers.player.PlayerController;
 import javafx.util.Pair;
-import parser.Ability;
-import parser.Amount;
-import parser.Attack;
-import parser.Target;
+import parser.*;
 import views.ChoiceDialog;
 import views.card.CardView;
 import views.cardcontainer.BenchView;
@@ -436,13 +433,13 @@ public class GameController {
 
     }
 
-    public void applyAbility(HumanPlayerController humanPlayerController, AIPlayerController aiPlayerController, Ability ability, Pokemon pokemon) {
+    public void applyAbility(HumanPlayerController humanPlayerController, AIPlayerController aiPlayerController, AbilityLogic abilityLogic, Pokemon pokemon) {
         StringBuilder strBuilder = new StringBuilder();
 
-        String type1 = ability.getLogic().get(0).getClass().getSimpleName();
+        String type1 = abilityLogic.getClass().getSimpleName();
         System.out.print("applied: " + type1 + "\n");
 //        String type2 = ability.getLogic().get(1).getClass().getSimpleName();
-        if (ability.getLogic().size() < 2) {
+//        if (ability.getLogic().size() < 2) {
             switch (type1) {
 //                case ("Dam"): {
 //                    Amount amount = ((Dam) ability.getLogic().get(0)).getAmount();
@@ -452,8 +449,8 @@ public class GameController {
 //                    break;
 //                }//heal
                 case ("Draw"): {
-                    Amount amount = ((Draw) ability.getLogic().get(0)).getAmount();
-                    Target target = ((Draw) ability.getLogic().get(0)).getTarget();
+                    Amount amount = ((Draw) abilityLogic).getAmount();
+                    Target target = ((Draw) abilityLogic).getTarget();
                     int number = amount.getAmount();
                     for (int i = 0; i < number; i++) {
                         if (target.getName().equals("your"))
@@ -467,25 +464,33 @@ public class GameController {
                     break;
                 }//draw
                 case ("Heal"): {
-                    Amount amount = ((Heal) ability.getLogic().get(0)).getAmount();
-                    Target target = ((Heal) ability.getLogic().get(0)).getTarget();
+                    Amount amount = ((Heal) abilityLogic).getAmount();
+                    Target target = ((Heal) abilityLogic).getTarget();
 
                     int healAmount = amount.getAmount();
                     humanPlayerController.getActivePokemonController().getPokemonController().heal(healAmount);
                     break;
                 }//heal
                 case ("Applystat"): {
-                    String status = ((Applystat) ability.getLogic().get(0)).getStatus();
+                    String status = ((Applystat) abilityLogic).getStatus();
                     if (!status.equals("poisoned")) {
                         aiPlayerController.setStatus(status);
                         strBuilder.append("AI's status now is " + status + "!\n");
                     } else {
                         aiPlayerController.setIsPoisoned(true);
-                        strBuilder.append("AI' now is " + status + "!\n");
+                        strBuilder.append("AI' now is " + status + " and will lost 10HP between each turn!\n");
 
                     }
                     break;
-                }//heal
+                }//applys
+                case ("Destat"): {
+                 humanPlayerController.setStatus("normal");
+                 humanPlayerController.setIsPoisoned(false);
+                    strBuilder.append("Removed all the status!\n");
+
+                    break;
+                }//applys
+
 
 
                 default:
@@ -494,7 +499,7 @@ public class GameController {
 
                     break;
             }//switch type1
-        }//if
+//        }//if
 
         strBuilder.append("Press Enter to continue.");
         getView().addBoardListerner(new KeyListener() {

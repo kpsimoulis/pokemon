@@ -71,14 +71,14 @@ public class MainMenuListener implements KeyListener {
         builder.append("\n");
         builder.append("C. Cheating List for Test.\n");
         builder.append("D. Look at deck and pile.");
-        if(controller.getAIController().isPoisoned()){
-            builder.append("\nAI is poisoned and will lose 10 HP.");
-        }
         builder.append("\nAI's status is "+controller.getAIController().getStatus()+"!");
-        if(controller.getHumanController().isPoisoned()){
-            builder.append("\nYou are poisoned and will lose 10 HP.");
+        if(controller.getAIController().isPoisoned()){
+            builder.append(" AI is poisoned and will lose 10 HP.");
         }
         builder.append("\nYou status is "+controller.getHumanController().getStatus()+"!");
+        if(controller.getHumanController().isPoisoned()){
+            builder.append(" You are poisoned and will lose 10 HP.");
+        }
         controller.getView().setCommand(builder.toString());
 
     }

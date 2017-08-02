@@ -3,10 +3,12 @@ package controllers.game.KeyListeners;
 import ability.Cond;
 import ability.Dam;
 import ability.Search;
+import card.Card;
 import card.Energy;
 import card.Pokemon;
 import controllers.activepokemon.ActivePokemonController;
 import controllers.card.CardController;
+import controllers.card.PokemonController;
 import controllers.cardpiles.PrizeCardController;
 import controllers.coin.CoinController;
 import controllers.game.GameController;
@@ -40,40 +42,103 @@ public class PokemonAttack implements KeyListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_1:
             case KeyEvent.VK_NUMPAD1: {
-                ArrayList<AbilityLogic>logics = controller.getHumanController().getActivePokemonController().getPokemonController()
+                ArrayList<AbilityLogic> logics = controller.getHumanController().getActivePokemonController().getPokemonController()
                         .getAttacks().get(0).getAbility().getLogic();
-                for(AbilityLogic logic:logics) {
+                boolean chooseOccur = false;
+                for (AbilityLogic logic : logics) {
                     String type1 = logic.getClass().getSimpleName();
                     if (type1.equals("Cond")) {
-                        attack(1);
+                        Cond cond = (Cond) logic;
+                        if (cond.getCondition().equals("flip")) {
+                            if (controller.getHumanController().getCoinController().flipCoin() == 1) {
+                                sb.append("You flip a coin and got a HEAD!\n");
+                                for (AbilityLogic condl : cond.getConditionIsMet()) {
+                                    controller.applyAbility(controller.getHumanController(), controller.getAIController(),
+                                            condl,
+                                            controller.getHumanController().getActivePokemonCard(), sb);
+                                }
+                            } else {
+                                sb.append("You flip a coin and got a TAIL!\n");
+                                for (AbilityLogic condl : cond.getConditionIsNotMet()) {
+                                    controller.applyAbility(controller.getHumanController(), controller.getAIController(),
+                                            condl,
+                                            controller.getHumanController().getActivePokemonCard(), sb);
+                                }
+                            }
+                        } else {
+                        }
+//                        attackEnd(1);
+                    }
+                    else if (type1.equals("Dam")) {
+                        if (((Dam) logic).getTarget().getChoice()) {
+                            chooseOccur = true;
+                            controller.getView().setCommand("Select AI's Pokemon and press Enter\nto damage " + ((Dam) logic).getAmount().getAmount() + " points.");
+                            DamAlllistener damAlllistener = new DamAlllistener(controller, ((Dam) logic).getAmount().getAmount(), sb);
+                            controller.getAIController().getBenchController().setPokemonListener(damAlllistener);
+                            if (!((Dam) logic).getTarget().getArea().equals("bench")) {
+                                controller.getAIController().getActivePokemonController().setKeyListener(damAlllistener);
+                            }
+                            controller.getView().disableKeyListener();
+
+                        } else {
+                            controller.applyAbility(controller.getHumanController(), controller.getAIController(),
+                                    logic,
+                                    controller.getHumanController().getActivePokemonCard(), sb);
+//                            attackEnd(1);
+                        }
                     } else {
                         controller.applyAbility(controller.getHumanController(), controller.getAIController(),
                                 logic,
-                                controller.getHumanController().getActivePokemonCard(),sb);
+                                controller.getHumanController().getActivePokemonCard(), sb);
+//                        attackEnd(1);
+
                     }
                 }
-                attackEnd(1);
+                if(!chooseOccur)
+                        attackEnd(1);
+
                 break;
             }
             case KeyEvent.VK_2:
             case KeyEvent.VK_NUMPAD2: {
                 if (controller.getHumanController().getActivePokemonController().getPokemonController().getAttacks().size() > 1) {
-                    ArrayList<AbilityLogic>logics = controller.getHumanController().getActivePokemonController().getPokemonController()
+                    ArrayList<AbilityLogic> logics = controller.getHumanController().getActivePokemonController().getPokemonController()
                             .getAttacks().get(1).getAbility().getLogic();
-                    for(AbilityLogic logic:logics) {
+                    for (AbilityLogic logic : logics) {
                         String type2 = logic.getClass().getSimpleName();
 
                         if (type2.equals("Cond")) {
-                            attack(2);
-                        } else {
+                            Cond cond = (Cond) logic;
+                            if (cond.getCondition().equals("flip")) {
+                                if (controller.getHumanController().getCoinController().flipCoin() == 1) {
+                                    sb.append("You flip a coin and got a HEAD!\n");
+                                    for (AbilityLogic condl : cond.getConditionIsMet()) {
+                                        controller.applyAbility(controller.getHumanController(), controller.getAIController(),
+                                                condl,
+                                                controller.getHumanController().getActivePokemonCard(), sb);
+                                    }
+                                } else {
+                                    sb.append("You flip a coin and got a TAIL!\n");
+                                    for (AbilityLogic condl : cond.getConditionIsNotMet()) {
+                                        controller.applyAbility(controller.getHumanController(), controller.getAIController(),
+                                                condl,
+                                                controller.getHumanController().getActivePokemonCard(), sb);
+                                    }
+                                }
+                            } else {
+                            }
+                        }
+
+
+                            else {
                             controller.applyAbility(controller.getHumanController(), controller.getAIController(),
                                     logic,
-                                    controller.getHumanController().getActivePokemonCard(),sb);
+                                    controller.getHumanController().getActivePokemonCard(), sb);
                         }
                     }
                     attackEnd(2);
-                    break;
 
+                    break;
 
 
                 }//if
@@ -294,6 +359,25 @@ public class PokemonAttack implements KeyListener {
             if (controller.getAIController().getActivePokemonCard().getDamagePoints() >=
                     controller.getAIController().getActivePokemonCard().getHealthPoints())
                 defeatedOpp = true;
+
+            ArrayList<CardController> benches =
+                    controller.getAIController().getBenchController().getCardControllers();
+
+            ArrayList<Card> cardToRemove = new ArrayList<>();
+
+            for (CardController con : benches) {
+                Pokemon pok = (Pokemon) con.getCard();
+                if (pok.getDamagePoints() >= pok.getHealthPoints()) {
+                    cardToRemove.add(con.getCard());
+                }
+            }
+            if (cardToRemove.size() > 0) {
+                for (Card card : cardToRemove) {
+                    controller.getAIController().getDiscardPileController().addCard(card);
+                    controller.getAIController().getBenchController().removeCard(card);
+
+                }
+            }
 
             // Process Ability
 //            StringBuilder strBuilder = new StringBuilder();

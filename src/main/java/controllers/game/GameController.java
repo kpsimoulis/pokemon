@@ -6,10 +6,7 @@ import controllers.cardpiles.PrizeCardController;
 import controllers.game.*;
 import controllers.card.CardController;
 import controllers.cardcontainer.CardContainerController;
-import controllers.game.KeyListeners.CollectPrizeCard;
-import controllers.game.KeyListeners.HealListener;
-import controllers.game.KeyListeners.ListenerActivePok;
-import controllers.game.KeyListeners.MainMenuListener;
+import controllers.game.KeyListeners.*;
 import controllers.player.AIPlayerController;
 import controllers.player.HumanPlayerController;
 import controllers.player.PlayerController;
@@ -183,7 +180,7 @@ public class GameController {
 
     public void endFirstTurn() {
 
-        view.setCommand("AI is playing");
+        view.setCommand("AI is playing.\nPress 2 if stuck.XD");
 
         if (!player2Controller.handHasPokemon()) {
 
@@ -452,47 +449,57 @@ public class GameController {
                             ) {
                         damAmount = aiPlayerController.getActivePokemonCard().getEnergy().size()
                                 * amount.getMultiplier();
+                        sb.append("(From opponent's energy) ");
 
-                    }
-                    else if(name.equals("your") && area.equals("active")){
+                    } else if (name.equals("your") && area.equals("active")) {
                         damAmount = humanPlayerController.getActivePokemonCard().getDamagePoints();
-                    }
-                    else if(name.equals("your") && area.equals("bench")){
+                        sb.append("(From your damage points) ");
+                    } else if (name.equals("your") && area.equals("bench")) {
                         damAmount = humanPlayerController.getBenchController().getCardControllers().size()
                                 * amount.getMultiplier();
-                    }
-                    else damAmount = 6;
+                        sb.append("(From your bench size) ");
+                    } else damAmount = 6;
 //                        count[target:your-bench]
 //                        count(target:opponent-active:energy)
 //                        count(target:your-active:damage)
 
                 }//if amount
 
-                if(!target.getChoice()){
-                    String area = target.getArea();
-                    String name = target.getName();
-                    if (name.equals("opponent") && area.equals("active")){
+                String area = target.getArea();
+                String name = target.getName();
+                if (!target.getChoice()) {
+                    if (name.equals("opponent") && area.equals("active")) {
                         aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
-                    }
-                    else if(name.equals("your") && area.equals("active")){
+                        sb.append("Damege caused: " + damAmount + " .\n");
+                } else if (name.equals("your") && area.equals("active")) {
                         humanPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
-                    }
-                    else if(name.equals("your") && area.equals("bench")){
-                       ArrayList<CardController> benches = humanPlayerController.getBenchController().getCardControllers();
-                       for(CardController cardController : benches){
-                           PokemonController pokemonController = (PokemonController)cardController;
-                           pokemonController.causeDamage(damAmount);
-                       }
-                    }
-                    else if(name.equals("opponent") && area.equals("")){
+                        sb.append("Damege your active Pokemon: " + damAmount + " .\n");
+
+                    } else if (name.equals("your") && area.equals("bench")) {
+                        int size = humanPlayerController.getBenchController().getCardControllers().size();
+                        for (int i = 0; i < size; i++) {
+                            ((PokemonController)humanPlayerController.getBenchController().getCardControllers().get(i)).causeDamage(damAmount);
+                        }
+                        sb.append("Damege your bench: " + damAmount + " .\n");
+                    } else if (name.equals("opponent") && area.equals("")) {
                         aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
-                    }
-                    else aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(7);
+                        sb.append("Damege caused: " + damAmount + " .\n");
+                    } else {aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(7);
+                        sb.append("Damege caused: " + damAmount + " .\n");}
                 }//if target
-                else {
-                    aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
-                }
-                sb.append("Damege caused: " + damAmount + " .\n");
+//                else {
+//                    if  (name.equals("opponent") && area.equals("bench")) {
+//                        aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
+//                    }
+//                    else{
+//                        view.setCommand("Select Pokemon and press Enter\nto damage " + damAmount + " HP points.");
+//                        view.disableKeyListener();
+//                        DamAlllistener damAlllistener = new DamAlllistener(this,damAmount );
+//                        aiPlayerController.getBenchController().setPokemonListener(damAlllistener);
+//                        aiPlayerController.getActivePokemonController().setKeyListener(damAlllistener);
+//                    }
+//                    sb.append("Damege caused: " + damAmount + " .\n");
+//                }
                 break;
             }//Dam
             case ("Draw"): {
@@ -544,7 +551,7 @@ public class GameController {
                     System.out.println(energy.toString());
                     humanPlayerController.getDiscardPileController().addCard(energy);
                 }
-                for(int i=0;i<size;i++){
+                for (int i = 0; i < size; i++) {
                     humanPlayerController.getActivePokemonController().getPokemonController().removeEnergy();
                 }
 

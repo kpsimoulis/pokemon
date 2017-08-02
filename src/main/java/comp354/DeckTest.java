@@ -13,16 +13,16 @@ public class DeckTest {
         helper.parse();
 //        helper.printAll();
 
-        helper.printPokemonWithoutRetreat();
+//        helper.printPokemonWithoutRetreat();
 
         // Print Attacks of specific type
-//        helper.printAttacksByType("dam");
+        helper.printAttacksByType("search");
 
         // Attack with Multiple Abilities are Hardest ones to implement
 //        helper.printAttacksWithMultipleAbilities();
 
         // Getting a Specific Pokemon
-        Pokemon p1 = helper.getPokemonByName("Doduo");
+//        Pokemon p1 = helper.getPokemonByName("Doduo");
 //        System.out.println(p1);
     }
 

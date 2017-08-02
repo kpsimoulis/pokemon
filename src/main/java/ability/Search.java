@@ -49,8 +49,8 @@ public class Search extends AbilityLogic {
             throw new IllegalArgumentException("Search source should be deck or discard");
         }
 
-        logic.remove(0);
         this.source = logic.get(0);
+        logic.remove(0);
 
         if (logic.get(0).equals("filter")) {
             logic.remove(0);

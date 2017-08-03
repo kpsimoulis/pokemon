@@ -379,6 +379,38 @@ public class PokemonAttack implements KeyListener {
                 }
             }
 
+            boolean beDefeated = false;
+            ArrayList<CardController> benchesPlayers =
+                    controller.getHumanController().getBenchController().getCardControllers();
+
+            ArrayList<Card> cardToRemovePlayer = new ArrayList<>();
+
+            for (CardController con1 : benchesPlayers) {
+                Pokemon pok = (Pokemon) con1.getCard();
+                if (pok.getDamagePoints() >= pok.getHealthPoints()) {
+                    cardToRemovePlayer.add(con1.getCard());
+                }
+            }
+            if (cardToRemovePlayer.size() > 0) {
+                for (Card card : cardToRemovePlayer) {
+                    controller.getHumanController().getDiscardPileController().addCard(card);
+                    controller.getHumanController().getBenchController().removeCard(card);
+                    controller.getAIController().collectPrizeCards();
+                    sb.append("YOUR POKEMON HAS BEEN DEFEATED.\n").append("Opponent has collected a prize card.\n");
+
+                    if (controller.getAIController().getPrizeCardController().getCardContainer().getNoOfCards() == 0) {
+                        sb.append("OPPONENT HAS NO MORE PRIZE CARDS.\n").append("YOU LOST THE GAME. :(");
+                        controller.getView().setCommand(sb.toString());
+                        controller.endGame();
+
+                    }
+
+                }
+            }
+
+
+
+
             // Process Ability
 //            StringBuilder strBuilder = new StringBuilder();
 

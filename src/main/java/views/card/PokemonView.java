@@ -103,7 +103,7 @@ public class PokemonView extends CardView {
 
     private void setRetreatRequirement(int retreatRequirment) {this.getInfoTable().getModel().setValueAt(String.valueOf(retreatRequirment), 6, 1);
     }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public int getDmgPts(){
         return Integer.valueOf( this.getInfoTable().getModel().getValueAt(2, 1).toString());
     }
@@ -153,44 +153,12 @@ public class PokemonView extends CardView {
             String  dmg = "";
             Amount amount = new Amount();
 
-            if (aAttackInfo.getAbility().getLogic().size() > 1) {
-                dmg = "Multi Calc";
-            }
-            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Dam) {
+            if (aAttackInfo.getAbility().getLogic().get(0) instanceof Dam && aAttackInfo.getAbility().getLogic().size() == 1) {
                 attackHasAmount = true;
                 amount = ((Dam) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
             }
-            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Deck) {
-                attackHasAmount = true;
-                amount = ((Deck) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
-            }
-            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Draw) {
-                attackHasAmount = true;
-                amount = ((Draw) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
-            }
-            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Heal) {
-                attackHasAmount = true;
-                amount = ((Heal) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
-            }
-            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Deenergize) {
-                attackHasAmount = true;
-                amount = ((Deenergize) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
-            }
-            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Search) {
-                attackHasAmount = true;
-                amount = ((Search) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
-            }
-            else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Redamage) {
-                attackHasAmount = true;
-                amount = ((Redamage) aAttackInfo.getAbility().getLogic().get(0)).getAmount();
-            }
-            if (attackHasAmount) {
-                if (amount.isCalculated()) {
-                    dmg = "Calculated";
-                }
-                else {
-                    dmg = Integer.toString(amount.getAmount());
-                }
+            if (attackHasAmount && !amount.isCalculated()) {
+                dmg = Integer.toString(amount.getAmount());
                 attack.append(aAttackInfo.getAbility().getName()).append(" (" + aAttackInfo.getAbility().getLogic().get(0).getType()+ ": ").append(dmg).append(")\n");
             }
             else if (aAttackInfo.getAbility().getLogic().get(0) instanceof Reenergize) {

@@ -21,15 +21,19 @@ public class BenchControllerIT {
     private BenchView benchView;
     private BenchController benchController;
     private Pokemon pokemon1;
+    private Pokemon p1;
     private Energy energy1;
 
     @Before
     public void beforeEachTest() {
+        ParserHelper helper = new ParserHelper();
+        helper.parse();
+        p1 = helper.getPokemonByName("Purugly");
         bench = new Bench();
         benchView = new BenchView();
         benchController = new BenchController(bench, benchView);
         ArrayList<Energy> energyArray = new ArrayList<Energy>(20);
-        ArrayList<Pokemon> poks = null;
+        ArrayList<Pokemon> poks = new ArrayList<>();
 
         Retreat retreat = new Retreat("fighting", 1);
         ArrayList<AbilityLogic> logic = new ArrayList<AbilityLogic>();
@@ -41,7 +45,7 @@ public class BenchControllerIT {
         Attack attack = new Attack(requirements, ability);
         ArrayList<Attack> attacks = new ArrayList<Attack>();
         attacks.add(attack);
-        pokemon1 = new Pokemon("Raichu", 27, "pokemon", 90, energyArray, "basic", "", retreat, attacks, poks);
+        pokemon1 = new Pokemon("Raichu", 27, "pokemon", 90, energyArray, "basic", "", retreat, attacks, null);
         energy1 = new Energy("Fight", 20, "fight");
 
 
@@ -50,7 +54,7 @@ public class BenchControllerIT {
     @Test
     public void addCard() throws Exception {
         assertEquals(0, benchController.getContainer().getNoOfCards());
-        benchController.addCard(pokemon1);
+        benchController.addCard(p1);
         assertEquals(1, benchController.getContainer().getNoOfCards());
 
     }
@@ -58,9 +62,9 @@ public class BenchControllerIT {
 
     @Test
     public void removeCard() throws Exception {
-        benchController.addCard(pokemon1);
+        benchController.addCard(p1);
         assertEquals(1, benchController.getContainer().getNoOfCards());
-        benchController.removeCard(pokemon1);
+        benchController.removeCard(p1);
         assertEquals(0, benchController.getContainer().getNoOfCards());
     }
 

@@ -254,8 +254,13 @@ public abstract class PlayerController {
     }
 
     public void shuffleHandInDeck() {
+//        ArrayList<CardController> removedCards = handController.removeAllCards();
+        ArrayList<CardController> removedCards = new ArrayList<>();
+        int size = handController.getCardControllers().size();
+        for(int i = 0 ; i<size ; i++){
+            removedCards.add(handController.removeCard(handController.getCardControllers().get(0).getCard()).getKey());
+        }
 
-        ArrayList<CardController> removedCards = handController.removeAllCards();
         for (CardController controller : removedCards) {
             deckController.addCard(controller.getCard());
         }

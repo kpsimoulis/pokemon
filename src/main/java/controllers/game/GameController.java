@@ -471,21 +471,23 @@ public class GameController {
                     if (name.equals("opponent") && area.equals("active")) {
                         aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
                         sb.append("Damege caused: " + damAmount + " .\n");
-                } else if (name.equals("your") && area.equals("active")) {
+                    } else if (name.equals("your") && area.equals("active")) {
                         humanPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
                         sb.append("Damege your active Pokemon: " + damAmount + " .\n");
 
                     } else if (name.equals("your") && area.equals("bench")) {
                         int size = humanPlayerController.getBenchController().getCardControllers().size();
                         for (int i = 0; i < size; i++) {
-                            ((PokemonController)humanPlayerController.getBenchController().getCardControllers().get(i)).causeDamage(damAmount);
+                            ((PokemonController) humanPlayerController.getBenchController().getCardControllers().get(i)).causeDamage(damAmount);
                         }
                         sb.append("Damege your bench: " + damAmount + " .\n");
                     } else if (name.equals("opponent") && area.equals("")) {
                         aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
                         sb.append("Damege caused: " + damAmount + " .\n");
-                    } else {aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(7);
-                        sb.append("Damege caused: " + damAmount + " .\n");}
+                    } else {
+                        aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(7);
+                        sb.append("Damege caused: " + damAmount + " .\n");
+                    }
                 }//if target
 //                else {
 //                    if  (name.equals("opponent") && area.equals("bench")) {
@@ -517,12 +519,54 @@ public class GameController {
 
                 break;
             }//draw
+
+            case ("Deck"): {
+                Amount amount = ((Deck) abilityLogic).getAmount();
+                Target target = ((Deck) abilityLogic).getTarget();
+                int number = amount.getAmount();
+                if(target.getName().equals("opponent")) {
+                    if(number>aiPlayerController.getHandController().getCardControllers().size()) {
+                        number = aiPlayerController.getHandController().getCardControllers().size();
+                        sb.append("AI does not have enough card in hand! ");
+                    }
+                        for (int i = 0; i < number; i++) {
+                            Card card = aiPlayerController.getHandController().getCardControllers().get(0).getCard();
+                            aiPlayerController.getHandController().removeCard(card);
+                            aiPlayerController.getDeckController().addCard(card);
+                            aiPlayerController.getDeckController().shuffleDeck();
+                        }
+                        humanPlayerController.getHandController().returnAllCards();
+                        sb.append("AI has put " + number + " card(s) back to deck! \n");
+
+
+                }
+                else{
+                    sb.append("Plz, there should not exist any Pokemon's ability to let player change his deck! directly \n");
+
+                }
+                break;
+            }//draw
+
+            case ("Shuffle"): {
+                Target target = ((Shuffle) abilityLogic).getTarget();
+                if (target.getName().equals("your")) {
+                    humanPlayerController.getDeckController().shuffleDeck();
+                    sb.append("You shuffled your deck!\n");
+
+                } else {
+                    aiPlayerController.getDeckController().shuffleDeck();
+                    sb.append("AI shuffled his deck!\n");
+                }
+                break;
+            }//draw
             case ("Heal"): {
                 Amount amount = ((Heal) abilityLogic).getAmount();
                 Target target = ((Heal) abilityLogic).getTarget();
 
                 int healAmount = amount.getAmount();
                 humanPlayerController.getActivePokemonController().getPokemonController().heal(healAmount);
+                sb.append("Healed " + healAmount + "!\n");
+                healAmount = 0;
                 break;
             }//heal
             case ("Applystat"): {
@@ -545,20 +589,65 @@ public class GameController {
                 break;
             }//destat
             case ("Deenergize"): {
-                ArrayList<Energy> ens = humanPlayerController.getActivePokemonCard().getEnergy();
-                int size = ens.size();
-                for (Energy energy : ens) {
-                    System.out.println(energy.toString());
-                    humanPlayerController.getDiscardPileController().addCard(energy);
-                }
-                for (int i = 0; i < size; i++) {
-                    humanPlayerController.getActivePokemonController().getPokemonController().removeEnergy();
+                Amount amount = ((Deenergize) abilityLogic).getAmount();
+                Target target = ((Deenergize) abilityLogic).getTarget();
+                ArrayList<Energy> ens = new ArrayList<>();
+                int size = amount.getAmount();
+                if (target.getName().equals("your")) {
+                    ens = humanPlayerController.getActivePokemonCard().getEnergy();
+                    if (size == 0) {
+                        size = ens.size();
+                        for (Energy energy : ens) {
+                            System.out.println(energy.toString());
+                            humanPlayerController.getDiscardPileController().addCard(energy);
+                        }
+                        for (int i = 0; i < size; i++) {
+                            humanPlayerController.getActivePokemonController().getPokemonController().removeEnergy();
+                        }
+                    } else {
+                        ArrayList<Energy> tmp = new ArrayList<>(size);
+                        for (int i = 0; i < size; i++) {
+                            tmp.add(humanPlayerController.getActivePokemonController().getPokemonController().removeEnergy());
+                        }
+                        for (Energy energy : tmp) {
+                            System.out.println(energy.toString());
+                            humanPlayerController.getDiscardPileController().addCard(energy);
+                        }
+                    }
+
+
+                } else {
+                    ens = aiPlayerController.getActivePokemonCard().getEnergy();
+                    size = ens.size();
+
+                    if (size == 0) {
+                        size = ens.size();
+                        for (Energy energy : ens) {
+                            System.out.println(energy.toString());
+                            aiPlayerController.getDiscardPileController().addCard(energy);
+                        }
+                        for (int i = 0; i < size; i++) {
+                            aiPlayerController.getActivePokemonController().getPokemonController().removeEnergy();
+                        }
+                    } else {
+                        size = amount.getAmount();
+                        ArrayList<Energy> tmp = new ArrayList<>(size);
+                        for (int i = 0; i < size; i++) {
+                            tmp.add(aiPlayerController.getActivePokemonController().getPokemonController().removeEnergy());
+                        }
+                        for (Energy energy : tmp) {
+                            System.out.println(energy.toString());
+                            aiPlayerController.getDiscardPileController().addCard(energy);
+                        }
+                    }
+
+
                 }
 
-                sb.append("Removed all the energies!\n");
-
+                sb.append("Removed " + size + " energies!\n");
+                size = 0;
                 break;
-            }//destat
+            }//Deenergize
 
 
             default:

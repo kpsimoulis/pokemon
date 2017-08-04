@@ -65,7 +65,36 @@ public class PokemonAttack implements KeyListener {
                                             controller.getHumanController().getActivePokemonCard(), sb);
                                 }
                             }
-                        } else {
+                        }
+
+                        else if(cond.getCondition().equals("count(target:your-active:energy:psychic)>0")) {
+                            boolean match = false;
+                            Pokemon exActive = new Pokemon(controller.getHumanController().getActivePokemonCard());
+                            ArrayList<Energy> energys = exActive.getEnergy();
+                            for(Energy en : energys){
+                                if(en.getCategory().equals("psychic")) {
+                                    match = true;
+                                    break;
+                                }
+                            }
+                            if(match){
+                                sb.append("Your pokemon has psychic energy, then cause more damage.\n");
+                                for (AbilityLogic condl : cond.getConditionIsMet()) {
+                                    controller.applyAbility(controller.getHumanController(), controller.getAIController(),
+                                            condl,
+                                            controller.getHumanController().getActivePokemonCard(), sb);
+                                }
+                            }
+                        }//else if
+                        else if(cond.getCondition().equals("healed")){
+                            if(controller.getHumanController().getActivePokemonController().getPokemonController().isHealed){
+                                sb.append("Your pokemon has been healed, then cause more damage.\n");
+                                for (AbilityLogic condl : cond.getConditionIsMet()) {
+                                    controller.applyAbility(controller.getHumanController(), controller.getAIController(),
+                                            condl,
+                                            controller.getHumanController().getActivePokemonCard(), sb);
+                                }
+                            }
                         }
 //                        attackEnd(1);
                     }

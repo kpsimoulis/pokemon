@@ -434,12 +434,14 @@ public class GameController {
     }
 
     public void checkHeal(){
+        getHumanController().getActivePokemonController().getPokemonController().isHealed = false;
         if(getHumanController().getActivePokemonController().getPokemonController().selfHeal > 0
                 && ((Pokemon)getHumanController().getActivePokemonController().getPokemonController().getCard()).getStage().equals("basic"))
             getHumanController().getActivePokemonController().getPokemonController().heal(getHumanController().getActivePokemonController().getPokemonController().selfHeal);
         ArrayList<CardController> cc = getHumanController().getBenchController().getCardControllers();
         for(CardController c : cc){
             PokemonController pc = (PokemonController)c;
+            pc.isHealed = false;
             if(pc.selfHeal>0 && ((Pokemon)pc.getCard()).getStage().equals("basic")){
                 pc.heal(pc.selfHeal);
             }

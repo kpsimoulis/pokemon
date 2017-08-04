@@ -9,16 +9,20 @@ import java.util.ArrayList;
 
 public class PokemonController extends CardController {
     public int selfHeal;
+    public boolean isHealed;
 
     public PokemonController(Pokemon card){
 
         super(card, new PokemonView(card.getEnergy(), card.getAttack(), card.getDamagePoints(), card.getHealthPoints(), card.getStage(), card.getRetreat().getEnergyAmount()));
         this.selfHeal = 0;
+        this.isHealed = false;
+
     }
 
     public PokemonController(PokemonController pokemonController) {
         super(pokemonController.getCard(), new PokemonView( (PokemonView) pokemonController.getView()));
         this.selfHeal = 0;
+        this.isHealed = false;
     }
 
     public void addEnergy(Energy energyCard){
@@ -82,6 +86,7 @@ public class PokemonController extends CardController {
         Pokemon card = (Pokemon) getCard();
         card.setDamagePoints(Math.max(0,card.getDamagePoints() - healPoints));
         ((PokemonView) getView()).setDmgPts(card.getDamagePoints());
+        this.isHealed = true;
 
     }
 

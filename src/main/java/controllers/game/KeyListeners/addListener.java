@@ -14,13 +14,13 @@ import java.awt.event.KeyListener;
 /**
  * Created by zc on 2017/7/14.
  */
-public class HealListener implements KeyListener {
+public class addListener implements KeyListener {
 
     private GameController controller;
     private Card card;
     private int amount;
 
-    public HealListener(GameController gameController, Card card, int amount) {
+    public addListener(GameController gameController, Card card, int amount) {
         this.controller = gameController;
         this.card = card;
         this.amount = amount;
@@ -49,11 +49,10 @@ public class HealListener implements KeyListener {
                             chosenCard, controller.getHumanController().getBenchController());
                 }
 
-                chosenController.heal(amount);
+                chosenController.setSelfHeal(amount);
                 amount = 0;
                 controller.getHumanController().getHandController().removeCard(this.card);
                 controller.getHumanController().getDiscardPileController().addCard(this.card);
-
                 // Remove listener
                 controller.getHumanController().setChosingCard(false);
 
@@ -65,7 +64,7 @@ public class HealListener implements KeyListener {
 
 
             default: {
-                System.out.println("Enter the correct Key.(from HealListener)");
+                System.out.println("Enter the correct Key.(from addListener)");
                 break;
             }
         }

@@ -55,8 +55,8 @@ public class EvolveListener implements KeyListener {
                     }
                 }
                 // Remove from container and set as active for both player controller and in the view
-                Pair<CardController, CardView> pairBasic = appliedContainer.removeCard(basicCard);
                 Pair<CardController, CardView> pairStage1 = controller.getHumanController().getHandController().removeCard(stage1Pokemon);
+                Pair<CardController, CardView> pairBasic = appliedContainer.removeCard(basicCard);
 
                 //get pokemon and damage point from activepokemon controller
                 ArrayList<Energy> energies =
@@ -81,7 +81,7 @@ public class EvolveListener implements KeyListener {
 
             }
             default: {
-                System.out.println("Press Again.");
+                System.out.println("Press Again. From evolvelistener");
             }
         }
     }

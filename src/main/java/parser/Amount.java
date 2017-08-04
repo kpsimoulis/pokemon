@@ -76,7 +76,8 @@ public class Amount {
 
     public int getAmount() {
         if (isCalculated()) {
-            throw new IllegalArgumentException("This method is only for integer amount");
+//            throw new IllegalArgumentException("This method is only for integer amount");
+        return 0;
         }
         return amount;
     }

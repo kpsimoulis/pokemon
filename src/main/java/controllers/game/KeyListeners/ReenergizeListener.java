@@ -75,6 +75,7 @@ public class ReenergizeListener implements KeyListener {
                 if (controller.getHumanController().getSourceController() != null && controller.getHumanController().getDestController() != null) {
                     if (((Pokemon) controller.getHumanController().getSourceController().getCard()).getEnergy().size() == 0) {
                         controller.getHumanController().getHandController().removeCard(this.card);
+                        controller.getHumanController().getDiscardPileController().addCard(this.card);
                         controller.getHumanController().setChosingCard(false);
                         controller.getHumanController().getActivePokemonController().removeKeyListener(this);
                         controller.getHumanController().getBenchController().removeAllListeners(this);
@@ -86,6 +87,7 @@ public class ReenergizeListener implements KeyListener {
                         }
 
                         controller.getHumanController().getHandController().removeCard(this.card);
+                        controller.getHumanController().getDiscardPileController().addCard(this.card);
                         controller.getHumanController().setChosingCard(false);
                         controller.getHumanController().getActivePokemonController().removeKeyListener(this);
                         controller.getHumanController().getBenchController().removeAllListeners(this);

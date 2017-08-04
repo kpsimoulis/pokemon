@@ -1,6 +1,7 @@
 package controllers.cardcontainer;
 
 import card.Card;
+import card.Pokemon;
 import cardcontainer.CardContainer;
 import controllers.card.CardController;
 import controllers.card.ControllerViewBuilder;
@@ -97,7 +98,10 @@ public abstract class CardContainerController {
 
         for (CardController cardController : getCardControllers()) {
             if (cardController.getView() instanceof PokemonView) {
-                cardController.getView().setListeners(activeListener);
+                Pokemon pok = (Pokemon) cardController.getCard();
+                if (pok.getStage().equals("basic")) {
+                    cardController.getView().setListeners(activeListener);
+                }
             }
         }
 

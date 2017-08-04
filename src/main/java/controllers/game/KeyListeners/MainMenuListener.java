@@ -71,12 +71,12 @@ public class MainMenuListener implements KeyListener {
         builder.append("\n");
         builder.append("C. Cheating List for Test.\n");
         builder.append("D. Look at deck and pile.");
-        builder.append("\nAI's status is "+controller.getAIController().getStatus()+"!");
-        if(controller.getAIController().isPoisoned()){
+        builder.append("\nAI's status is " + controller.getAIController().getStatus() + "!");
+        if (controller.getAIController().isPoisoned()) {
             builder.append(" AI is poisoned and will lose 10 HP.");
         }
-        builder.append("\nYou status is "+controller.getHumanController().getStatus()+"!");
-        if(controller.getHumanController().isPoisoned()){
+        builder.append("\nYou status is " + controller.getHumanController().getStatus() + "!");
+        if (controller.getHumanController().isPoisoned()) {
             builder.append(" You are poisoned and will lose 10 HP.");
         }
         controller.getView().setCommand(builder.toString());
@@ -252,10 +252,10 @@ public class MainMenuListener implements KeyListener {
             case KeyEvent.VK_X: {
                 controller.setEnergyAdded(false);
                 controller.setHasRetreated(false);
-                if(controller.getAIController().isPoisoned()){
+                if (controller.getAIController().isPoisoned()) {
                     controller.getAIController().getActivePokemonController().getPokemonController().causeDamage(10);
                 }
-                if(controller.getHumanController().isPoisoned()){
+                if (controller.getHumanController().isPoisoned()) {
                     controller.getHumanController().getActivePokemonController().getPokemonController().causeDamage(10);
                 }
                 controller.gameAITurn();
@@ -267,7 +267,7 @@ public class MainMenuListener implements KeyListener {
                 if (!controller.getHumanController().benchHasPokemon()
                         || (controller.getHumanController().getActivePokemonCard().getEnergy().size()
                         < controller.getHumanController().getActivePokemonCard().getRetreat().getEnergyAmount())
-            || controller.getHasRetreated() == true
+                        || controller.getHasRetreated() == true
                         ) {
                     StringBuilder builder = new StringBuilder("You cannot retreat now! \n");
                     builder.append("To retreat you need:\n"
@@ -598,6 +598,7 @@ public class MainMenuListener implements KeyListener {
                             controller.getHumanController().getActivePokemonCard().attachPokemon(exActive);
                             // Remove all key listeners of this type and go back to menu
                             controller.getHumanController().getActivePokemonController().removeKeyListener(this);
+                            controller.getHumanController().getBenchController().removeAllListeners(this);
                             controller.getView().disableKeyListener();
                             controller.getView().addBoardListerner(new MainMenuListener(controller));
                         }
@@ -609,15 +610,15 @@ public class MainMenuListener implements KeyListener {
 
 
                             //get pokemon and damage point from activepokemon controller
-                            ArrayList<Pokemon> stage1Pokemons = controller.getHumanController().getStage1PokemonInHand();
+                            ArrayList<Pokemon> stage1Pokemons1 = controller.getHumanController().getStage1PokemonInHand();
 
-                            EvolveListener evolveListener = new EvolveListener(controller, controller.getHumanController().getBenchController(), stage1Pokemons);
+                            EvolveListener evolveListener = new EvolveListener(controller, controller.getHumanController().getBenchController(), stage1Pokemons1);
                             for (int i = 0; i < controller.getHumanController().getBenchController().getContainer().getCards().size(); i++) {
-                                for (Pokemon pok : stage1Pokemons) {
+                                for (Pokemon pok : stage1Pokemons1) {
 
                                     if (pok.getEvolvesFrom().equals(controller.getHumanController().getBenchController().getCardControllers().get(i).getCard().getName())) {
                                         controller.getHumanController().getBenchController().getCardControllers().get(i).getView().setListeners(evolveListener);
-                                        break;
+//                                        break;
                                     }
                                 }
                             }
@@ -631,6 +632,7 @@ public class MainMenuListener implements KeyListener {
                                 public void keyPressed(KeyEvent e) {
                                     if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                                         controller.getView().disableKeyListener();
+                                        controller.getHumanController().getActivePokemonController().removeKeyListener(this);
                                         controller.getHumanController().getBenchController().removeAllListeners(evolveListener);
                                         controller.getView().addBoardListerner(new MainMenuListener(controller));
                                     }
@@ -728,14 +730,38 @@ public class MainMenuListener implements KeyListener {
                                         break;
                                     }//draw
 
+                                    case ("Add"): {
+                                        AbilityLogic al = ((Add) tc.getAbility().getLogic().get(0)).getAbility().get(0);
+                                        int amount = ((Heal)al).getAmount().getAmount();
+
+                                        addListener addlistener = new addListener(controller, card, amount);
+                                        controller.getView().setCommand("Select Pokemon and press Enter\nto attach this card to a basic Pokemon and heal " + amount + " HP points after each turn!");
+
+                                        controller.getHumanController().getActivePokemonController().removeKeyListener(this);
+                                        controller.getHumanController().getBenchController().removeAllListeners(this);
+                                        controller.getHumanController().getBenchController().setPokemonListener(addlistener);
+                                        controller.getHumanController().getActivePokemonController().setKeyListener(addlistener);
+                                        controller.getHumanController().getHandController().returnAllCards();
+
+                                        controller.getHumanController().getHandController().removeAllListeners(this);
+
+                                        break;
+                                    }//draw
+
                                     case ("Heal"): {
                                         Amount amount = ((Heal) tc.getAbility().getLogic().get(0)).getAmount();
                                         Target target = ((Heal) tc.getAbility().getLogic().get(0)).getTarget();
+                                        if(tc.getAbility().getLogic().size()>1){
+                                            controller.getHumanController().setStatus("normal");
+                                            controller.getHumanController().setIsPoisoned(false);
+                                        }
 
                                         int healAmount = amount.getAmount();
                                         if (target.getChoice() == false) {
                                             controller.getHumanController().getActivePokemonController().getPokemonController().heal(healAmount);
                                             controller.getHumanController().getHandController().removeCard(card);
+                                            controller.getHumanController().getDiscardPileController().addCard(card);
+
                                             controller.getHumanController().setChosingCard(false);
                                             controller.getView().addBoardListerner(new MainMenuListener(controller));
                                         } else {
@@ -777,14 +803,15 @@ public class MainMenuListener implements KeyListener {
                                     }//reenergize
 
                                     case ("Swap"): {
-                                        if(controller.getHumanController().getBenchController().getContainer().getNoOfCards() == 0){
+                                        if (controller.getHumanController().getBenchController().getContainer().getNoOfCards() == 0) {
                                             controller.getView().setCommand("You dont have any bench Pokemon\nPress ESC to go back.");
                                             controller.getHumanController().setChosingCard(false);
 
                                             break;
-                                        }
-                                        else {
+                                        } else {
                                             Pair<CardController, CardView> pair = controller.getHumanController().getHandController().removeCard(card);
+                                            controller.getHumanController().getDiscardPileController().addCard(card);
+
                                             SwapListener swapListener = new SwapListener(controller, controller.getHumanController().getBenchController());
                                             controller.getView().setCommand("Select Pokemon and press Enter\nto swap.");
 
@@ -798,6 +825,38 @@ public class MainMenuListener implements KeyListener {
                                             break;
                                         }
                                     }//swap
+
+                                    case ("Deck"): {
+                                        ArrayList<AbilityLogic> logics = tc.getAbility().getLogic();
+                                        Amount amount = ((Draw) tc.getAbility().getLogic().get(2)).getAmount();
+                                        Target target = ((Deck) tc.getAbility().getLogic().get(0)).getTarget();
+
+                                        int drawAmount = amount.getAmount();
+                                        if (target.getName().equals("your")) {
+                                            controller.getHumanController().discardAllHand();
+                                            controller.getHumanController().getDeckController().shuffleDeck();
+                                            for (int i = 0; i < drawAmount; i++) {
+                                                controller.getHumanController().dealDeckHand();
+
+                                            }
+                                            controller.getHumanController().getHandController().returnAllCards();
+                                        } else {
+                                            controller.getAIController().discardAllHand();
+                                            controller.getAIController().getDeckController().shuffleDeck();
+                                            for (int i = 0; i < drawAmount; i++) {
+                                                controller.getAIController().dealDeckHand();
+
+                                            }
+
+                                        }
+                                        controller.getHumanController().getActivePokemonController().removeKeyListener(this);
+                                        controller.getHumanController().getBenchController().removeAllListeners(this);
+                                        controller.getHumanController().getHandController().removeAllListeners(this);
+                                        controller.getView().addBoardListerner(new MainMenuListener(controller));
+                                        controller.getHumanController().setChosingCard(false);
+                                        break;
+                                    }//deck
+
 
                                     default:
                                         controller.getView().setCommand("Haven't implement yet. default from Trainer card in MainMenu.\nPress ESC to go back");

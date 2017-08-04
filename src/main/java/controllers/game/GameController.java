@@ -22,6 +22,7 @@ import views.cardpiles.PrizeCardView;
 import views.game.GameView;
 import card.*;
 
+import javax.sound.sampled.Control;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -365,8 +366,10 @@ public class GameController {
                 public void keyPressed(KeyEvent e) {
                     switch (e.getKeyCode()) {
                         case KeyEvent.VK_ENTER: {
+                            checkHeal();
                             playerDealDeck(player1Controller);
                             decideNextAction();
+
                         }
                     }
                 }
@@ -428,6 +431,19 @@ public class GameController {
             endGame();
         }
 
+    }
+
+    public void checkHeal(){
+        if(getHumanController().getActivePokemonController().getPokemonController().selfHeal > 0
+                && ((Pokemon)getHumanController().getActivePokemonController().getPokemonController().getCard()).getStage().equals("basic"))
+            getHumanController().getActivePokemonController().getPokemonController().heal(getHumanController().getActivePokemonController().getPokemonController().selfHeal);
+        ArrayList<CardController> cc = getHumanController().getBenchController().getCardControllers();
+        for(CardController c : cc){
+            PokemonController pc = (PokemonController)c;
+            if(pc.selfHeal>0 && ((Pokemon)pc.getCard()).getStage().equals("basic")){
+                pc.heal(pc.selfHeal);
+            }
+        }
     }
 
     public void applyAbility(HumanPlayerController humanPlayerController, AIPlayerController aiPlayerController, AbilityLogic abilityLogic, Pokemon pokemon, StringBuilder sb) {

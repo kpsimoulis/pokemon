@@ -44,7 +44,7 @@ public abstract class PlayerController {
         this.player = new Player();
         activePokemonController = null;
         this.status = "normal";
-        this.isPoisoned= false;
+        this.isPoisoned = false;
 
     }
 
@@ -254,10 +254,9 @@ public abstract class PlayerController {
     }
 
     public void shuffleHandInDeck() {
-//        ArrayList<CardController> removedCards = handController.removeAllCards();
         ArrayList<CardController> removedCards = new ArrayList<>();
         int size = handController.getCardControllers().size();
-        for(int i = 0 ; i<size ; i++){
+        for (int i = 0; i < size; i++) {
             removedCards.add(handController.removeCard(handController.getCardControllers().get(0).getCard()).getKey());
         }
 
@@ -268,6 +267,20 @@ public abstract class PlayerController {
         for (int i = 0; i < removedCards.size(); i++) {
             dealDeckHand();
         }
+
+    }
+
+    public void discardAllHand() {
+        ArrayList<CardController> removedCards = new ArrayList<>();
+        int size = handController.getCardControllers().size();
+        for (int i = 0; i < size; i++) {
+            removedCards.add(handController.removeCard(handController.getCardControllers().get(0).getCard()).getKey());
+        }
+
+        for (CardController controller : removedCards) {
+            deckController.addCard(controller.getCard());
+        }
+        deckController.shuffleDeck();
 
     }
 
@@ -404,11 +417,11 @@ public abstract class PlayerController {
         this.destController = destController;
     }
 
-    public void setStatus(String string){
+    public void setStatus(String string) {
         this.status = string;
     }
 
-    public void setIsPoisoned(boolean bool){
+    public void setIsPoisoned(boolean bool) {
         this.isPoisoned = bool;
     }
 
@@ -419,7 +432,6 @@ public abstract class PlayerController {
     public boolean isPoisoned() {
         return isPoisoned;
     }
-
 
 
 }

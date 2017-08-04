@@ -8,17 +8,17 @@ import views.card.PokemonView;
 import java.util.ArrayList;
 
 public class PokemonController extends CardController {
-    public boolean isAttached;
+    public int selfHeal;
 
     public PokemonController(Pokemon card){
 
         super(card, new PokemonView(card.getEnergy(), card.getAttack(), card.getDamagePoints(), card.getHealthPoints(), card.getStage(), card.getRetreat().getEnergyAmount()));
-        this.isAttached = false;
+        this.selfHeal = 0;
     }
 
     public PokemonController(PokemonController pokemonController) {
         super(pokemonController.getCard(), new PokemonView( (PokemonView) pokemonController.getView()));
-        this.isAttached = false;
+        this.selfHeal = 0;
     }
 
     public void addEnergy(Energy energyCard){
@@ -85,7 +85,7 @@ public class PokemonController extends CardController {
 
     }
 
-    public void setIsAttached(boolean bool) {
-        this.isAttached = bool;
+    public void setSelfHeal(int num) {
+        this.selfHeal = 20;
     }
 }

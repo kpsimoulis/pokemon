@@ -102,7 +102,7 @@ public class PokemonAttack implements KeyListener {
                             chooseOccur = true;
                             controller.getView().setCommand("Select AI's Pokemon and press Enter\nto damage " + ((Dam) logic).getAmount().getAmount() + " points.");
                             DamAlllistener damAlllistener = new DamAlllistener(controller, ((Dam) logic).getAmount().getAmount(), sb);
-                            controller.getAIController().getBenchController().setPokemonListener(damAlllistener);
+                            controller.getAIController().getBenchController().setAllPokemonListener(damAlllistener);
                             if (!((Dam) logic).getTarget().getArea().equals("bench")) {
                                 controller.getAIController().getActivePokemonController().setKeyListener(damAlllistener);
                             }
@@ -113,7 +113,17 @@ public class PokemonAttack implements KeyListener {
                                     logic,
                                     controller.getHumanController().getActivePokemonCard(), sb);
                         }
-                    } else {
+                    }
+                    else if(type1.equals("Redamage")){
+                        chooseOccur = true;
+                        controller.getView().setCommand("Select AI's Pokemon and press D \nto set this Pokemon as source of damage counters");
+                        RedamageAlllistener redamagelistener = new RedamageAlllistener(controller, sb);
+                        controller.getAIController().getActivePokemonController().setKeyListener(redamagelistener);
+                        controller.getAIController().getBenchController().setAllPokemonListener(redamagelistener);
+                        controller.getView().disableKeyListener();
+
+                    }
+                    else {
                         controller.applyAbility(controller.getHumanController(), controller.getAIController(),
                                 logic,
                                 controller.getHumanController().getActivePokemonCard(), sb);

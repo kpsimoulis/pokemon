@@ -182,7 +182,7 @@ public class MainMenuListener implements KeyListener {
                 };
 
                 controller.getView().addBoardListerner(exitBoard);
-                controller.getHumanController().getBenchController().setPokemonListener(pokemonListener);
+                controller.getHumanController().getBenchController().setAllPokemonListener(pokemonListener);
                 controller.getHumanController().getActivePokemonController().setKeyListener(pokemonListener);
 
                 break;
@@ -312,7 +312,7 @@ public class MainMenuListener implements KeyListener {
                         + "(Press Esc to exit)");
 
                 RetreatListener retreatListener = new RetreatListener(controller, controller.getHumanController().getBenchController());
-                controller.getHumanController().getBenchController().setPokemonListener(retreatListener);
+                controller.getHumanController().getBenchController().setAllPokemonListener(retreatListener);
                 controller.getView().addBoardListerner(new KeyListener() {
                     @Override
                     public void keyTyped(KeyEvent e) {
@@ -770,7 +770,7 @@ public class MainMenuListener implements KeyListener {
 
                                             controller.getHumanController().getActivePokemonController().removeKeyListener(this);
                                             controller.getHumanController().getBenchController().removeAllListeners(this);
-                                            controller.getHumanController().getBenchController().setPokemonListener(healListener);
+                                            controller.getHumanController().getBenchController().setAllPokemonListener(healListener);
                                             controller.getHumanController().getActivePokemonController().setKeyListener(healListener);
                                         }
                                         controller.getHumanController().getHandController().removeAllListeners(this);
@@ -794,7 +794,7 @@ public class MainMenuListener implements KeyListener {
                                         ReenergizeListener reenergizeListener = new ReenergizeListener(controller, card, sourceAmount, destAmount);
                                         controller.getHumanController().getActivePokemonController().removeKeyListener(this);
                                         controller.getHumanController().getBenchController().removeAllListeners(this);
-                                        controller.getHumanController().getBenchController().setPokemonListener(reenergizeListener);
+                                        controller.getHumanController().getBenchController().setAllPokemonListener(reenergizeListener);
                                         controller.getHumanController().getActivePokemonController().setKeyListener(reenergizeListener);
                                         destAmount = 0;
                                         sourceAmount = 0;
@@ -817,7 +817,7 @@ public class MainMenuListener implements KeyListener {
 
                                             controller.getHumanController().getActivePokemonController().removeKeyListener(this);
                                             controller.getHumanController().getBenchController().removeAllListeners(this);
-                                            controller.getHumanController().getBenchController().setPokemonListener(swapListener);
+                                            controller.getHumanController().getBenchController().setAllPokemonListener(swapListener);
                                             controller.getHumanController().getActivePokemonController().setKeyListener(swapListener);
 
                                             controller.getHumanController().getHandController().removeAllListeners(this);

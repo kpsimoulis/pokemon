@@ -246,4 +246,17 @@ public class Deck extends CardContainer {
 
     }
 
+    public ArrayList<Card> Search(String filterType, String filterCategory, int filterTotal, String filterTarget) {
+        ArrayList<Card> resultCards = new ArrayList<Card>(filterTotal);
+        int currentTotal = 0;
+        if (!isEmpty()) {
+            for (Card card : cards) {
+
+            }
+        }
+
+        return resultCards;
+
+    }
+
 }

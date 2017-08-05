@@ -36,19 +36,19 @@ public class DeckTest {
         Target target = deckLogic.getTarget();
 //        Target target1 = deckLogic1.getTarget();
         String type1 = p1.getAttack().get(1).getAbility().getLogic().get(0).getClass().getSimpleName();
-        System.out.println(
-                "type1: " + type1 + "\n"
-                        + "logic: " + deckLogic.toString() + "\n"
-//                        + "logic1: " + deckLogic1.toString() + "\n"
-                        +ab.toString() + "\n"
-                        + ""
-
-                        + "amout: " +amount.getAmount() +amount.toString() + "\n"
-//                        + "amout1: " +amount1.getTarget().getName()+amount1.getTarget().getArea()+amount1.getTarget().getCardType()+amount1.getMultiplier() +amount1.toString() + "\n"
-//                        + "target : " + target.getName()+target.getArea() + "\n"
-//                        + "target1 : " + target1.getName()+target1.getArea() + "\n"
-//                        + target1.toString() + "\n"
-                        + ab.getLogic().size() + "\n");
+//        System.out.println(
+//                "type1: " + type1 + "\n"
+//                        + "logic: " + deckLogic.toString() + "\n"
+////                        + "logic1: " + deckLogic1.toString() + "\n"
+//                        +ab.toString() + "\n"
+//                        + ""
+//
+//                        + "amout: " +amount.getAmount() +amount.toString() + "\n"
+////                        + "amout1: " +amount1.getTarget().getName()+amount1.getTarget().getArea()+amount1.getTarget().getCardType()+amount1.getMultiplier() +amount1.toString() + "\n"
+////                        + "target : " + target.getName()+target.getArea() + "\n"
+////                        + "target1 : " + target1.getName()+target1.getArea() + "\n"
+////                        + target1.toString() + "\n"
+//                        + ab.getLogic().size() + "\n");
 
         if (p1.getAttack().size() > 1) {
             Ability ab2 = p1.getAttack().get(1).getAbility();
@@ -62,29 +62,30 @@ public class DeckTest {
 //        Target target2 = ((Cond) ab.getLogic().get(1)).getTarget();
 //        Amount amount2 = ((Cond) ab.getLogic().get(1)).getAmount();
 
-            System.out.println(
-//                            "type1: " + type1 + "\n"
-//                            + "amout1: " + amount1.toString() + "\n"
-//                            + "target1 : " + target1.getName() + "\n"
-//                            + target1.toString() + "\n"
-//                            + ab.getLogic().size() + "\n"
-//                            +
-                    "type2: " + type2 + "\n"
-//                            + "amout2: " + amount2.getAmount() + "\n"
-//                            + "target2 : " + target2.getName() + "\n"
-//                            + target2.toString() + "\n"
-                            + ab2.getLogic().size() + "\n"
-                    +deckLogic2.toString()
-//                        + "type1: " + type1 + "\n"
-//                        + "amout1: "+ ( (Dam)((Cond)p1.getAttack().get(0).getAbility().getLogic().get(1)).getConditionIsMet().get(0) ).getAmount().getAmount()+  "\n"
-//                        + "target2 : " + target2.toString() + "\n"
-//                +((Draw)tc2.getAbility().getLogic().get(0)).getTarget().getName()
-//                        +tc3.getAbility().getLogic().get(0).getClass().getSimpleName()
-            );
+//            System.out.println(
+////                            "type1: " + type1 + "\n"
+////                            + "amout1: " + amount1.toString() + "\n"
+////                            + "target1 : " + target1.getName() + "\n"
+////                            + target1.toString() + "\n"
+////                            + ab.getLogic().size() + "\n"
+////                            +
+//                    "type2: " + type2 + "\n"
+////                            + "amout2: " + amount2.getAmount() + "\n"
+////                            + "target2 : " + target2.getName() + "\n"
+////                            + target2.toString() + "\n"
+//                            + ab2.getLogic().size() + "\n"
+//                    +deckLogic2.toString()
+////                        + "type1: " + type1 + "\n"
+////                        + "amout1: "+ ( (Dam)((Cond)p1.getAttack().get(0).getAbility().getLogic().get(1)).getConditionIsMet().get(0) ).getAmount().getAmount()+  "\n"
+////                        + "target2 : " + target2.toString() + "\n"
+////                +((Draw)tc2.getAbility().getLogic().get(0)).getTarget().getName()
+////                        +tc3.getAbility().getLogic().get(0).getClass().getSimpleName()
+//            );
         }
 
 //        System.out.println(p1);
         Trainer tc = helper.getTrainerByName("Clemont");
+        System.out.println(tc);
 //        Trainer tc2 = helper.getTrainerByName("reenergize");
 //        Trainer tc3 = helper.getTrainerByName("Energy Switch");
 

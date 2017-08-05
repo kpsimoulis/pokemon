@@ -442,6 +442,7 @@ public class GameController {
         for(CardController c : cc){
             PokemonController pc = (PokemonController)c;
             pc.isHealed = false;
+
             if(pc.selfHeal>0 && ((Pokemon)pc.getCard()).getStage().equals("basic")){
                 pc.heal(pc.selfHeal);
             }

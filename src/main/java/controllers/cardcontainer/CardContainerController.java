@@ -107,6 +107,19 @@ public abstract class CardContainerController {
 
     }
 
+    public void setAllPokemonListener(KeyListener activeListener) {
+
+        for (CardController cardController : getCardControllers()) {
+            if (cardController.getView() instanceof PokemonView) {
+                Pokemon pok = (Pokemon) cardController.getCard();
+                cardController.getView().setListeners(activeListener);
+
+            }
+        }
+
+    }
+
+
     public void removeAllListeners(KeyListener keyListener) {
 
         for (CardController cardController : getCardControllers()) {

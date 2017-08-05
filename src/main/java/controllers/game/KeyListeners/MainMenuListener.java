@@ -885,6 +885,42 @@ public class MainMenuListener implements KeyListener {
 
                                     }
 
+                                    case ("Cond"): {
+                                        Target target = ((Cond) ability.getLogic().get(0)).getTarget();
+                                        Pair<CardController, CardView> pair = controller.getHumanController().getHandController().removeCard(card);
+                                        controller.getHumanController().getDiscardPileController().addCard(card);
+
+                                        if(!((Cond) tc.getAbility().getLogic().get(0)).getCondition().equals("flip")) {
+
+
+                                            if (controller.getHumanController().getHandController().getContainer().getNoOfCards() == 0) {
+                                                controller.getView().setCommand("You dont have any card in hand!\nPress ESC to go back.");
+                                                controller.getHumanController().setChosingCard(false);
+                                                break;
+                                            } else {
+                                                StringBuilder builder = new StringBuilder("Select hand card and press enter to discard.\n");
+                                                controller.getView().setCommand(builder.toString());
+
+
+
+
+                                                mistyListener mistyListener = new mistyListener(controller, card);
+
+                                                controller.getHumanController().getHandController().setTrainerListener(mistyListener);
+                                                controller.getHumanController().getHandController().setEnergyListener(mistyListener);
+                                                controller.getHumanController().getHandController().setAllPokemonListener(mistyListener);
+                                                controller.getHumanController().getHandController().removeAllListeners(this);
+
+
+                                                break;
+                                            }
+                                        }
+                                        else {
+                                            controller.getHumanController().setChosingCard(false);
+                                            break;
+                                        }
+                                    }//Cond
+
 
                                     default:
                                         controller.getView().setCommand("Haven't implement yet. default from Trainer card in MainMenu.\nPress ESC to go back");

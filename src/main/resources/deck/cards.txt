@@ -51,7 +51,7 @@ Poké Ball:trainer:cat:item:68
 Shauna:trainer:cat:supporter:69
 Pokémon Fan Club:trainer:cat:supporter:70
 Switch:trainer:cat:item:71
-Clemont:trainer:cat:supporter:35
+Energy Switch:trainer:cat:item:72
 Red Card:trainer:cat:item:73
 Wally:trainer:cat:supporter:74
 Fight:energy:cat:fight

@@ -52,4 +52,9 @@ public abstract class PileController {
         }
     }
 
+    public void removeCard(Card newCard) {
+        cardContainer.removeCard(newCard.getIndex());
+        view.decrementNoOfCards();
+    }
+
 }

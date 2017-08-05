@@ -30,7 +30,7 @@ public class DeckController extends PileController {
         return ControllerViewBuilder.buildControllerView( ((Deck) container).dealCard());
     }
 
-    public ArrayList<Card> Search(String filterType, String filterCategory, int filterTotal, String filterTarget) {
-        return ((Deck) this.getCardContainer()).Search(filterType, filterCategory, filterTotal, filterTarget);
+    public ArrayList<Card> Search(int searchAmount, String filterType, String filterCategory, int filterTotal, String filterTarget) {
+        return ((Deck) this.getCardContainer()).Search(searchAmount, filterType, filterCategory, filterTotal, filterTarget);
     }
 }

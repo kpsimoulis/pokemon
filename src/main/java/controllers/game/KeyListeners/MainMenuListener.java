@@ -857,6 +857,8 @@ public class MainMenuListener implements KeyListener {
                                         break;
                                     }//deck
                                     case ("Search"): {
+                                        Pair<CardController, CardView> pair = controller.getHumanController().getHandController().removeCard(card);
+                                        controller.getHumanController().getDiscardPileController().addCard(card);
 //                                        ArrayList<AbilityLogic> logics = tc.getAbility().getLogic();
                                         String source = ((Search) tc.getAbility().getLogic().get(0)).getSource();
                                         Amount amount = ((Search) tc.getAbility().getLogic().get(0)).getAmount();

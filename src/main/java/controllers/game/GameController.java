@@ -489,23 +489,23 @@ public class GameController {
                 if (!target.getChoice()) {
                     if (name.equals("opponent") && area.equals("active")) {
                         aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
-                        sb.append("Damege caused: " + damAmount + " .\n");
+                        sb.append("Damage caused: " + damAmount + " .\n");
                     } else if (name.equals("your") && area.equals("active")) {
                         humanPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
-                        sb.append("Damege your active Pokemon: " + damAmount + " .\n");
+                        sb.append("Damage your active Pokemon: " + damAmount + " .\n");
 
                     } else if (name.equals("your") && area.equals("bench")) {
                         int size = humanPlayerController.getBenchController().getCardControllers().size();
                         for (int i = 0; i < size; i++) {
                             ((PokemonController) humanPlayerController.getBenchController().getCardControllers().get(i)).causeDamage(damAmount);
                         }
-                        sb.append("Damege your bench: " + damAmount + " .\n");
+                        sb.append("Damage your bench: " + damAmount + " .\n");
                     } else if (name.equals("opponent") && area.equals("")) {
                         aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(damAmount);
-                        sb.append("Damege caused: " + damAmount + " .\n");
+                        sb.append("Damage caused: " + damAmount + " .\n");
                     } else {
                         aiPlayerController.getActivePokemonController().getPokemonController().causeDamage(7);
-                        sb.append("Damege caused: " + damAmount + " .\n");
+                        sb.append("Damage caused: " + damAmount + " .\n");
                     }
                 }//if target
 //                else {
@@ -519,7 +519,7 @@ public class GameController {
 //                        aiPlayerController.getBenchController().setPokemonListener(damAlllistener);
 //                        aiPlayerController.getActivePokemonController().setKeyListener(damAlllistener);
 //                    }
-//                    sb.append("Damege caused: " + damAmount + " .\n");
+//                    sb.append("Damage caused: " + damAmount + " .\n");
 //                }
                 break;
             }//Dam
@@ -666,7 +666,14 @@ public class GameController {
                 sb.append("Removed " + size + " energies!\n");
                 size = 0;
                 break;
-            }//Deenergize
+            }
+            case ("Search"): {
+//                humanPlayerController.setStatus("normal");
+//                humanPlayerController.setIsPoisoned(false);
+//                sb.append("Removed all the status!\n");
+
+                break;
+            }//
 
 
             default:

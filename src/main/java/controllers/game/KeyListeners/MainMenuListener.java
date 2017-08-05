@@ -856,6 +856,51 @@ public class MainMenuListener implements KeyListener {
                                         controller.getHumanController().setChosingCard(false);
                                         break;
                                     }//deck
+                                    case ("Search"): {
+//                                        ArrayList<AbilityLogic> logics = tc.getAbility().getLogic();
+                                        String source = ((Search) tc.getAbility().getLogic().get(0)).getSource();
+                                        Amount amount = ((Search) tc.getAbility().getLogic().get(0)).getAmount();
+                                        Target target = ((Search) tc.getAbility().getLogic().get(0)).getTarget();
+
+                                        // Energy or Pokemon
+                                        String filterType = ((Search) tc.getAbility().getLogic().get(0)).getFilterType();
+                                        String filterCategory = ((Search) tc.getAbility().getLogic().get(0)).getFilterCategory();
+                                        int filterTotal = ((Search) tc.getAbility().getLogic().get(0)).getFilterTotal();
+                                        String filterTarget = ((Search) tc.getAbility().getLogic().get(0)).getFilterTarget();
+
+                                        int searchAmount = amount.getAmount();
+
+                                        ArrayList<Card> searchCards = new ArrayList<Card>();
+                                        if (target.getName().equals("your")) {
+                                            if (source.equals("deck")) {
+                                                searchCards = controller.getHumanController().getDeckController().Search(searchAmount, filterType, filterCategory, filterTotal, filterTarget);
+
+                                            }
+                                            else if (source.equals("discard")) {
+
+                                            }
+                                            else {
+                                                throw new IllegalArgumentException("Source should be deck or discard");
+                                            }
+
+                                        }
+
+                                        StringBuilder builder = new StringBuilder("Your search revealed " + searchCards.size()+ " cards\n\n");
+//                                        controller.getView().setCommand("Your search revealed " + searchCards.size()+ " cards");
+                                        for (Card searchCard : searchCards) {
+                                            builder.append(searchCard.getName() + " cat:" + searchCard.getCategory() + "\n");
+                                            controller.getHumanController().getHandController().addCard(searchCard);
+                                            controller.getHumanController().getDeckController().removeCard(searchCard);
+                                        }
+                                        controller.getView().setCommand(builder.toString());
+                                        controller.getHumanController().getHandController().returnAllCards();
+                                        controller.getHumanController().getHandController().removeAllListeners(this);
+                                        controller.getView().addBoardListerner(new MainMenuListener(controller));
+                                        controller.getHumanController().setChosingCard(false);
+
+                                        break;
+
+                                    }
 
                                     case ("Cond"): {
                                         Target target = ((Cond) ability.getLogic().get(0)).getTarget();
@@ -903,6 +948,7 @@ public class MainMenuListener implements KeyListener {
 
                                 break;
                             }//key
+
 
 
                             default: {

@@ -246,4 +246,32 @@ public class Deck extends CardContainer {
 
     }
 
+    public ArrayList<Card> Search(int searchAmount, String filterType, String filterCategory, int filterTotal, String filterTarget) {
+        ArrayList<Card> resultCards = new ArrayList<Card>(filterTotal);
+        int currentTotal = 0;
+        if (!isEmpty()) {
+            for (Card card : cards) {
+                if (filterType.equals("energy") && card instanceof Energy) {
+                    resultCards.add(card);
+                    currentTotal++;
+                }
+                else if (filterType.equals("pokemon") && card instanceof Pokemon) {
+                    resultCards.add(card);
+                    currentTotal++;
+                }
+                else if (card.getCategory().equals(filterCategory)) {
+                    resultCards.add(card);
+                    currentTotal++;
+                }
+
+                if (currentTotal == searchAmount) {
+                    break;
+                }
+            }
+        }
+
+        return resultCards;
+
+    }
+
 }
